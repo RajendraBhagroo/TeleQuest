@@ -1,0 +1,22 @@
+{
+  "name": "senior_project",
+  "version": "1.0.0",
+  "description": "Senior Project - Spring 2019",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RajendraBhagroo/Senior_Project.git"
+  },
+  "author": "Rajendra Bhagroo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RajendraBhagroo/Senior_Project/issues"
+  },
+  "homepage": "https://github.com/RajendraBhagroo/Senior_Project#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
