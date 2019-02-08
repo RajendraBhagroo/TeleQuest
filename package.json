@@ -1,8 +1,12 @@
 {
-  "name": "senior_project",
+  "name": "TeleQuest",
   "version": "1.0.0",
-  "description": "Senior Project - Spring 2019",
-  "main": "app.js",
+  "main": "server.js",
+  "author": {
+    "name": "Rajendra Bhagroo",
+    "email": "RajendraBhagroo@Gmail.com"
+  },
+  "description": "Web App That Promotes Interactivity During A Live Video Streaming Session (Senior Project - Spring 2019)",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,13 +14,35 @@
     "type": "git",
     "url": "git+https://github.com/RajendraBhagroo/Senior_Project.git"
   },
-  "author": "Rajendra Bhagroo",
-  "license": "MIT",
+  "keywords": [
+    "MERN",
+    "MongoDB",
+    "Express",
+    "React",
+    "Node",
+    "Realtime Streaming"
+  ],
+  "license": "AGPL-3.0",
+  "private": true,
+  "engines": {
+    "node": ">= 10.15.0",
+    "npm": ">= 6.6.0"
+  },
   "bugs": {
     "url": "https://github.com/RajendraBhagroo/Senior_Project/issues"
   },
   "homepage": "https://github.com/RajendraBhagroo/Senior_Project#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "bcryptjs": "^2.4.3",
+    "express": "^4.16.4",
+    "gravatar": "^1.8.0",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.10",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
   }
 }
