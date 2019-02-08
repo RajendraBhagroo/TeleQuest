@@ -1,0 +1,48 @@
+{
+  "name": "telequest",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": {
+    "name": "Rajendra Bhagroo",
+    "email": "RajendraBhagroo@Gmail.com"
+  },
+  "description": "Web App That Promotes Interactivity During A Live Video Streaming Session (Senior Project - Spring 2019)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RajendraBhagroo/TeleQuest.git"
+  },
+  "keywords": [
+    "MERN",
+    "MongoDB",
+    "Express",
+    "React",
+    "Node",
+    "Realtime Streaming"
+  ],
+  "license": "AGPL-3.0",
+  "private": true,
+  "engines": {
+    "node": ">= 10.15.0",
+    "npm": ">= 6.6.0"
+  },
+  "bugs": {
+    "url": "https://github.com/RajendraBhagroo/TeleQuest/issues"
+  },
+  "homepage": "https://github.com/RajendraBhagroo/TeleQuest#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.16.4",
+    "gravatar": "^1.8.0",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.10",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
