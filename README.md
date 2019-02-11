@@ -8,48 +8,81 @@
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Features](#features)
-- [Contributing](#contributing)
-- [Team](#team)
-- [License](#license)
+- [TeleQuest](#telequest)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Clone](#clone)
+    - [Setup](#setup)
+  - [Features](#features)
+  - [Usage](#usage)
+  - [Documentation](#documentation)
+    - [Config File](#config-file)
+  - [Tests](#tests)
+  - [Contributing](#contributing)
+  - [Team](#team)
+  - [License](#license)
 
 ## Installation
 
 ### Clone
 
-- Clone this repo to your local machine using `https://github.com/RajendraBhagroo/TeleQuest.git`
+> Clone this repo to your local machine using `https://github.com/RajendraBhagroo/TeleQuest.git`
+
+```shell
+$ git clone https://github.com/RajendraBhagroo/TeleQuest.git
+```
+
 
 ### Setup
 
-> Install npm packages
+> Install all npm packages
 
 ```shell
-$ npm install
+$ cd TeleQuest/ 
+$ npm run install-script
 ```
-
----
 
 ## Features
 
 ## Usage
 
+* Follow installation instructions prior to usage and ensure you are at project root directory
+
+> Run Application (Server And Client)
+
+```shell
+$ npm run app
+```
+
+> Run only server
+
+```shell
+$ npm run server
+```
+
+> Run only client
+
+```shell
+$ npm run client
+```
+
+
 ## Documentation
 
 ### Config File
 
-Folder Structure
+>Folder Structure
 
 <pre>
 config/
 	keys.js
 </pre>
 
-- keys.js
+> keys.js
 
 ```javascript
 module.exports = {
-  mongoURI: ""
+  mongoURI: "<INSERT URI KEY HERE>"
 };
 ```
 
@@ -60,23 +93,7 @@ module.exports = {
 ## Contributing
 
 > To get started...
-
-### Step 1
-
-- **Option 1**
-
-  - 🍴 Fork this repo!
-
-- **Option 2**
-  - 👯 Clone this repo to your local machine using `https://github.com/RajendraBhagroo/TeleQuest.git`
-
-### Step 2
-
-- **HACK AWAY!** 🔨🔨🔨
-
-### Step 3
-
-- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/ISSUE_TEMPLATE/feature_request.md" target="_blank">`Template`</a>.
+- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/ISSUE_TEMPLATE/feature_request.md" target="_blank">`Template`</a>
 
 ---
 
