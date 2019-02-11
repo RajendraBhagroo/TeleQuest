@@ -17,6 +17,7 @@
   - [Usage](#usage)
   - [Documentation](#documentation)
     - [Config File](#config-file)
+    - [Default Development Ports](#default-development-ports)
   - [Tests](#tests)
   - [Contributing](#contributing)
   - [Team](#team)
@@ -48,7 +49,7 @@ $ npm run install-script
 
 * Follow installation instructions prior to usage and ensure you are at project root directory
 
-> Run Application (Server And Client)
+> Run application (Server And Client)
 
 ```shell
 $ npm run app
@@ -71,7 +72,7 @@ $ npm run client
 
 ### Config File
 
->Folder Structure
+>Folder structure
 
 <pre>
 config/
@@ -86,7 +87,12 @@ module.exports = {
 };
 ```
 
----
+### Default Development Ports
+
+> Server : http://localhost:3001
+
+> Client : http://localhost:3000
+
 
 ## Tests
 
@@ -95,11 +101,10 @@ module.exports = {
 > To get started...
 - 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/ISSUE_TEMPLATE/feature_request.md" target="_blank">`Template`</a>
 
----
 
 ## Team
 
-> Or Contributors/People
+> Core development team
 
 |                <a href="https://github.com/RajendraBhagroo" target="_blank">**RajendraBhagroo**</a>                |       <a href="https://github.com/gint0kix" target="_blank">**Chris**</a>       |         <a href="https://github.com/Gold-Turtle" target="_blank">**Kim**</a>          |
 | :----------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: |
