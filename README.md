@@ -16,8 +16,7 @@
   - [Features](#features)
   - [Usage](#usage)
   - [Documentation](#documentation)
-    - [Config File](#config-file)
-    - [Default Development Ports](#default-development-ports)
+    - [Config Folder](#config-folder)
   - [Tests](#tests)
   - [Contributing](#contributing)
   - [Team](#team)
@@ -36,7 +35,7 @@ $ git clone https://github.com/RajendraBhagroo/TeleQuest.git
 
 ### Setup
 
-> Install all npm packages
+> Install all dependencies from all npm packages
 
 ```shell
 $ cd TeleQuest/ 
@@ -70,29 +69,28 @@ $ npm run client
 
 ## Documentation
 
-### Config File
+### Config Folder
 
->Folder structure
+- Config folder should be placed at root of project
+
+> Folder structure
 
 <pre>
 config/
-	keys.js
+    config.development.js
+    config.production.js
 </pre>
 
-> keys.js
+> config.*.js [Example]
 
 ```javascript
 module.exports = {
-  mongoURI: "<INSERT URI KEY HERE>"
+  host: "localhost",
+  node_port: 3001,
+  react_port: 3000,
+  mongodb_uri: "<Insert URI Here>"
 };
 ```
-
-### Default Development Ports
-
-> Server : http://localhost:3001
-
-> Client : http://localhost:3000
-
 
 ## Tests
 

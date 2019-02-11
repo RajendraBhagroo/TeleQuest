@@ -2,6 +2,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
+// Config
+const config = require("../config/config.development.js");
+
 const app = express();
 
 // Middleware
@@ -9,16 +12,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Database Configuration
-const db = require("../config/keys").mongoURI;
-
 mongoose
-  .connect(db, { useNewUrlParser: true })
+  .connect(config.mongodb_uri, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
 // Run Server
-const host = "localhost";
-const port = process.env.PORT || 3001;
+const host = config.host;
+const port = process.env.PORT || config.node_port;
 
 app.listen(port, () => console.log(`Server running on http://${host}:${port}`));
 
