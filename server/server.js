@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Database Configuration
-const db = require("./config/keys").mongoURI;
+const db = require("../config/keys").mongoURI;
 
 mongoose
   .connect(db, { useNewUrlParser: true })
@@ -18,6 +18,10 @@ mongoose
 
 // Run Server
 const host = "localhost";
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 
 app.listen(port, () => console.log(`Server running on http://${host}:${port}`));
+
+app.get("/", (req, res) => {
+  res.status(200).json("TeleQuest Server Alive");
+});
