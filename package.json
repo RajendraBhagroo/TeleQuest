@@ -8,7 +8,8 @@
   },
   "description": "Web App That Promotes Interactivity During A Live Video Streaming Session (Senior Project - Spring 2019)",
   "scripts": {
-    "install-script": "npm install && cd server && npm install && cd ../client && npm install",
+    "install-script-dev": "npm install && cd server && npm install && cd ../client && npm install",
+    "install-script-prod": "npm install --only=production && cd server && npm install --only=production && cd ../client && npm install --only=production",
     "server": "cd server && npm run start",
     "client": "cd client && npm run start",
     "app": "concurrently --raw --kill-others \"npm run server\" \"npm run client\""
