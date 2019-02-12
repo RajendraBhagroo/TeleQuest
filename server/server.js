@@ -2,10 +2,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
+const app = express();
+
+// Routes
+const users = require("./routes/api/users");
+const profile = require("./routes/api/profile");
+
 // Config
 const config = require("../config/config.development.js");
-
-const app = express();
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -17,12 +21,12 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
+// Use Routes
+app.use("/api/users", users);
+app.use("/api/profile", profile);
+
 // Run Server
 const host = config.host;
 const port = process.env.PORT || config.node_port;
 
 app.listen(port, () => console.log(`Server running on http://${host}:${port}`));
-
-app.get("/", (req, res) => {
-  res.status(200).json("TeleQuest Server Alive");
-});
