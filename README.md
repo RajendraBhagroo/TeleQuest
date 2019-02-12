@@ -13,6 +13,7 @@
   - [Installation](#installation)
     - [Clone](#clone)
     - [Setup](#setup)
+    - [Docker](#docker)
   - [Features](#features)
   - [Usage](#usage)
   - [Documentation](#documentation)
@@ -35,11 +36,27 @@ $ git clone https://github.com/RajendraBhagroo/TeleQuest.git
 
 ### Setup
 
-> Install all dependencies from all npm packages
+> Install dependencies from all npm packages 
 
 ```shell
 $ cd TeleQuest/ 
-$ npm run install-script
+$ npm run install-script-dev
+```
+
+### Docker
+> Create image and run container
+> 
+```shell
+$ cd TeleQuest/
+$ docker build -t rajendrabhagroo/telequest .
+$ docker run --name telequest -p 3001:3001 -p 3000:3000 -d rajendrabhagroo/telequest
+```
+
+> Teardown container
+
+```shell
+$ docker ps 
+$ docker stop <CONTAINER ID>
 ```
 
 ## Features
