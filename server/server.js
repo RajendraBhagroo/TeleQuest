@@ -1,29 +1,30 @@
-// Libraries
+const config = require("../config/config.development");
 const express = require("express");
 const mongoose = require("mongoose");
-
+const passport = require("passport");
 const app = express();
 
-// Routes
-const users = require("./routes/api/users");
-const profile = require("./routes/api/profile");
+require("./passport")(passport);
 
-// Config
-const config = require("../config/config.development.js");
+// Routes
+const users = require("./routes/api/v1/users");
+const profile = require("./routes/api/v1/profile");
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(passport.initialize());
 
 // Database Configuration
 mongoose
+  .set("useCreateIndex", true)
   .connect(config.mongodb_uri, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
 // Use Routes
-app.use("/api/users", users);
-app.use("/api/profile", profile);
+app.use("/api/v1/users", users);
+app.use("/api/v1/profile", profile);
 
 // Run Server
 const host = config.host;
