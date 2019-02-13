@@ -105,7 +105,8 @@ module.exports = {
   host: "localhost",
   node_port: 3001,
   react_port: 3000,
-  mongodb_uri: "<Insert URI Here>"
+  mongodb_uri: "<Insert URI Here>",
+  jwt_secret: "secret"
 };
 ```
 
