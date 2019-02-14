@@ -8,81 +8,119 @@
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Features](#features)
-- [Contributing](#contributing)
-- [Team](#team)
-- [License](#license)
+- [TeleQuest](#telequest)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Clone](#clone)
+    - [Setup](#setup)
+    - [Docker](#docker)
+  - [Features](#features)
+  - [Usage](#usage)
+  - [Documentation](#documentation)
+    - [Config Folder](#config-folder)
+  - [Tests](#tests)
+  - [Contributing](#contributing)
+  - [Team](#team)
+  - [License](#license)
 
 ## Installation
 
 ### Clone
 
-- Clone this repo to your local machine using `https://github.com/RajendraBhagroo/TeleQuest.git`
+> Clone this repo to your local machine using `https://github.com/RajendraBhagroo/TeleQuest.git`
+
+```shell
+$ git clone https://github.com/RajendraBhagroo/TeleQuest.git
+```
+
 
 ### Setup
 
-> Install npm packages
+> Install dependencies from all npm packages 
 
 ```shell
-$ npm install
+$ cd TeleQuest/ 
+$ npm run install-script-dev
 ```
 
----
+### Docker
+> Create image and run container
+> 
+```shell
+$ cd TeleQuest/
+$ docker build -t rajendrabhagroo/telequest .
+$ docker run --name telequest -p 3001:3001 -p 3000:3000 -d rajendrabhagroo/telequest
+```
+
+> Teardown container
+
+```shell
+$ docker ps 
+$ docker stop <CONTAINER ID>
+```
 
 ## Features
 
 ## Usage
 
+* Follow installation instructions prior to usage and ensure you are at project root directory
+
+> Run application (Server And Client)
+
+```shell
+$ npm run app
+```
+
+> Run only server
+
+```shell
+$ npm run server
+```
+
+> Run only client
+
+```shell
+$ npm run client
+```
+
+
 ## Documentation
 
-### Config File
+### Config Folder
 
-Folder Structure
+- Config folder should be placed at root of project
+
+> Folder structure
 
 <pre>
 config/
-	keys.js
+    config.development.js
+    config.production.js
 </pre>
 
-- keys.js
+> config.*.js [Example]
 
 ```javascript
 module.exports = {
-  mongoURI: ""
+  host: "localhost",
+  node_port: 3001,
+  react_port: 3000,
+  mongodb_uri: "<Insert URI Here>",
+  jwt_secret: "secret"
 };
 ```
-
----
 
 ## Tests
 
 ## Contributing
 
 > To get started...
+- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/ISSUE_TEMPLATE/feature_request.md" target="_blank">`Template`</a>
 
-### Step 1
-
-- **Option 1**
-
-  - 🍴 Fork this repo!
-
-- **Option 2**
-  - 👯 Clone this repo to your local machine using `https://github.com/RajendraBhagroo/TeleQuest.git`
-
-### Step 2
-
-- **HACK AWAY!** 🔨🔨🔨
-
-### Step 3
-
-- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/ISSUE_TEMPLATE/feature_request.md" target="_blank">`Template`</a>.
-
----
 
 ## Team
 
-> Or Contributors/People
+> Core development team
 
 |                <a href="https://github.com/RajendraBhagroo" target="_blank">**RajendraBhagroo**</a>                |       <a href="https://github.com/gint0kix" target="_blank">**Chris**</a>       |         <a href="https://github.com/Gold-Turtle" target="_blank">**Kim**</a>          |
 | :----------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: |
