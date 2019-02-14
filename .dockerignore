@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+Dockerfile
+.circeci
+.dockerignore
+.git
+.github
+.gitignore
+CODE_OF_CONDUCT.md
+README.md
