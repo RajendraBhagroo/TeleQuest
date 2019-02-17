@@ -16,7 +16,7 @@ jobs:
             # Fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: npm --prefix ./client install
+      - run: npm run install-script-dev
 
       - save_cache:
           paths:
@@ -24,4 +24,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # Run tests
+
+      # - run: npm run app
       - run: npm --prefix ./client run test
+      # - run: npm --prefix ./server run test
