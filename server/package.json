@@ -3,7 +3,8 @@
   "description": "Server Package.json For TeleQuest",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "mocha tests/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -16,6 +17,8 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.9",
+    "supertest": "^3.4.2"
   }
 }

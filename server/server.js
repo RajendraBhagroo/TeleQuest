@@ -2,6 +2,7 @@ const config = require("../config/config.development");
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
+
 const app = express();
 
 require("./passport")(passport);
