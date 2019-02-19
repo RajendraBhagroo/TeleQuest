@@ -13,7 +13,7 @@
   - [Installation](#installation)
     - [Clone](#clone)
     - [Setup](#setup)
-    - [Docker](#docker)
+    - [Docker (Optional)](#docker-optional)
   - [Features](#features)
   - [Usage](#usage)
   - [Documentation](#documentation)
@@ -43,7 +43,7 @@ $ cd TeleQuest/
 $ npm run install-script-dev
 ```
 
-### Docker
+### Docker (Optional)
 > Create image and run container
 > 
 ```shell
@@ -129,6 +129,6 @@ module.exports = {
 
 ## License
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
-- **[GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl.txt)**
+- **[Massachusetts Institute of Technology](http://opensource.org/licenses/MIT)**

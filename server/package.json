@@ -1,6 +1,7 @@
 {
   "name": "server",
   "description": "Server Package.json For TeleQuest",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "start": "nodemon server.js",
