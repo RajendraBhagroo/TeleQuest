@@ -1,12 +1,14 @@
 {
   "name": "telequest",
   "version": "1.0.0",
+  "description": "Web App That Promotes Interactivity During A Live Video Streaming Session (Senior Project - Spring 2019)",
+  "license": "MIT",
+  "private": true,
   "main": "server/server.js",
   "author": {
     "name": "Rajendra Bhagroo",
     "email": "RajendraBhagroo@Gmail.com"
   },
-  "description": "Web App That Promotes Interactivity During A Live Video Streaming Session (Senior Project - Spring 2019)",
   "scripts": {
     "install-script-dev": "npm install && cd server && npm install && cd ../client && npm install",
     "install-script-prod": "npm install --only=production && cd server && npm install --only=production && cd ../client && npm install --only=production",
@@ -26,8 +28,6 @@
     "Node",
     "Realtime Streaming"
   ],
-  "license": "AGPL-3.0",
-  "private": true,
   "engines": {
     "node": ">= 10.15.0",
     "npm": ">= 6.6.0"
