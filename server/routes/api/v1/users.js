@@ -1,4 +1,3 @@
-const config = require("../../../../config/config.development");
 const express = require("express");
 const router = express.Router();
 const gravatar = require("gravatar");
@@ -88,7 +87,7 @@ router.post("/login", (req, res) => {
         // JWT Token Expires In 1 Week
         jwt.sign(
           payload,
-          config.jwt_secret,
+          process.env.JWT_SECRET,
           { expiresIn: 604800 },
           (err, token) => {
             res.json({
@@ -120,8 +119,6 @@ router.get(
   }
 );
 
-module.exports = router;
-
 /*
  * @route   DELETE /api/v1/users/:user_id
  * @params  {user_id}
@@ -141,3 +138,5 @@ router.delete(
       });
   }
 );
+
+module.exports = router;
