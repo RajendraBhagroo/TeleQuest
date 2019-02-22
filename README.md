@@ -116,6 +116,7 @@ JWT_SECRET=<Insert Your Secret>
 ## Contributing
 
 > To get started...
+- Review our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/CODE_OF_CONDUCT.md" target="_blank">`Code Of Conduct`</a>
 - 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/CONTRIBUTOR_TEMPLATES/feature_request.md" target="_blank">`Template`</a>
 
 
