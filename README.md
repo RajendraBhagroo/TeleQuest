@@ -17,6 +17,7 @@
   - [Features](#features)
   - [Usage](#usage)
   - [Documentation](#documentation)
+    - [Wiki](#wiki)
     - [Config Folder](#config-folder)
   - [Tests](#tests)
   - [Contributing](#contributing)
@@ -86,28 +87,28 @@ $ npm run client
 
 ## Documentation
 
+### Wiki
+
+> Please refer to our project <a href="https://github.com/RajendraBhagroo/TeleQuest/wiki" target="_blank">`Wiki`</a> for extended documentation
+
 ### Config Folder
 
-- Config folder should be placed at root of project
+- Config folder is located at the root of the project
 
 > Folder structure
 
 <pre>
 config/
-    config.development.js
-    config.production.js
+    .env
 </pre>
 
-> config.*.js [Example]
+> .env [Example]
 
-```javascript
-module.exports = {
-  host: "localhost",
-  node_port: 3001,
-  react_port: 3000,
-  mongodb_uri: "<Insert URI Here>",
-  jwt_secret: "secret"
-};
+```dosini
+HOST=http://127.0.0.1
+NODE_PORT=3001
+MONGO_DB_URI=<Insert Your Mongo URI>
+JWT_SECRET=<Insert Your Secret>
 ```
 
 ## Tests
@@ -115,7 +116,7 @@ module.exports = {
 ## Contributing
 
 > To get started...
-- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/ISSUE_TEMPLATE/feature_request.md" target="_blank">`Template`</a>
+- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/CONTRIBUTOR_TEMPLATES/feature_request.md" target="_blank">`Template`</a>
 
 
 ## Team
