@@ -1,0 +1,13 @@
+FROM node:10.15.1-alpine
+
+RUN npm install -g nodemon
+
+RUN mkdir -p /app/server
+
+WORKDIR /app/server
+
+COPY . /app/server
+
+RUN npm install
+
+CMD ["npm", "run", "start"]
