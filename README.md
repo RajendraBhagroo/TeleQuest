@@ -13,7 +13,8 @@
   - [Installation](#installation)
     - [Clone](#clone)
     - [Setup](#setup)
-    - [Docker (Optional)](#docker-optional)
+  - [Docker](#docker)
+    - [Troubleshooting](#troubleshooting)
   - [Features](#features)
   - [Usage](#usage)
   - [Documentation](#documentation)
@@ -25,6 +26,8 @@
   - [License](#license)
 
 ## Installation
+
+> Please refer to our project Wiki for <a href="https://github.com/RajendraBhagroo/TeleQuest/wiki/1.-Installing-Node.js" target="_blank">`Node.js`</a> installation
 
 ### Clone
 
@@ -44,20 +47,33 @@ $ cd TeleQuest/
 $ npm run install-script-dev
 ```
 
-### Docker (Optional)
-> Create image and run container
-> 
+## Docker
+> Build and run containers
+
 ```shell
 $ cd TeleQuest/
-$ docker build -t rajendrabhagroo/telequest .
-$ docker run --name telequest -p 3001:3001 -p 3000:3000 -d rajendrabhagroo/telequest
+$ docker-compose -f docker-compose-dev.yml build
+$ docker-compose -f docker-compose-dev.yml up -d
 ```
 
-> Teardown container
+> Teardown containers
 
 ```shell
-$ docker ps 
-$ docker stop <CONTAINER ID>
+$ docker-compose -f docker-compose-dev.yml down
+```
+
+### Troubleshooting
+
+- If you are using Docker Toolbox, please use the IP address of your docker-machine when accessing ports locally
+
+```shell
+$ docker-machine ip
+```
+
+- Run only server
+
+```shell
+$ docker-compose -f docker-compose-dev.yml run server
 ```
 
 ## Features
@@ -109,6 +125,7 @@ HOST=http://127.0.0.1
 NODE_PORT=3001
 MONGO_DB_URI=<Insert Your Mongo URI>
 JWT_SECRET=<Insert Your Secret>
+JWT_EXPIRE=604800
 ```
 
 ## Tests
