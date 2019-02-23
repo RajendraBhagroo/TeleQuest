@@ -1,4 +1,3 @@
-const config = require("../config/config.development");
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -19,7 +18,7 @@ app.use(passport.initialize());
 // Database Configuration
 mongoose
   .set("useCreateIndex", true)
-  .connect(config.mongodb_uri, { useNewUrlParser: true })
+  .connect(process.env.MONGO_DB_URI, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
@@ -28,7 +27,7 @@ app.use("/api/v1/users", users);
 app.use("/api/v1/profile", profile);
 
 // Run Server
-const host = config.host;
-const port = process.env.PORT || config.node_port;
+const host = process.env.HOST || `http://127.0.0.1`;
+const port = process.env.PORT || 3001;
 
-app.listen(port, () => console.log(`Server running on http://${host}:${port}`));
+app.listen(port, () => console.log(`Server running on ${host}:${port}`));

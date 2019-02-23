@@ -13,10 +13,12 @@
   - [Installation](#installation)
     - [Clone](#clone)
     - [Setup](#setup)
-    - [Docker (Optional)](#docker-optional)
+  - [Docker](#docker)
+    - [Troubleshooting](#troubleshooting)
   - [Features](#features)
   - [Usage](#usage)
   - [Documentation](#documentation)
+    - [Wiki](#wiki)
     - [Config Folder](#config-folder)
   - [Tests](#tests)
   - [Contributing](#contributing)
@@ -24,6 +26,8 @@
   - [License](#license)
 
 ## Installation
+
+> Please refer to our project Wiki for <a href="https://github.com/RajendraBhagroo/TeleQuest/wiki/1.-Installing-Node.js" target="_blank">`Node.js`</a> installation
 
 ### Clone
 
@@ -43,20 +47,33 @@ $ cd TeleQuest/
 $ npm run install-script-dev
 ```
 
-### Docker (Optional)
-> Create image and run container
-> 
+## Docker
+> Build and run containers
+
 ```shell
 $ cd TeleQuest/
-$ docker build -t rajendrabhagroo/telequest .
-$ docker run --name telequest -p 3001:3001 -p 3000:3000 -d rajendrabhagroo/telequest
+$ docker-compose -f docker-compose-dev.yml build
+$ docker-compose -f docker-compose-dev.yml up -d
 ```
 
-> Teardown container
+> Teardown containers
 
 ```shell
-$ docker ps 
-$ docker stop <CONTAINER ID>
+$ docker-compose -f docker-compose-dev.yml down
+```
+
+### Troubleshooting
+
+- If you are using Docker Toolbox, please use the IP address of your docker-machine when accessing ports locally
+
+```shell
+$ docker-machine ip
+```
+
+- Run only server
+
+```shell
+$ docker-compose -f docker-compose-dev.yml run server
 ```
 
 ## Features
@@ -86,28 +103,29 @@ $ npm run client
 
 ## Documentation
 
+### Wiki
+
+> Please refer to our project <a href="https://github.com/RajendraBhagroo/TeleQuest/wiki" target="_blank">`Wiki`</a> for extended documentation
+
 ### Config Folder
 
-- Config folder should be placed at root of project
+- Config folder is located at the root of the project
 
 > Folder structure
 
 <pre>
 config/
-    config.development.js
-    config.production.js
+    .env
 </pre>
 
-> config.*.js [Example]
+> .env [Example]
 
-```javascript
-module.exports = {
-  host: "localhost",
-  node_port: 3001,
-  react_port: 3000,
-  mongodb_uri: "<Insert URI Here>",
-  jwt_secret: "secret"
-};
+```dosini
+HOST=http://127.0.0.1
+NODE_PORT=3001
+MONGO_DB_URI=<Insert Your Mongo URI>
+JWT_SECRET=<Insert Your Secret>
+JWT_EXPIRE=604800
 ```
 
 ## Tests
@@ -115,7 +133,8 @@ module.exports = {
 ## Contributing
 
 > To get started...
-- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/ISSUE_TEMPLATE/feature_request.md" target="_blank">`Template`</a>
+- Review our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/CODE_OF_CONDUCT.md" target="_blank">`Code Of Conduct`</a>
+- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/CONTRIBUTOR_TEMPLATES/feature_request.md" target="_blank">`Template`</a>
 
 
 ## Team
