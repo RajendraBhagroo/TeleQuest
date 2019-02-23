@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "nodemon -r dotenv/config server.js dotenv_config_path=../config/.env",
+    "start": "nodemon -L -r dotenv/config server.js dotenv_config_path=../config/.env",
     "test": "mocha tests/*.test.js"
   },
   "dependencies": {

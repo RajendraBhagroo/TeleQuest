@@ -84,11 +84,10 @@ router.post("/login", (req, res) => {
       if (isMatch) {
         const payload = { id: user.id, name: user.name, avatar: user.avatar };
 
-        // JWT Token Expires In 1 Week
         jwt.sign(
           payload,
           process.env.JWT_SECRET,
-          { expiresIn: 604800 },
+          { expiresIn: process.env.JWT_EXPIRE },
           (err, token) => {
             res.json({
               success: true,
