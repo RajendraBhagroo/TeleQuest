@@ -1,6 +1,6 @@
-const host = process.env.HOST || `http://127.0.0.1`;
+const host = process.env.HOST || `127.0.0.1`;
 const port = process.env.PORT || 3001;
-const request = require("supertest").agent(`${host}:${port}`);
+const request = require("supertest").agent(`http://${host}:${port}`);
 
 /*
  * @route   GET api/v1/users/test

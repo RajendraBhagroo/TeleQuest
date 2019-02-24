@@ -27,7 +27,7 @@ app.use("/api/v1/users", users);
 app.use("/api/v1/profile", profile);
 
 // Run Server
-const host = process.env.HOST || `http://127.0.0.1`;
+const host = process.env.HOST || `127.0.0.1`;
 const port = process.env.PORT || 3001;
 
-app.listen(port, () => console.log(`Server running on ${host}:${port}`));
+app.listen(port, () => console.log(`Server running on http://${host}:${port}`));
