@@ -116,12 +116,13 @@ $ npm run client
 <pre>
 config/
     .env
+    .env.example
 </pre>
 
 > .env [Example]
 
 ```dosini
-HOST=http://127.0.0.1
+HOST=127.0.0.1
 NODE_PORT=3001
 MONGO_DB_URI=<Insert Your Mongo URI>
 JWT_SECRET=<Insert Your Secret>
@@ -133,8 +134,9 @@ JWT_EXPIRE=604800
 ## Contributing
 
 > To get started...
-- Review our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/CODE_OF_CONDUCT.md" target="_blank">`Code Of Conduct`</a>
-- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/CONTRIBUTOR_TEMPLATES/feature_request.md" target="_blank">`Template`</a>
+- Review our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/CONTRIBUTOR/CODE_OF_CONDUCT.md" target="_blank">`Code Of Conduct`</a>
+- Please refer to our project Wiki for setting up <a href="https://github.com/RajendraBhagroo/TeleQuest/wiki/2.-Setting-Up-Verified-Commits" target="_blank">`Verified Commits`</a> (required)
+- 🔃 Create a new pull request using our <a href="https://github.com/RajendraBhagroo/TeleQuest/blob/master/.github/CONTRIBUTOR/feature_request.md" target="_blank">`Template`</a>
 
 
 ## Team
