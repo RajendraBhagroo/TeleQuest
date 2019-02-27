@@ -1,15 +1,15 @@
-const host = process.env.HOST || `http://127.0.0.1`;
+const host = process.env.HOST || `127.0.0.1`;
 const port = process.env.PORT || 3001;
 const request = require("supertest").agent(`${host}:${port}`);
-var token = null;
-var userid="";
+let token = null;
+let userid = "";
 /*
- * @route   GET api/v1/users/test
- * @desc    Tests users route
+ * @route   GET /api/v1/users/test
+ * @desc    Tests users route, should respond with JSON message and 200 OK
  * @access  Public
  */
 describe("GET /api/v1/users/", () => {
-  it("Should Return JSON Message", done => {
+  it("Should Return JSON Message, and 200 OK", done => {
     request
       .get("/api/v1/users/")
       .set("Accept", "application/json")
@@ -24,9 +24,9 @@ describe("GET /api/v1/users/", () => {
 });
 
 /*
- * @route   POST api/v1/users/register
+ * @route   POST /api/v1/users/register
  * @params  {name, email, password}
- * @desc    Register user
+ * @desc    Register user, should respond with 201 Created
  * @access  Public
  */
 describe("POST /api/v1/users/register", () => {
@@ -48,9 +48,10 @@ describe("POST /api/v1/users/register", () => {
   });
 }); 
 /*
- * @route   POST api/v1/users/register
+ * @route   POST /api/v1/users/register
  * @params  {name, email}
- * @desc    Register user Missing 1 Param should send 400
+ * @missing parms {password}
+ * @desc    Register user missing 1 Param should send 400 Bad Request
  * @access  Public
  */
 describe("POST /api/v1/users/register", () => {
@@ -59,7 +60,7 @@ describe("POST /api/v1/users/register", () => {
     email: "JohnDoeMissingParm@Gmail.com"
 
   };
-  it("Should Respond With 400 Created", done => {
+  it("Should Respond With 400 Bad Request", done => {
     request
       .post("/api/v1/users/register")
       .send(body)
@@ -72,9 +73,9 @@ describe("POST /api/v1/users/register", () => {
   });
 });
 /*
- * @route   POST api/v1/users/register
+ * @route   POST /api/v1/users/register
  * @params  {name, email, password}
- * @desc    Register user using same email should send 400
+ * @desc    Register user using existing email should send 400 Bad Request
  * @access  Public
  */
 describe("POST /api/v1/users/register", () => {
@@ -84,7 +85,7 @@ describe("POST /api/v1/users/register", () => {
     password: "123456"
 
   };
-  it("Should Respond With 400 Created", done => {
+  it("Should Respond With 400 Bad Request", done => {
     request
       .post("/api/v1/users/register")
       .send(body)
@@ -97,9 +98,9 @@ describe("POST /api/v1/users/register", () => {
   });
 });
 /*
- * @route   POST api/v1/users/login
+ * @route   POST /api/v1/users/login
  * @params  {email, password}
- * @desc    Tests successful login, should send 200
+ * @desc    Tests successful login, should send 200 OK
  * @access  Public
  */
 describe("POST /api/v1/users/login", () => {
@@ -107,7 +108,7 @@ describe("POST /api/v1/users/login", () => {
     email: "JohnDoe@Gmail.com",
     password: "123456"
   };
-  it("Should Respond With Success", done => {
+  it("Should Respond With 200 OK", done => {
     request
       .post("/api/v1/users/login")
       .send(body)
@@ -117,16 +118,16 @@ describe("POST /api/v1/users/login", () => {
         if (err) return done(err);
         else
         {
-          token =res.body.token;
+          token = res.body.token;
         }
         done();
       });
   });
 });
 /*
- * @route   POST api/v1/users/login
+ * @route   POST /api/v1/users/login
  * @params  {email, password}
- * @desc    Test failed login should send 400
+ * @desc    Test failed login, wrong password should send 400 Bad Request
  * @access  Public
  */
 describe("POST /api/v1/users/login", () => {
@@ -134,7 +135,7 @@ describe("POST /api/v1/users/login", () => {
     email: "JohnDoe@Gmail.com",
     password: "123454"
   };
-  it("Should Respond With Failure", done => {
+  it("Should Respond With 400 Bad Request", done => {
     request
       .post("/api/v1/users/login")
       .send(body)
@@ -147,13 +148,13 @@ describe("POST /api/v1/users/login", () => {
   });
 });
 /*
- * @route   GET api/v1/users/current
- * @params  {token}
- * @desc    Test for current route, should return 200 and JSON
+ * @route   GET /api/v1/users/current
+ * @authorization  {token}
+ * @desc    Test for current route, should return 200 OK and JSON
  * @access  Private
  */
 describe("GET /api/v1/users/current", () => {
-  it("Should Return JSON Message", done => {
+  it("Should Return JSON Message, and 200 OK", done => {
     request
       .get("/api/v1/users/current")
       .set("Authorization",token)
@@ -161,25 +162,22 @@ describe("GET /api/v1/users/current", () => {
       .end((err,res) => {
         if (err) return done(err);
         else
-        userid=res.body.id;
+        userid = res.body.id;
         done();
       });
   });
 });
-// Test -> User Delete: Success
 /*
- * @route   DELETE api/v1/users/:userid
- * @params  {userid, token}
- * @desc    Test delete route, should return 200
+ * @route   DELETE /api/v1/users/:user_id
+ * @params URL  {:user_id}
+ * @authorization {token}
+ * @desc    Test delete route, should return 200 OK
  * @access  Private
  */
 describe("DELETE /api/v1/users/:user_id", () => {
-  const body={
-    user_id:userid
-  }
-  it("Should Respond With Success", done => {      
+  it("Should Respond With Success, and 200 OK", done => {      
     request
-      .delete('/api/v1/users/'+userid)
+      .delete(`/api/v1/users/${userid}`)
       .set("Authorization",token)
       .expect(200)
       .end(err => {
@@ -189,18 +187,16 @@ describe("DELETE /api/v1/users/:user_id", () => {
   });
 });
 /*
- * @route   DELETE api/v1/users/:userid
- * @params  {user_id, token}
- * @desc    Deletes user with given authorization, and user_id, should return 401
+ * @route   DELETE /api/v1/users/:user_id
+ * @params URL  {:user_id}
+ * @authorization {token}
+ * @desc    Deletes user with given authorization, and user_id, should return 401 bad request
  * @access  Private
  */
 describe("DELETE /api/v1/users/:user_id", () => {
-  const body={
-    user_id:userid
-  }
-  it("Should Respond With Failure", done => {      
+  it("Should Respond With 401 bad request", done => {      
     request
-      .delete('/api/v1/users/'+userid)
+      .delete(`/api/v1/users/${userid}`)
       .set("Authorization",token)
       .expect(401)
       .end(err => {

@@ -43,11 +43,6 @@ router.post("/register", (req, res) => {
         avatar,
         password: req.body.password
       });
-      if(newUser.password==null)
-      {
-        errors.password = "Password Is Undefined";
-        return res.status(400).json(errors);
-      }
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
