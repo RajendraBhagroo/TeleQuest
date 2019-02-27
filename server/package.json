@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon -L -r dotenv/config server.js dotenv_config_path=../config/.env",
-    "test": "mocha tests/*.test.js"
+    "test": "mocha tests/v1/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
