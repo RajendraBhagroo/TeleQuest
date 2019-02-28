@@ -10,11 +10,15 @@
     "email": "RajendraBhagroo@Gmail.com"
   },
   "scripts": {
-    "install-script-dev": "npm install && cd server && npm install && cd ../client && npm install",
-    "install-script-prod": "npm install --only=production && cd server && npm install --only=production && cd ../client && npm install --only=production",
+    "install-script": "npm install --only=production && cd server && npm install --only=production && cd ../client && npm install --only=production",
     "server": "cd server && npm run start",
     "client": "cd client && npm run start",
-    "app": "concurrently --raw --kill-others \"npm run server\" \"npm run client\""
+    "app": "concurrently --raw --kill-others \"npm run server\" \"npm run client\"",
+    "install-script-dev": "npm install && cd server && npm install && cd ../client && npm install",
+    "server-dev": "cd server && npm run start-dev",
+    "app-dev": "concurrently --raw --kill-others \"npm run server-dev\" \"npm run client\"",
+    "test": "cd server/ && npm run test && cd .. && cd client/ && npm run test",
+    "circle-ci": "concurrently --success first --raw --kill-others \"npm run server-dev\" \"sleep 10 && npm run test\""
   },
   "repository": {
     "type": "git",
