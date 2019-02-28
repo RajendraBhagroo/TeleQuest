@@ -25,7 +25,4 @@ jobs:
 
       # Run tests
 
-      - run: npm run server &
-      - run: sleep 10
-      - run: npm --prefix ./client run test
-      - run: npm --prefix ./server run test
+      - run: npm run circle-ci

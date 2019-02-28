@@ -12,7 +12,7 @@ services:
       - 3001:3001
     volumes:
       - ./server/:/app/server/
-    command: npm run start
+    command: npm run start-dev
     restart: always
 
   client:
