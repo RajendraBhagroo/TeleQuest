@@ -25,6 +25,6 @@ jobs:
 
       # Run tests
 
-      - run: npm run server
+      - run: npm run server &
       - run: npm --prefix ./client run test
       - run: npm --prefix ./server run test
