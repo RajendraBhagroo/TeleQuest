@@ -30,4 +30,4 @@ jobs:
       - run:
           name: Circle-Ci Testing
           command: npm run circle-ci
-          no_output_timeout: 15s
+          timeout: 15
