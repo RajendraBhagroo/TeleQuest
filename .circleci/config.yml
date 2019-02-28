@@ -25,8 +25,7 @@ jobs:
 
       # Run tests
 
-      - run:
-          name: Running Server
-          command: npm run server & | sleep 6
+      - run: npm run server &
+      - run: sleep 10
       - run: npm --prefix ./client run test
       - run: npm --prefix ./server run test
