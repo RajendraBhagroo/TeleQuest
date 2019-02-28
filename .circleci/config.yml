@@ -25,6 +25,9 @@ jobs:
 
       # Run tests
 
-      # - run: npm run app
-      - run: npm --prefix ./client run test
-      # - run: npm --prefix ./server run test
+      - run: npm run circle-ci
+
+      - run:
+          name: Circle-Ci Testing
+          command: npm run circle-ci
+          timeout: 15
