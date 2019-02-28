@@ -56,15 +56,15 @@ describe("POST /api/v1/users/register", () => {
 
 /*
  * @route          POST /api/v1/users/register
- * @params         {name, email}
- * @params missing {password}
+ * @params         {name, password}
+ * @params missing {email}
  * @desc           Register user missing 1 Param should send 400 Bad Request
  * @access         Public
  */
 describe("POST /api/v1/users/register", () => {
   const body = {
     name: "Johnny Doe",
-    email: "JohnDoeMissingParm@Gmail.com"
+    password: "123456"
   };
   it("Should Respond With 400 Bad Request", done => {
     request
@@ -199,15 +199,15 @@ describe("DELETE /api/v1/users/:user_id", () => {
  * @route         DELETE /api/v1/users/:user_id
  * @params URL    {:user_id}
  * @authorization {token}
- * @desc          Deletes user with given authorization, and user_id, should return 400 bad request (user is not in database)
+ * @desc          Deletes user with given authorization, and user_id, should return 401 Unauthorized (user is not in database)
  * @access        Private
  */
 describe("DELETE /api/v1/users/:user_id", () => {
-  it("Should Respond With 400 bad request", done => {
+  it("Should Respond With 401 Unauthorized", done => {
     request
       .delete(`/api/v1/users/${user_id}`)
       .set("Authorization", token)
-      .expect(400)
+      .expect(401)
       .end(err => {
         if (err) return done(err);
         done();
