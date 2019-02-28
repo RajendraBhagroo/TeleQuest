@@ -25,7 +25,9 @@ jobs:
 
       # Run tests
 
-      - run: npm run server &
-        no_output_timeout: 20m
+      - run:
+          name: Running Server
+          command: npm run server &
+          no_output_timeout: 20m
       - run: npm --prefix ./client run test
       - run: npm --prefix ./server run test
