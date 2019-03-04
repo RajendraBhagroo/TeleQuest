@@ -3,7 +3,9 @@ import React from "react";
 const Footer = props => {
   return (
     <div>
-      <h1>Footer</h1>
+      <footer className="sticky-bottom">
+        <p>&copy; TeleQuest {new Date().getFullYear()}</p>
+      </footer>
     </div>
   );
 };
