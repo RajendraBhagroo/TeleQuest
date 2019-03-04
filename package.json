@@ -17,7 +17,7 @@
     "install-script-dev": "npm install && cd server && npm install && cd ../client && npm install",
     "server-dev": "cd server && npm run start-dev",
     "app-dev": "concurrently --raw --kill-others \"npm run server-dev\" \"npm run client\"",
-    "test": "cd server/ && npm run test && cd .. && cd client/ && npm run test",
+    "test": "cd server && npm run test && cd .. && cd client && npm run test",
     "circle-ci": "concurrently --success first --raw --kill-others \"npm run server-dev\" \"sleep 10 && npm run test\""
   },
   "repository": {
