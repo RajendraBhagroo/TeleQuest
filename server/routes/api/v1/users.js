@@ -8,6 +8,10 @@ const passport = require("passport");
 // Load Models
 const User = require("../../../models/User");
 
+// Load Input Validation
+const validateRegisterInput = require("../../../validation/register");
+const validateLoginInput = require("../../../validation/login");
+
 /*
  * @route   GET /api/v1/users/test
  * @desc    Tests Users Route
@@ -24,7 +28,11 @@ router.get("/", (req, res) => {
  * @access  Public
  */
 router.post("/register", (req, res) => {
-  const errors = {};
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
@@ -67,7 +75,12 @@ router.post("/register", (req, res) => {
  * @access  Public
  */
 router.post("/login", (req, res) => {
-  const errors = {};
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const email = req.body.email;
   const password = req.body.password;
 
@@ -118,10 +131,10 @@ router.get(
 );
 
 /*
- * @route   DELETE /api/v1/users/:user_id
- * @params  {user_id}
- * @desc    Delete User By User ID
- * @access  Private
+ * @route       DELETE /api/v1/users/:user_id
+ * @params URL  {user_id}
+ * @desc        Delete User By User ID
+ * @access      Private
  */
 router.delete(
   "/:user_id",
@@ -131,7 +144,7 @@ router.delete(
     User.findOneAndDelete({ _id: req.params.user_id })
       .then(() => res.json({ success: true }))
       .catch(err => {
-        errors.delete = `Could not be deleted : ${err}`;
+        errors.delete = `User Could not be deleted : ${err}`;
         res.status(400).json(errors);
       });
   }
