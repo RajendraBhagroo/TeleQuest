@@ -5,21 +5,34 @@ module.exports = validateRegisterInput = data => {
   let errors = {};
   let body = {};
 
-  body.name = !isEmpty(data.name) ? data.name.trim() : "";
+  body.firstName = !isEmpty(data.firstName) ? data.firstName.trim() : "";
+  body.lastName = !isEmpty(data.lastName) ? data.lastName.trim() : "";
   body.email = !isEmpty(data.email) ? data.email.trim().toLowerCase() : "";
   body.password = !isEmpty(data.password) ? data.password.trim() : "";
   body.password2 = !isEmpty(data.password2) ? data.password2.trim() : "";
 
-  if (!Validator.isLength(body.name, { min: 2, max: 30 })) {
-    errors.name = "Name must be between 2 and 30 characters";
+  if (!Validator.isLength(body.firstName, { min: 2, max: 30 })) {
+    errors.name = "First name must be between 2 and 30 characters";
   }
 
-  if (!Validator.isAlpha(body.name)) {
-    errors.name = "Name must only contain letters";
+  if (!Validator.isLength(body.lastName, { min: 2, max: 30 })) {
+    errors.name = "Last name must be between 2 and 30 characters";
   }
 
-  if (Validator.isEmpty(body.name)) {
-    errors.name = "Name field is required";
+  if (!Validator.isAlpha(body.firstName)) {
+    errors.name = "First name must only contain letters";
+  }
+
+  if (!Validator.isAlpha(body.lastName)) {
+    errors.name = "Last name must only contain letters";
+  }
+
+  if (Validator.isEmpty(body.firstName)) {
+    errors.name = "First name field is required";
+  }
+
+  if (Validator.isEmpty(body.lastName)) {
+    errors.name = "Last name field is required";
   }
 
   if (Validator.isEmpty(body.email)) {

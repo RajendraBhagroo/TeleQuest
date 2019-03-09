@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
 
 /*
  * @route   POST /api/v1/users/register
- * @params  {name, email, password}
+ * @params  {firstName, lastName, email, password}
  * @desc    Register User
  * @access  Public
  */
@@ -46,7 +46,8 @@ router.post("/register", (req, res) => {
       });
 
       const newUser = new User({
-        name: body.name,
+        firstName: body.firstName,
+        lastName: body.lastName,
         email: body.email,
         avatar,
         password: body.password
@@ -91,7 +92,12 @@ router.post("/login", (req, res) => {
     // Check Password
     bcrypt.compare(body.password, user.password).then(isMatch => {
       if (isMatch) {
-        const payload = { id: user.id, name: user.name, avatar: user.avatar };
+        const payload = {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          avatar: user.avatar
+        };
 
         jwt.sign(
           payload,
@@ -121,7 +127,8 @@ router.get(
   (req, res) => {
     res.json({
       id: req.user.id,
-      name: req.user.name,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
       email: req.user.email
     });
   }
