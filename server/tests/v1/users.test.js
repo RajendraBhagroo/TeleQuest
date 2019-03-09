@@ -31,14 +31,15 @@ describe("GET /api/v1/users/", () => {
 
 /*
  * @route   POST /api/v1/users/register
- * @params  {name, email, password, password2}
+ * @params  {firstName, lastName, email, password, password2}
  * @desc    Register user, should respond with 201 Created
  * @access  Public
  */
 describe("POST /api/v1/users/register", () => {
   const body = {
-    name: "John Doe",
-    email: "JohnDoe@Gmail.com",
+    firstName: "John",
+    lastName: "Doe",
+    email: "JohnDoe@Nyit.edu",
     password: "123456",
     password2: "123456"
   };
@@ -57,14 +58,15 @@ describe("POST /api/v1/users/register", () => {
 
 /*
  * @route          POST /api/v1/users/register
- * @params         {name, password, password2}
+ * @params         {firstName, lastName, password, password2}
  * @params missing {email}
  * @desc           Register user missing 1 Param should send 400 Bad Request
  * @access         Public
  */
 describe("POST /api/v1/users/register", () => {
   const body = {
-    name: "Johnny Doe",
+    firstName: "John",
+    lastName: "Doe",
     password: "123456",
     password2: "123456"
   };
@@ -83,14 +85,15 @@ describe("POST /api/v1/users/register", () => {
 
 /*
  * @route   POST /api/v1/users/register
- * @params  {name, email, password, password2}
+ * @params  {firstName, lastName, email, password, password2}
  * @desc    Register user using existing email should send 400 Bad Request
  * @access  Public
  */
 describe("POST /api/v1/users/register", () => {
   const body = {
-    name: "Johnny Doe",
-    email: "JohnDoe@Gmail.com",
+    firstName: "John",
+    lastName: "Doe",
+    email: "JohnDoe@Nyit.edu",
     password: "123456",
     password2: "123456"
   };
@@ -115,7 +118,7 @@ describe("POST /api/v1/users/register", () => {
  */
 describe("POST /api/v1/users/login", () => {
   const body = {
-    email: "JohnDoe@Gmail.com",
+    email: "JohnDoe@Nyit.edu",
     password: "123456"
   };
   it("Should Respond With 200 OK", done => {
@@ -142,7 +145,7 @@ describe("POST /api/v1/users/login", () => {
  */
 describe("POST /api/v1/users/login", () => {
   const body = {
-    email: "JohnDoe@Gmail.com",
+    email: "JohnDoe@Nyit.edu",
     password: "123454"
   };
   it("Should Respond With 400 Bad Request", done => {
