@@ -37,15 +37,17 @@ class Navbar extends React.Component {
             <Link className="nav-item nav-link" to="/about">
               About
             </Link>
+            <Link className="nav-item nav-link" to="/course">
+              Course
+            </Link>
+            <Link className="nav-item nav-link" to="/mypage">
+              My page
+            </Link>
           </div>
           <div className="navbar-nav">
             <Link className="nav-item nav-link mr-2" to="/login">
               Login
               <i className="fas fa-sign-in-alt ml-2" />
-            </Link>
-            <Link className="nav-item nav-link" to="/register">
-              Register
-              <i className="fas fa-registered ml-2" />
             </Link>
           </div>
         </div>
