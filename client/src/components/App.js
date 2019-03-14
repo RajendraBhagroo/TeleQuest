@@ -8,6 +8,8 @@ import history from "../history";
 import Layout from "../components/layout/Layout";
 import Landing from "../components/home/Landing";
 import About from "../components/home/About";
+import Course from "../components/home/Course";
+import Mypage from "../components/home/Mypage";
 import Login from "../components/authentication/Login";
 import Register from "../components/authentication/Register";
 
@@ -21,6 +23,8 @@ const App = () => {
               <Switch>
                 <Route path="/" exact component={Landing} />
                 <Route path="/about" exact component={About} />
+                <Route path="/course" exact component={Course} />
+                <Route path="/mypage" exact component={Mypage} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
               </Switch>
