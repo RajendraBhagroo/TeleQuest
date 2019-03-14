@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ProfileSchema = new Schema({
-    //Represents if the profile belongs to a student or teacher, if false then the profile is a student
+    //Represents, if the profile belongs to a student or teacher, if false then the profile is a student
     teacher:{
         type: boolean,
         required: true
@@ -21,10 +21,16 @@ const ProfileSchema = new Schema({
     classesIn:{
         type: Array
     },
-    //The name of the educational institue to which this profile is assossiated too
+    //The name of the educational institute  to which this profile is associated too
     school:{
         type: String,
         required: true
+    },
+    //User associated with profile
+    user:{
+        type:Schema.Types.ObjectId,
+        ref='users'
+        
     }
 });
 
