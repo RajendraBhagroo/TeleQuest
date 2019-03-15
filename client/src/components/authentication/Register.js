@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../redux/actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
@@ -97,6 +98,9 @@ class Register extends Component {
                   onChange={this.onChange}
                   error={errors.password2}
                 />
+                <div className="login-register">
+                  Already have an account? <Link to="/login">Login</Link>
+                </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
             </div>
