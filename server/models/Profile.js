@@ -4,13 +4,8 @@ const Schema = mongoose.Schema;
 // Create Schema
 const ProfileSchema = new Schema({
     //Represents, if the profile belongs to a student or teacher, if false then the profile is a student
-    teacher:{
+    isTeacher:{
         type: boolean,
-        required: true
-    },
-    //This is the name that will be shown to the public
-    name:{
-        type: string,
         required: true
     },
     //Array to hold classes teaching if the profile belongs to a teacher
