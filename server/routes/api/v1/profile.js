@@ -9,23 +9,22 @@ router.get("/", (req, res) => {
   
   /*
    * @route   POST /api/v1/profile/register
-   * @params  {name, email, password}
+   * @params  {isTeacher, user_id, school}
    * @desc    Register Profile
    * @access  Public
    */
-  router.post("/register", (req, res) => {
+router.post("/register", (req, res) => {
     const errors = {};
   
     Profile.findOne({ user_id: req.body.user_id }).then(user => {
       if (user) {
-        errors.user_id = "This user alraedy has a profile";
+        errors.user_id = "This user already has a profile";
         return res.status(400).json(errors);
       } 
       else {
         
         const newProfile = new Profile({
-          name: req.body.name,
-          teacher: req.body.email,
+          isTeacher: req.body.isTeacher,
           user_id: req.body.user_id,
           school: req.body.school  
         });
@@ -44,15 +43,10 @@ router.get("/", (req, res) => {
   // @desc    Return Current User's School, classes enrolled in or teaching
   // @access  Private
   router.get(
-    "/current",
+    "/",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
-      res.json({
-        teacher: req.profile.teacher,
-        classesIn: req.profile.classesIn,
-        classesTeaching: req.profile.classesTeaching,
-        school: req.profile.school
-      });
+      res.json(profile);
     }
   );
   
@@ -78,11 +72,11 @@ router.get("/", (req, res) => {
   );
    /*
    * @route   UPDATE /api/v1/profile/studentEnroll
-   * @params  {user_id}
+   * @params  {user_id,classesIn[]}
    * @desc    Update a profile to enroll into classes
    * @access  Private
    */
-  router.update(
+  router.post(
     "/studentEnroll",
     passport.authenticate("jwt",{session:false}),
     (req, res) => {
@@ -92,18 +86,18 @@ router.get("/", (req, res) => {
         {$push:{classesIn:req.paramas.class}})
       .then(()=>res.json.status(204).json(profile))
       .catch(err => {
-        errors.update=`Could not update classes enrolled:${err}`;
+        errors.update=`Could not add class(s) to classesIn:${err}`;
         res.status(400).json(errors);
       });
     }
   );
   /*
    * @route   UPDATE /api/v1/profile/teachEnroll
-   * @params  {user_id}
+   * @params  {user_id, classesTeaching[]}
    * @desc    Update a profile's classes they're teaching
    * @access  Private
    */
-  router.update(
+  router.post(
     "/teacherEnroll",
     passport.authenticate("jwt",{session:false}),
     (req, res) => {
@@ -113,7 +107,70 @@ router.get("/", (req, res) => {
         {$push:{classesTeaching:req.paramas.class}})
       .then(()=>res.json.status(204).json(profile))
       .catch(err => {
-        errors.update=`Could not update classes enrolled:${err}`;
+        errors.update=`Could not add class(s) to classesTeaching:${err}`;
+        res.status(400).json(errors);
+      });
+    }
+  );
+  /*
+   * @route   DELETE /api/v1/profile/studentDrop
+   * @params  {user_id, classesIn[]}
+   * @desc    Update a profile's to drop a class they're enrolled in 
+   * @access  Private
+   */
+  router.delete(
+    "/studentDrop",
+    passport.authenticate("jwt",{session:false}),
+    (req, res) => {
+      const errors= {};
+      Profile.findOneAndUpdate(
+        { user_id:req.parmas.user_id},
+        { $pull: { classesIn: { $in: [req.paramas.class] }}})
+      .then(()=>res.json.status(204).json(profile))
+      .catch(err => {
+        errors.update=`Could not drop class(s) from classesIn:${err}`;
+        res.status(400).json(errors);
+      });
+    }
+  );
+    /*
+   * @route   DELETE /api/v1/profile/teacherDrop
+   * @params  {user_id}
+   * @desc    Update a profile's to drop a class they're teaching
+   * @access  Private
+   */
+  router.delete(
+    "/teacherDrop",
+    passport.authenticate("jwt",{session:false}),
+    (req, res) => {
+      const errors= {};
+      Profile.findOneAndUpdate(
+        { user_id:req.parmas.user_id},
+        { $pull: { classesTeaching: { $in: [req.paramas.class] }}})
+      .then(()=>res.json.status(204).json(profile))
+      .catch(err => {
+        errors.update=`Could not drop class(s) in classesTeaching:${err}`;
+        res.status(400).json(errors);
+      });
+    }
+  );
+      /*
+   * @route   POST /api/v1/profile/teacherStatUpdate
+   * @params  {user_id, isTeacher}
+   * @desc    Update a profile's teacher status
+   * @access  Private
+   */
+  router.post(
+    "/teacherStatUpdate",
+    passport.authenticate("jwt",{session:false}),
+    (req, res) => {
+      const errors= {};
+      Profile.findOneAndUpdate(
+        { user_id:req.parmas.user_id},
+        { isTeacher:req.params.isTeacher})
+      .then(()=>res.json.status(204).json(profile))
+      .catch(err => {
+        errors.update=`Could not update teacher status:${err}`;
         res.status(400).json(errors);
       });
     }
