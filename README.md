@@ -47,6 +47,8 @@ $ cd TeleQuest/
 $ npm run install-script-dev
 ```
 
+- To complete setup, please refer to the [Config Folder](#config-folder) section
+
 ## Docker
 > Build and run containers
 
@@ -85,7 +87,7 @@ $ docker-compose -f docker-compose-dev.yml run server
 > Run application (Server And Client)
 
 ```shell
-$ npm run app
+$ npm run app-dev
 ```
 
 > Run only server
@@ -109,7 +111,8 @@ $ npm run client
 
 ### Config Folder
 
-- Config folder is located at the root of the project
+- Config folder is located at the root of the project. 
+- Both, client & server share the same config. [CRA obscures .env at build-time]
 
 > Folder structure
 
@@ -122,8 +125,13 @@ config/
 > .env [Example]
 
 ```dosini
+# Client
+PORT=3000
+
+# Server
 HOST=127.0.0.1
 NODE_PORT=3001
+ROUTE_VERSION=v1
 MONGO_DB_URI=<Insert Your Mongo URI>
 JWT_SECRET=<Insert Your Secret>
 JWT_EXPIRE=604800

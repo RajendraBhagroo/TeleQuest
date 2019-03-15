@@ -4,11 +4,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "nodemon -L -r dotenv/config server.js dotenv_config_path=../config/.env",
-    "test": "mocha tests/*.test.js"
+    "start": "node -r dotenv/config server.js dotenv_config_path=../config/.env",
+    "start-dev": "nodemon -L -r dotenv/config server.js dotenv_config_path=../config/.env",
+    "test": "mocha tests/*/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.4.0",
