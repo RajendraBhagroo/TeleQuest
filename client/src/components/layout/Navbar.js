@@ -1,54 +1,105 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { logoutUser } from "../../redux/actions/authActions";
 import Logo from "../../resources/images/TeleQuest_Logo.png";
+import PropTypes from "prop-types";
 
 const styles = {
   Logo: {
     width: "100px",
     height: "30px"
+  },
+  Avatar: {
+    width: "25px",
+    marginRight: "5px"
   }
 };
 
-class Navbar extends React.Component {
-  state = {};
+class Navbar extends Component {
+  onLogoutClick(e) {
+    e.preventDefault();
+    this.props.logoutUser();
+  }
 
   render() {
+    const { isAuthenticated, user } = this.props.auth;
+
+    const authLinks = (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <Link className="nav-link" to="/profile">
+            My Profile
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            to=""
+            onClick={this.onLogoutClick.bind(this)}
+            className="nav-link"
+          >
+            <img
+              className="rounded-circle mr-2"
+              src={user.avatar}
+              alt={user.firstName + " " + user.lastName}
+              style={styles.Avatar}
+              title="You must have a Gravatar connected to your email to display an image"
+            />
+            Logout
+          </Link>
+        </li>
+      </ul>
+    );
+
+    const guestLinks = (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <Link className="nav-link" to="/login">
+            Login
+            <i className="fas fa-sign-in-alt ml-2" />
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/register">
+            Sign Up
+            <i className="fas fa-user-plus  ml-2" />
+          </Link>
+        </li>
+      </ul>
+    );
+
     return (
       <nav className="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-        <Link className="navbar-brand mr-4" to="/">
-          <img style={styles.Logo} src={Logo} alt="TeleQuest Logo" />
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarToggle"
-          aria-controls="navbarToggle"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarToggle">
-          <div className="navbar-nav mr-auto">
-            <Link className="nav-item nav-link" to="/">
-              Home
-            </Link>
-            <Link className="nav-item nav-link" to="/about">
-              About
-            </Link>
-            <Link className="nav-item nav-link" to="/course">
-              Course
-            </Link>
-            <Link className="nav-item nav-link" to="/mypage">
-              My page
-            </Link>
-          </div>
-          <div className="navbar-nav">
-            <Link className="nav-item nav-link mr-2" to="/login">
-              Login
-              <i className="fas fa-sign-in-alt ml-2" />
-            </Link>
+        <div className="container">
+          <Link className="navbar-brand mr-4" to="/">
+            <img style={styles.Logo} src={Logo} alt="TeleQuest Logo" />
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarToggle"
+            aria-controls="navbarToggle"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+
+          <div className="collapse navbar-collapse" id="mobile-nav">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item">
+                <Link className="nav-item nav-link" to="/about">
+                  About Us
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-item nav-link" to="/course">
+                  Course
+                </Link>
+              </li>
+            </ul>
+            {isAuthenticated ? authLinks : guestLinks}
           </div>
         </div>
       </nav>
@@ -56,4 +107,16 @@ class Navbar extends React.Component {
   }
 }
 
-export default Navbar;
+Navbar.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(Navbar);

@@ -87,7 +87,7 @@ $ docker-compose -f docker-compose-dev.yml run server
 > Run application (Server And Client)
 
 ```shell
-$ npm run app
+$ npm run app-dev
 ```
 
 > Run only server
@@ -125,15 +125,13 @@ config/
 > .env [Example]
 
 ```dosini
-# Shared
-HOST=127.0.0.1
-ROUTE_VERSION=v1
-
 # Client
 PORT=3000
 
 # Server
+HOST=127.0.0.1
 NODE_PORT=3001
+ROUTE_VERSION=v1
 MONGO_DB_URI=<Insert Your Mongo URI>
 JWT_SECRET=<Insert Your Secret>
 JWT_EXPIRE=604800

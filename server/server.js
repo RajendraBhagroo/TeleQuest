@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
+const cors = require("cors");
 
 const app = express();
 
@@ -14,6 +15,7 @@ const profile = require(`./routes/api/${process.env.ROUTE_VERSION}/profile`);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(passport.initialize());
+app.use(cors());
 
 // Database Configuration
 mongoose

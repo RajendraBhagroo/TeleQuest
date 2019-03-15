@@ -1,17 +1,20 @@
-import { SIGN_IN, SIGN_OUT } from "../actions/types";
+import isEmpty from "../../utils/is-empty";
+import { SET_CURRENT_USER } from "../actions/types";
 
-const INTIAL_STATE = {
-  isSignedIn: null,
-  userId: null
+const initialState = {
+  isAuthenticated: false,
+  user: {}
 };
 
-export default (state = INTIAL_STATE, action) => {
+export default function(state = initialState, action) {
   switch (action.type) {
-    case SIGN_IN:
-      return { ...state, isSignedIn: true, userId: action.payload };
-    case SIGN_OUT:
-      return { ...state, isSignedIn: false, userId: null };
+    case SET_CURRENT_USER:
+      return {
+        ...state,
+        isAuthenticated: !isEmpty(action.payload),
+        user: action.payload
+      };
     default:
       return state;
   }
-};
+}
