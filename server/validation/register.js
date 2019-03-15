@@ -12,27 +12,27 @@ module.exports = validateRegisterInput = data => {
   body.password2 = !isEmpty(data.password2) ? data.password2.trim() : "";
 
   if (!Validator.isLength(body.firstName, { min: 2, max: 30 })) {
-    errors.name = "First name must be between 2 and 30 characters";
+    errors.firstName = "First name must be between 2 and 30 characters";
   }
 
   if (!Validator.isLength(body.lastName, { min: 2, max: 30 })) {
-    errors.name = "Last name must be between 2 and 30 characters";
+    errors.lastName = "Last name must be between 2 and 30 characters";
   }
 
   if (!Validator.isAlpha(body.firstName)) {
-    errors.name = "First name must only contain letters";
+    errors.firstName = "First name must only contain letters";
   }
 
   if (!Validator.isAlpha(body.lastName)) {
-    errors.name = "Last name must only contain letters";
+    errors.lastName = "Last name must only contain letters";
   }
 
   if (Validator.isEmpty(body.firstName)) {
-    errors.name = "First name field is required";
+    errors.firstName = "First name field is required";
   }
 
   if (Validator.isEmpty(body.lastName)) {
-    errors.name = "Last name field is required";
+    errors.lastName = "Last name field is required";
   }
 
   if (Validator.isEmpty(body.email)) {
