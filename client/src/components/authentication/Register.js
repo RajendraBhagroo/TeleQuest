@@ -1,71 +1,103 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { registerUser } from "../../redux/actions/authActions";
+import TextFieldGroup from "../common/TextFieldGroup";
+import PropTypes from "prop-types";
 
-class Register extends React.Component {
-  state = {};
+class Register extends Component {
+  constructor() {
+    super();
+    this.state = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      password2: "",
+      errors: {}
+    };
+  }
+
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    const newUser = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+
+    this.props.registerUser(newUser);
+  };
 
   render() {
+    const { errors } = this.state;
+
     return (
-      <div className="container text-center">
-        <Link style={styles.Logo} to="/">TeleQuest</Link>
-        <div className="card">
-          <div className="text-white bg-primary mb-3">
-            <div className="card-header text-center">REGISTER</div>
-          </div>
-          <div>
-            <div class="card-body">
-              <form class="form-horizontal" method="post" action="#">
-                <div class="form-group">
-                  <label for="firstname" class="cols-sm-2 control-label">Frist Name</label>
-                  <div class="cols-sm-10">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                      <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter your First Name" />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="lastname" class="cols-sm-2 control-label">Last Name</label>
-                  <div class="cols-sm-10">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                      <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter your Last Name" />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="email" class="cols-sm-2 control-label">Email</label>
-                  <div class="cols-sm-10">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                      <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="password" class="cols-sm-2 control-label">Password</label>
-                  <div class="cols-sm-10">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                      <input type="password" class="form-control" name="password" id="password" placeholder="Enter your Password" />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
-                  <div class="cols-sm-10">
-                    <div class="input-group">
-                      <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                      <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Confirm your Password" />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
-                </div>
-                <div class="login-register">
-                  Already have an account? <Link to="/login">Login</Link>
-                </div>
+      <div className="register">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 m-auto">
+              <h1 className="display-4 text-center">Sign Up</h1>
+              <p className="lead text-center">Create your TeleQuest account</p>
+              <form noValidate onSubmit={this.onSubmit}>
+                <TextFieldGroup
+                  placeholder="First Name"
+                  name="firstName"
+                  value={this.state.firstName}
+                  onChange={this.onChange}
+                  error={errors.firstName}
+                />
+                <TextFieldGroup
+                  placeholder="Last Name"
+                  name="lastName"
+                  value={this.state.lastName}
+                  onChange={this.onChange}
+                  error={errors.lastName}
+                />
+                <TextFieldGroup
+                  placeholder="Email"
+                  name="email"
+                  type="email"
+                  value={this.state.email}
+                  onChange={this.onChange}
+                  error={errors.email}
+                  info="This site uses Gravatar so if you want a profile image, use a Gravatar email"
+                />
+                <TextFieldGroup
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                  error={errors.password}
+                />
+                <TextFieldGroup
+                  placeholder="Confirm Password"
+                  name="password2"
+                  type="password"
+                  value={this.state.password2}
+                  onChange={this.onChange}
+                  error={errors.password2}
+                />
+                <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
             </div>
           </div>
@@ -75,11 +107,18 @@ class Register extends React.Component {
   }
 }
 
-const styles = {
-  Logo:{
-      fontSize: 50,
-      color: "orange"
-  }
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
-export default Register;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(Register);

@@ -7,7 +7,9 @@ class Login extends React.Component {
   render() {
     return (
       <div className="container text-center">
-        <Link style={styles.Logo} to="/">TeleQuest</Link>
+        <Link style={styles.Logo} to="/">
+          TeleQuest
+        </Link>
         <div className="card">
           <div className="text-white bg-primary mb-3">
             <div className="card-header text-center">LOGIN</div>
@@ -15,20 +17,36 @@ class Login extends React.Component {
           <div>
             <div className="card-body">
               <form>
-					      <div class="input-group form-group">
-						      <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <div className="input-group form-group">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text">
+                      <i className="fas fa-user" />
+                    </span>
                   </div>
-                  <input type="text" class="form-control" placeholder="Email"/> 
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Email"
+                  />
                 </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                <div className="input-group form-group">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text">
+                      <i className="fas fa-key" />
+                    </span>
                   </div>
-                  <input type="password" class="form-control" placeholder="Password"/>
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Password"
+                  />
                 </div>
-                <div class="form-group">
-                  <input type="submit" value="Login" class="btn btn-primary btn-lg btn-block login-button"/>
+                <div className="form-group">
+                  <input
+                    type="submit"
+                    value="Login"
+                    className="btn btn-primary btn-lg btn-block login-button"
+                  />
                 </div>
               </form>
             </div>
@@ -43,9 +61,9 @@ class Login extends React.Component {
 }
 
 const styles = {
-  Logo:{
-      fontSize: 50,
-      color: "orange"
+  Logo: {
+    fontSize: 50,
+    color: "orange"
   }
 };
 
