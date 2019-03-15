@@ -1,11 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
-// @route   GET api/v1/profile/test
-// @desc    Tests profile route
-// @access  Public
-router.get("/", (req, res) => {
-    res.json({ msg: "Profile Test Route" })});
   
   /*
    * @route   POST /api/v1/profile/register
@@ -42,8 +36,7 @@ router.post("/register", (req, res) => {
   // @route   GET /api/v1/profile/current
   // @desc    Return Current User's School, classes enrolled in or teaching
   // @access  Private
-  router.get(
-    "/",
+  router.get("/",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
       res.json(profile);
@@ -72,7 +65,7 @@ router.post("/register", (req, res) => {
   );
    /*
    * @route   UPDATE /api/v1/profile/studentEnroll
-   * @params  {user_id,classesIn[]}
+   * @params  {user_id,class}
    * @desc    Update a profile to enroll into classes
    * @access  Private
    */
@@ -93,7 +86,7 @@ router.post("/register", (req, res) => {
   );
   /*
    * @route   UPDATE /api/v1/profile/teachEnroll
-   * @params  {user_id, classesTeaching[]}
+   * @params  {user_id, class}
    * @desc    Update a profile's classes they're teaching
    * @access  Private
    */
@@ -114,7 +107,7 @@ router.post("/register", (req, res) => {
   );
   /*
    * @route   DELETE /api/v1/profile/studentDrop
-   * @params  {user_id, classesIn[]}
+   * @params  {user_id, class}
    * @desc    Update a profile's to drop a class they're enrolled in 
    * @access  Private
    */
@@ -135,7 +128,7 @@ router.post("/register", (req, res) => {
   );
     /*
    * @route   DELETE /api/v1/profile/teacherDrop
-   * @params  {user_id}
+   * @params  {user_id, class}
    * @desc    Update a profile's to drop a class they're teaching
    * @access  Private
    */
