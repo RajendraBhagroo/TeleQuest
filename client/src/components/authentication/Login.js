@@ -1,57 +1,85 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { loginUser } from "../../redux/actions/authActions";
+import TextFieldGroup from "../common/TextFieldGroup";
+import PropTypes from "prop-types";
 
-class Login extends React.Component {
-  state = {};
+class Login extends Component {
+  constructor() {
+    super();
+    this.state = {
+      email: "",
+      password: "",
+      errors: {}
+    };
+  }
+
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    const userData = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    this.props.loginUser(userData);
+  };
+
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   render() {
+    const { errors } = this.state;
+
     return (
-      <div className="container text-center">
-        <Link style={styles.Logo} to="/">
-          TeleQuest
-        </Link>
-        <div className="card">
-          <div className="text-white bg-primary mb-3">
-            <div className="card-header text-center">LOGIN</div>
-          </div>
-          <div>
-            <div className="card-body">
-              <form>
-                <div className="input-group form-group">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">
-                      <i className="fas fa-user" />
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Email"
-                  />
+      <div className="login">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 m-auto">
+              <h1 className="display-4 text-center">Log In</h1>
+              <p className="lead text-center">
+                Sign in to your TeleQuest account
+              </p>
+              <form onSubmit={this.onSubmit}>
+                <TextFieldGroup
+                  placeholder="Email Address"
+                  name="email"
+                  type="email"
+                  value={this.state.email}
+                  onChange={this.onChange}
+                  error={errors.email}
+                />
+                <TextFieldGroup
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                  error={errors.password}
+                />
+                <div>
+                  New Here? <Link to="/register">Create an account</Link>
                 </div>
-                <div className="input-group form-group">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">
-                      <i className="fas fa-key" />
-                    </span>
-                  </div>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Password"
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="submit"
-                    value="Login"
-                    className="btn btn-primary btn-lg btn-block login-button"
-                  />
-                </div>
+                <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
-            </div>
-            <div>
-              New Here? <Link to="/register">Create an account</Link>
             </div>
           </div>
         </div>
@@ -60,11 +88,18 @@ class Login extends React.Component {
   }
 }
 
-const styles = {
-  Logo: {
-    fontSize: 50,
-    color: "orange"
-  }
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
-export default Login;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);
