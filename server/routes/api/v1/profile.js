@@ -34,7 +34,7 @@ router.post("/register", (req, res) => {
   });
 
   // @route   GET /api/v1/profile/current
-  // @desc    Return Current User's School, classes enrolled in or teaching
+  // @desc    Return Current Profiles's School, classes enrolled in or teaching
   // @access  Private
   router.get("/",
     passport.authenticate("jwt", { session: false }),
