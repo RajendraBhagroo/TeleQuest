@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-  
+const gravatar = require("gravatar");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const passport = require("passport");
   /*
    * @route   POST /api/v1/profile/register
    * @params  {isTeacher, user_id, school}
