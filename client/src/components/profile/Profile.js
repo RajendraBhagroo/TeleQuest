@@ -1,15 +1,27 @@
 import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 class Profile extends React.Component {
   state = {};
 
   render() {
+    const { userName } = this.props.auth.user;
+
     return (
       <div>
-        <h1>Profile</h1>
+        <h1>Hello {userName}</h1>
       </div>
     );
   }
 }
 
-export default Profile;
+Profile.propTypes = {
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(Profile);
