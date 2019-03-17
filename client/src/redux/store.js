@@ -4,13 +4,17 @@ import reducers from "./reducers";
 
 /*
  * Integrates React Developer Tools
- * Install: https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi
+ * Install React DevTools: https://github.com/facebook/react-devtools
+ * Install Redux DevTools: https://github.com/zalmoxisus/redux-devtools-extension
  */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const initialState = {};
+const middleware = [reduxThunk];
 
 const store = createStore(
   reducers,
-  composeEnhancers(applyMiddleware(reduxThunk))
+  initialState,
+  composeEnhancers(applyMiddleware(...middleware))
 );
 
 export default store;

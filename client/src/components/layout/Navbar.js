@@ -11,8 +11,7 @@ const styles = {
     height: "30px"
   },
   Avatar: {
-    width: "25px",
-    marginRight: "5px"
+    width: "25px"
   }
 };
 
@@ -30,6 +29,13 @@ class Navbar extends Component {
         <li className="nav-item">
           <Link className="nav-link" to="/profile">
             My Profile
+            <img
+              className="rounded-circle ml-2"
+              src={user.avatar}
+              alt={user.userName}
+              style={styles.Avatar}
+              title="You must have a Gravatar connected to your email to display an image"
+            />
           </Link>
         </li>
         <li className="nav-item">
@@ -38,14 +44,8 @@ class Navbar extends Component {
             onClick={this.onLogoutClick.bind(this)}
             className="nav-link"
           >
-            <img
-              className="rounded-circle mr-2"
-              src={user.avatar}
-              alt={user.firstName + " " + user.lastName}
-              style={styles.Avatar}
-              title="You must have a Gravatar connected to your email to display an image"
-            />
             Logout
+            <i className="fas fa-sign-out-alt ml-2" />
           </Link>
         </li>
       </ul>
