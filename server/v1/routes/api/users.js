@@ -140,7 +140,7 @@ router.get(
 /*
  * @route       DELETE /api/v1/users/:user_id
  * @params URL  {user_id}
- * @desc        Delete User By User ID
+ * @desc        Delete User By User Id
  * @access      Private
  */
 router.delete(
