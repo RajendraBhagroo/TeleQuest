@@ -6,6 +6,7 @@ import jwt_decode from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "../redux/actions/authActions";
 
+import PrivateRoute from "../components/common/PrivateRoute";
 import store from "../redux/store";
 import history from "../history";
 
@@ -40,7 +41,7 @@ const App = () => {
                 <Route path="/" exact component={Landing} />
                 <Route path="/about" exact component={About} />
                 <Route path="/course" exact component={Course} />
-                <Route path="/profile" exact component={Profile} />
+                <PrivateRoute path="/profile" exact component={Profile} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
               </Switch>
