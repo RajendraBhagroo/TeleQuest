@@ -24,9 +24,11 @@ module.exports = validateProfieInput = (data, user) => {
   if (data.instagram) body.social.instagram = data.instagram;
   if (data.github) body.social.github = data.github;
 
-  // Student
+  body.studentFields = {};
+  if (data.studentId) body.studentFields.studentId = data.studentId;
 
-  // Teacher
+  body.teacherFields = {};
+  if (data.teacherId) body.teacherFields.teacherId = data.teacherId;
 
   return {
     errors,

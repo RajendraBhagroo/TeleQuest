@@ -10,6 +10,8 @@ const User = require("../../models/User");
 const validateProfileInput = require("../../validation/profile/profile");
 const validateEducationInput = require("../../validation/profile/education");
 const validateExperienceInput = require("../../validation/profile/experience");
+const validateStudentFieldsInput = require("../../validation/profile/studentFields");
+const validateTeacherFieldsInput = require("../../validation/profile/teacherFields");
 
 /*
  * @route   GET /api/v1/profile/test
@@ -49,7 +51,7 @@ router.get(
 
 /*
  * @route   POST /api/profile
- * @params  {handle, bio, skills, youtube, twitter, linkedin, facebook, instagram, github, isStudent}
+ * @params  {handle, bio, skills, youtube, twitter, linkedin, facebook, instagram, github, isStudent, studentId, teacherId}
  * @desc    Create Or Edit User Profile
  * @access  Private
  */
@@ -84,9 +86,10 @@ router.post(
 );
 
 /*
- * @route   GET /api/profile/handle/:handle
- * @desc    Get Profile By Handle
- * @access  Public
+ * @route       GET /api/profile/handle/:handle
+ * @params URL  {handle}
+ * @desc        Get Profile By Handle
+ * @access      Public
  */
 router.get("/handle/:handle", (req, res) => {
   const errors = {};
@@ -107,9 +110,10 @@ router.get("/handle/:handle", (req, res) => {
 });
 
 /*
- * @route   GET /api/profile/user/:user_id
- * @desc    Get Profile By User ID
- * @access  Public
+ * @route       GET /api/profile/user/:user_id
+ * @params URL  {user_id}
+ * @desc        Get Profile By User ID
+ * @access      Public
  */
 router.get("/user/:user_id", (req, res) => {
   const errors = {};
@@ -177,9 +181,60 @@ router.post(
   }
 );
 
-// @route   DELETE api/profile/education/:edu_id
-// @desc    Delete education from profile
-// @access  Private
+/*
+ * @route   POST /api/profile/studentField
+ * @params  {name, type, number, firstName, lastName}
+ * @desc    Add Student Field To Profile
+ * @access  Private
+ */
+router.post(
+  "/studentField",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, body, isValid } = validateStudentFieldsInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newStudentField = body;
+      profile.studentFields.coursesEnrolledIn.unshift(newStudentField);
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
+
+/*
+ * @route   POST /api/profile/teacherField
+ * @params  {name, type, number, firstName, lastName, studentId}
+ * @desc    Add Teacher Field To Profile
+ * @access  Private
+ */
+router.post(
+  "/teacherField",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, body, isValid } = validateTeacherFieldsInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newTeacherField = body;
+      profile.teacherFields.coursesTeaching.unshift(newTeacherField);
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
+
+/*
+ * @route       DELETE /api/profile/education/:edu_id
+ * @params URL  {edu_id}
+ * @desc        Delete Education From Profile
+ * @access      Private
+ */
 router.delete(
   "/education/:edu_id",
   passport.authenticate("jwt", { session: false }),
@@ -201,9 +256,10 @@ router.delete(
 );
 
 /*
- * @route   DELETE /api/profile/experience/:exp_id
- * @desc    Delete Experience From Profile
- * @access  Private
+ * @route       DELETE /api/profile/experience/:exp_id
+ * @params URL  {exp_id}
+ * @desc        Delete Experience From Profile
+ * @access      Private
  */
 router.delete(
   "/experience/:exp_id",
@@ -225,9 +281,83 @@ router.delete(
   }
 );
 
-// @route   DELETE api/profile
-// @desc    Delete user and profile
-// @access  Private
+/*
+ * @route       DELETE /api/profile/studentField/:studentField_id
+ * @params URL  {studentField_id}
+ * @desc        Delete Student Field From Profile
+ * @access      Private
+ */
+router.delete(
+  "/studentField/:studentField_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        profile.studentFields.coursesEnrolledIn = profile.studentFields.coursesEnrolledIn.filter(
+          item => item.id != req.params.studentField_id
+        );
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => {
+        errors.exp = `Could Not Remove Sudent Field By Id: ${err}`;
+        res.status(404).json(errors);
+      });
+  }
+);
+
+/*
+ * @route       DELETE /api/profile/teacherField/:teacherField_id
+ * @params URL  {teacherField_id}
+ * @desc        Delete Teacher Field From Profile
+ * @access      Private
+ */
+router.delete(
+  "/teacherField/:teacherField_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        profile.teacherFields.coursesTeaching = profile.teacherFields.coursesTeaching.filter(
+          item => item.id != req.params.teacherField_id
+        );
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => {
+        errors.exp = `Could Not Remove Teacher Field By Id: ${err}`;
+        res.status(404).json(errors);
+      });
+  }
+);
+
+/*
+ * @route       DELETE /api/profile/:profile_id
+ * @params URL  {user_id}
+ * @desc        Delete Profile By Profile Id
+ * @access      Private
+ */
+router.delete(
+  "/:profile_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    Profile.findOneAndDelete({ _id: req.params.profile_id })
+      .then(() => res.json({ success: true }))
+      .catch(err => {
+        errors.delete = `Profile Could not be deleted : ${err}`;
+        res.status(400).json(errors);
+      });
+  }
+);
+
+/*
+ * @route   DELETE /api/profile
+ * @desc    Delete User And Profile
+ * @access  Private
+ */
 router.delete(
   "/",
   passport.authenticate("jwt", { session: false }),

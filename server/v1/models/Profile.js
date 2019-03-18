@@ -148,7 +148,7 @@ const ProfileSchema = new Schema({
         },
         students: [
           {
-            firstname: {
+            firstName: {
               type: String
             },
             lastName: {
