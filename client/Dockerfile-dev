@@ -1,10 +1,10 @@
 FROM node:10.15.1-alpine
 
-RUN mkdir -p /app/client
+RUN mkdir -p /TeleQuest/client
 
-WORKDIR /app/client
+COPY . /TeleQuest/client
 
-COPY . /app/client
+WORKDIR /TeleQuest/client
 
 RUN npm install
 

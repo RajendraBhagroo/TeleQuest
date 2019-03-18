@@ -14,10 +14,10 @@ let user_id = "";
  * @desc    Tests users route, should respond with JSON message and 200 OK
  * @access  Public
  */
-describe("GET /api/v1/users/", () => {
+describe("GET /api/v1/users/test", () => {
   it("Should Return JSON Message and 200 OK", done => {
     request
-      .get("/api/v1/users/")
+      .get("/api/v1/users/test")
       .set("Accept", "application/json")
       .expect(
         200,

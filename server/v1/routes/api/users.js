@@ -6,18 +6,18 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
 // Load Models
-const User = require("../../../models/User");
+const User = require("../../models/User");
 
 // Load Input Validation
-const validateRegisterInput = require("../../../validation/register");
-const validateLoginInput = require("../../../validation/login");
+const validateRegisterInput = require("../../validation/users/register");
+const validateLoginInput = require("../../validation/users/login");
 
 /*
  * @route   GET /api/v1/users/test
  * @desc    Tests Users Route
  * @access  Public
  */
-router.get("/", (req, res) => {
+router.get("/test", (req, res) => {
   res.json({ msg: "User Test Route" });
 });
 
