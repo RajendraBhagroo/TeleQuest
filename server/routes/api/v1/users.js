@@ -48,6 +48,7 @@ router.post("/register", (req, res) => {
       const newUser = new User({
         firstName: body.firstName,
         lastName: body.lastName,
+        userName: `${body.firstName} ${body.lastName}`,
         email: body.email,
         avatar,
         password: body.password
@@ -96,6 +97,7 @@ router.post("/login", (req, res) => {
           id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
+          userName: user.userName,
           avatar: user.avatar
         };
 
@@ -129,6 +131,7 @@ router.get(
       id: req.user.id,
       firstName: req.user.firstName,
       lastName: req.user.lastName,
+      userName: req.user.userName,
       email: req.user.email
     });
   }
