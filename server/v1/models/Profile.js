@@ -20,29 +20,24 @@ const ProfileSchema = new Schema({
   education: [
     {
       school: {
-        type: String,
-        required: true
+        type: String
       },
       location: {
-        type: String,
-        required: true
+        type: String
       },
       degree: {
-        type: String,
-        required: true
+        type: String
       },
-      fieldofstudy: {
-        type: String,
-        required: true
+      fieldOfStudy: {
+        type: String
       },
       from: {
-        type: Date,
-        required: true
+        type: Date
       },
       to: {
         type: Date
       },
-      current: {
+      isCurrent: {
         type: Boolean,
         default: false
       },
@@ -55,24 +50,21 @@ const ProfileSchema = new Schema({
   experience: [
     {
       title: {
-        type: String,
-        required: true
+        type: String
       },
       company: {
-        type: String,
-        required: true
+        type: String
       },
       location: {
         type: String
       },
       from: {
-        type: Date,
-        required: true
+        type: Date
       },
       to: {
         type: Date
       },
-      current: {
+      isCurrent: {
         type: Boolean,
         default: false
       },
@@ -112,8 +104,7 @@ const ProfileSchema = new Schema({
   },
   studentFields: {
     studentId: {
-      type: Number,
-      required: true
+      type: Number
     },
     coursesEnrolledIn: [
       {
@@ -122,20 +113,17 @@ const ProfileSchema = new Schema({
         },
         type: {
           type: String,
-          required: true,
           max: 30
         },
         number: {
-          type: Number,
-          required: true
+          type: Number
         },
         teacher: {
           firstName: {
             type: String
           },
           lastName: {
-            type: String,
-            required: true
+            type: String
           }
         }
       }
@@ -143,38 +131,31 @@ const ProfileSchema = new Schema({
   },
   teacherFields: {
     teacherId: {
-      type: Number,
-      required: true
+      type: Number
     },
     coursesTeaching: [
       {
         name: {
           type: String,
-          required: true,
           max: 280
         },
         type: {
           type: String,
-          required: true,
           max: 30
         },
         number: {
-          type: Number,
-          required: true
+          type: Number
         },
         students: [
           {
             firstname: {
-              type: String,
-              required: true
+              type: String
             },
             lastName: {
-              type: String,
-              required: true
+              type: String
             },
             studentId: {
-              type: Number,
-              required: true
+              type: Number
             }
           }
         ]
