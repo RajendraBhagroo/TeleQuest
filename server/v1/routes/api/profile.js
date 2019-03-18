@@ -4,9 +4,12 @@ const passport = require("passport");
 
 // Load Models
 const Profile = require("../../models/Profile");
+const User = require("../../models/User");
 
 // Load Input Validation
-const validateRegisterInput = require("../../validation/profile/studentRegister");
+const validateProfileInput = require("../../validation/profile/profile");
+const validateEducationInput = require("../../validation/profile/education");
+const validateExperienceInput = require("../../validation/profile/experience");
 
 /*
  * @route   GET /api/v1/profile/test
@@ -18,181 +21,222 @@ router.get("/test", (req, res) => {
 });
 
 /*
- * @route   POST /api/v1/profile/register
- * @params  {isStudent, user_id, educationalInstitute}
- * @desc    Register Profile
- * @access  Public
- */
-router.post("/register", (req, res) => {
-  const errors = {};
-
-  Profile.findOne({ user_id: req.body.user_id }).then(user => {
-    if (user) {
-      errors.user_id = "This user already has a profile";
-      return res.status(400).json(errors);
-    } else {
-      const newProfile = new Profile({
-        isTeacher: req.body.isTeacher,
-        user_id: req.body.user_id,
-        school: req.body.school
-      });
-      newProfile
-        .save()
-        .then(profile => res.status(201).json(profile))
-        .catch(err => {
-          errors.user = `Profile could not be saved: ${err}`;
-          res.status(400).json(errors);
-        });
-    }
-  });
-});
-
-/*
- * @route   GET /api/v1/profile/current
- * @desc    Return Current Profiles's School, classes enrolled in or teaching
+ * @route   GET /api/v1/profile
+ * @desc    Return Current Users Profile
  * @access  Private
  */
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.json(profile);
-  }
-);
-
-/*
- * @route   DELETE /api/v1/profile/:user_id
- * @params  {user_id}
- * @desc    Delete Profile By User ID
- * @access  Private
- */
-router.delete(
-  "/:user_id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
     const errors = {};
-    User.findOneAndDelete({ _id: req.params.user_id });
-    Profile.findOneAndDelete({ _id: req.params.user_id })
-      .then(() => res.json({ success: true }))
+
+    Profile.findOne({ user: req.user.id })
+      .populate("user", ["userName", "avatar"])
+      .then(profile => {
+        if (!profile) {
+          errors.noProfile = "There is no profile for this user";
+          return res.status(404).json(errors);
+        }
+        res.json(profile);
+      })
       .catch(err => {
-        errors.delete = `Could not be deleted : ${err}`;
-        res.status(400).json(errors);
+        errors.profile = `Could Not Return Profile: ${err}`;
+        res.status(404).json(errors);
       });
   }
 );
 
 /*
- * @route   UPDATE /api/v1/profile/studentEnroll
- * @params  {user_id,class}
- * @desc    Update a profile to enroll into classes
+ * @route   POST /api/profile
+ * @params  {handle, bio, skills, youtube, twitter, linkedin, facebook, instagram, github, isStudent}
+ * @desc    Create Or Edit User Profile
  * @access  Private
  */
 router.post(
-  "/studentEnroll",
+  "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const errors = {};
-    Profile.findOneAndUpdate(
-      { user_id: req.parmas.user_id },
-      { $push: { classesIn: req.paramas.class } }
-    )
-      .then(() => res.json.status(204).json(profile))
-      .catch(err => {
-        errors.update = `Could not add class(s) to classesIn:${err}`;
-        res.status(400).json(errors);
-      });
+    const { errors, body, isValid } = validateProfileInput(req.body, req.user);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      if (profile) {
+        Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: body },
+          { new: true }
+        ).then(profile => res.json(profile));
+      } else {
+        Profile.findOne({ handle: body.handle }).then(profile => {
+          if (profile) {
+            errors.handle = "That handle already exists";
+            res.status(400).json(errors);
+          }
+          new Profile(body).save().then(profile => res.json(profile));
+        });
+      }
+    });
   }
 );
 
 /*
- * @route   UPDATE /api/v1/profile/teachEnroll
- * @params  {user_id, class}
- * @desc    Update a profile's classes they're teaching
+ * @route   GET /api/profile/handle/:handle
+ * @desc    Get Profile By Handle
+ * @access  Public
+ */
+router.get("/handle/:handle", (req, res) => {
+  const errors = {};
+
+  Profile.findOne({ handle: req.params.handle })
+    .populate("user", ["userName", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noProfile = "There is no profile for this user";
+        res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err => {
+      errors.profile = `Could Not Return Profile By Handle: ${err}`;
+      res.status(404).json(errors);
+    });
+});
+
+/*
+ * @route   GET /api/profile/user/:user_id
+ * @desc    Get Profile By User ID
+ * @access  Public
+ */
+router.get("/user/:user_id", (req, res) => {
+  const errors = {};
+
+  Profile.findOne({ user: req.params.user_id })
+    .populate("user", ["name", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noprofile = "There is no profile for this user";
+        res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err => {
+      errors.profile = `Could Not Return Profile By User Id: ${err}`;
+      res.status(404).json(errors);
+    });
+});
+
+/*
+ * @route   POST /api/profile/education
+ * @params  {school, location, degree, fieldOfStudy, from, to, isCurrent, description}
+ * @desc    Add Education To Profile
  * @access  Private
  */
 router.post(
-  "/teacherEnroll",
+  "/education",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const errors = {};
-    Profile.findOneAndUpdate(
-      { user_id: req.parmas.user_id },
-      { $push: { classesTeaching: req.paramas.class } }
-    )
-      .then(() => res.json.status(204).json(profile))
-      .catch(err => {
-        errors.update = `Could not add class(s) to classesTeaching:${err}`;
-        res.status(400).json(errors);
-      });
+    const { errors, body, isValid } = validateEducationInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newEducation = body;
+      profile.education.unshift(newEducation);
+      profile.save().then(profile => res.json(profile));
+    });
   }
 );
 
 /*
- * @route   DELETE /api/v1/profile/studentDrop
- * @params  {user_id, class}
- * @desc    Update a profile's to drop a class they're enrolled in
- * @access  Private
- */
-router.delete(
-  "/studentDrop",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const errors = {};
-    Profile.findOneAndUpdate(
-      { user_id: req.parmas.user_id },
-      { $pull: { classesIn: { $in: [req.paramas.class] } } }
-    )
-      .then(() => res.json.status(204).json(profile))
-      .catch(err => {
-        errors.update = `Could not drop class(s) from classesIn:${err}`;
-        res.status(400).json(errors);
-      });
-  }
-);
-
-/*
- * @route   DELETE /api/v1/profile/teacherDrop
- * @params  {user_id, class}
- * @desc    Update a profile's to drop a class they're teaching
- * @access  Private
- */
-router.delete(
-  "/teacherDrop",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const errors = {};
-    Profile.findOneAndUpdate(
-      { user_id: req.parmas.user_id },
-      { $pull: { classesTeaching: { $in: [req.paramas.class] } } }
-    )
-      .then(() => res.json.status(204).json(profile))
-      .catch(err => {
-        errors.update = `Could not drop class(s) in classesTeaching:${err}`;
-        res.status(400).json(errors);
-      });
-  }
-);
-
-/*
- * @route   POST /api/v1/profile/teacherStatUpdate
- * @params  {user_id, isTeacher}
- * @desc    Update a profile's teacher status
+ * @route   POST /api/profile/experience
+ * @params  {title, company, location, from, to, isCurrent, description}
+ * @desc    Add Experience To Profile
  * @access  Private
  */
 router.post(
-  "/teacherStatUpdate",
+  "/experience",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, body, isValid } = validateExperienceInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newExperience = body;
+      profile.experience.unshift(newExperience);
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
+
+// @route   DELETE api/profile/education/:edu_id
+// @desc    Delete education from profile
+// @access  Private
+router.delete(
+  "/education/:edu_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const errors = {};
-    Profile.findOneAndUpdate(
-      { user_id: req.parmas.user_id },
-      { isTeacher: req.params.isTeacher }
-    )
-      .then(() => res.json.status(204).json(profile))
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        profile.education = profile.education.filter(
+          item => item.id != req.params.edu_id
+        );
+        profile.save().then(profile => res.json(profile));
+      })
       .catch(err => {
-        errors.update = `Could not update teacher status:${err}`;
-        res.status(400).json(errors);
+        errors.exp = `Could Not Remove Education By Id: ${err}`;
+        res.status(404).json(errors);
       });
+  }
+);
+
+/*
+ * @route   DELETE /api/profile/experience/:exp_id
+ * @desc    Delete Experience From Profile
+ * @access  Private
+ */
+router.delete(
+  "/experience/:exp_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        profile.experience = profile.experience.filter(
+          item => item.id != req.params.exp_id
+        );
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => {
+        errors.exp = `Could Not Remove Experience By Id: ${err}`;
+        res.status(404).json(errors);
+      });
+  }
+);
+
+// @route   DELETE api/profile
+// @desc    Delete user and profile
+// @access  Private
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOneAndRemove({ user: req.user.id }).then(() => {
+      User.findOneAndRemove({ _id: req.user.id }).then(() =>
+        res.json({ success: true })
+      );
+    });
   }
 );
 
