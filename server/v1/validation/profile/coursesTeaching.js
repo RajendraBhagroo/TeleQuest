@@ -1,7 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("../is-empty");
 
-module.exports = validateStudentFieldsInput = data => {
+module.exports = validateCoursesTeachingInput = data => {
   let errors = {};
   let body = {};
 
@@ -9,9 +9,10 @@ module.exports = validateStudentFieldsInput = data => {
   if (data.type) body.type = data.type;
   if (data.number) body.number = data.number;
 
-  body.teacher = {};
-  if (data.firstName) body.teacher.firstName = data.firstName;
-  if (data.lastName) body.teacher.lastName = data.lastName;
+  body.students = {};
+  if (data.firstName) body.students.firstName = data.firstName;
+  if (data.lastName) body.students.lastName = data.lastName;
+  if (data.studentId) body.students.studentId = data.studentId;
 
   return {
     errors,
