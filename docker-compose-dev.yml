@@ -3,7 +3,7 @@ version: "3"
 services:
   server:
     build:
-      context: ./server
+      context: ./server/v1
       dockerfile: Dockerfile-dev
     expose:
       - 3001
@@ -11,7 +11,7 @@ services:
     ports:
       - 3001:3001
     volumes:
-      - ./server/:/app/server/
+      - ./server/:/TeleQuest/server/
     command: npm run start-dev
     restart: always
 
@@ -27,8 +27,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./client/src:/app/client/src
-      - ./client/public:/app/client/public
+      - ./client/src:/TeleQuest/client/src
+      - ./client/public:/TeleQuest/client/public
     links:
       - server
     command: npm run start
