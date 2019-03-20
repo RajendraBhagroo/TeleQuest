@@ -40,7 +40,9 @@
     "url": "https://github.com/RajendraBhagroo/TeleQuest/issues"
   },
   "homepage": "https://github.com/RajendraBhagroo/TeleQuest#readme",
-  "dependencies": {},
+  "dependencies": {
+    "socket.io": "^2.2.0"
+  },
   "devDependencies": {
     "concurrently": "^4.1.0"
   }
