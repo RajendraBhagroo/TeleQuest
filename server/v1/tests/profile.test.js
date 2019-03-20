@@ -26,8 +26,8 @@ describe("POST /api/v1/users/register", () => {
   it("Should Respond With 201 Created [User Created]", done => {
     request
       .post("/api/v1/users/register")
-      .send(body)
       .set("Accept", "application/json")
+      .send(body)
       .expect(201)
       .end(err => {
         if (err) return done(err);
@@ -50,8 +50,8 @@ describe("POST /api/v1/users/login", () => {
   it("Should Respond With 200 OK [JWT Token Set]", done => {
     request
       .post("/api/v1/users/login")
-      .send(body)
       .set("Accept", "application/json")
+      .send(body)
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
@@ -150,8 +150,8 @@ describe("POST /api/v1/profile", () => {
     request
       .post("/api/v1/profile")
       .set("Authorization", token)
-      .send(body)
       .set("Accept", "application/json")
+      .send(body)
       .expect(201)
       .end(err => {
         if (err) return done(err);
@@ -185,8 +185,8 @@ describe("POST /api/v1/profile", () => {
     request
       .post("/api/v1/profile")
       .set("Authorization", token)
-      .send(body)
       .set("Accept", "application/json")
+      .send(body)
       .expect(200)
       .end(err => {
         if (err) return done(err);
@@ -276,8 +276,8 @@ describe("POST /api/v1/profile/education", () => {
     request
       .post("/api/v1/profile/education")
       .set("Authorization", token)
-      .send(body)
       .set("Accept", "application/json")
+      .send(body)
       .expect(201)
       .end((err, res) => {
         if (err) return done(err);
@@ -307,8 +307,8 @@ describe("POST /api/v1/profile/experience", () => {
     request
       .post("/api/v1/profile/experience")
       .set("Authorization", token)
-      .send(body)
       .set("Accept", "application/json")
+      .send(body)
       .expect(201)
       .end((err, res) => {
         if (err) return done(err);
@@ -336,8 +336,8 @@ describe("POST /api/v1/profile/coursesEnrolledIn", () => {
     request
       .post("/api/v1/profile/coursesEnrolledIn")
       .set("Authorization", token)
-      .send(body)
       .set("Accept", "application/json")
+      .send(body)
       .expect(201)
       .end((err, res) => {
         if (err) return done(err);
@@ -366,8 +366,8 @@ describe("POST /api/v1/profile/coursesTeaching", () => {
     request
       .post("/api/v1/profile/coursesTeaching")
       .set("Authorization", token)
-      .send(body)
       .set("Accept", "application/json")
+      .send(body)
       .expect(201)
       .end((err, res) => {
         if (err) return done(err);
