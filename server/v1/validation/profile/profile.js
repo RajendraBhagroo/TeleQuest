@@ -11,7 +11,7 @@ module.exports = validateProfieInput = (data, user) => {
   body.handle = !isEmpty(data.handle) ? data.handle.replace(" ", "") : "";
   body.isStudent = !isEmpty(data.isStudent) ? data.isStudent : false;
   body.bio = !isEmpty(data.bio) ? data.bio.trim() : "";
-  body.skills = !isEmpty(data.skills) ? data.skills : "";
+  body.skills = !isEmpty(data.skills) ? data.skills.trim() : "";
 
   body.social = {};
   body.social.youtube = !isEmpty(data.youtube)
@@ -34,14 +34,10 @@ module.exports = validateProfieInput = (data, user) => {
     : "";
 
   body.studentFields = {};
-  body.studentFields.studentId = !isEmpty(data.studentId)
-    ? data.studentId
-    : null;
+  body.studentFields.studentId = !isEmpty(data.studentId) ? data.studentId : "";
 
   body.teacherFields = {};
-  body.teacherFields.teacherId = !isEmpty(data.teacherId)
-    ? data.teacherId
-    : null;
+  body.teacherFields.teacherId = !isEmpty(data.teacherId) ? data.teacherId : "";
 
   // Run Validation
 
@@ -64,6 +60,28 @@ module.exports = validateProfieInput = (data, user) => {
     if (typeof data.skills !== "undefined") {
       body.skills = data.skills.split(",");
     }
+  }
+
+  if (
+    !isEmpty(String(body.studentFields.studentId)) &&
+    !isEmpty(String(body.teacherFields.teacherId))
+  ) {
+    errors.id =
+      "Cannot accept id for teacher and student. Please submit one discrete id for either student or teacher";
+  }
+
+  if (
+    Boolean(body.isStudent) &&
+    Validator.isEmpty(String(body.studentFields.studentId))
+  ) {
+    errors.studentId = "Students Id number is required";
+  }
+
+  if (
+    Boolean(!body.isStudent) &&
+    Validator.isEmpty(String(body.teacherFields.teacherId))
+  ) {
+    errors.teacherId = "Teachers Id number is required";
   }
 
   if (!isEmpty(body.youtube)) {
@@ -102,9 +120,9 @@ module.exports = validateProfieInput = (data, user) => {
     }
   }
 
-  if (!isEmpty(body.studentFields.studentId)) {
+  if (!isEmpty(String(body.studentFields.studentId))) {
     if (
-      !Validator.isNumeric(body.studentFields.studentId + "", {
+      !Validator.isNumeric(String(body.studentFields.studentId), {
         no_symbols: true
       })
     ) {
@@ -113,17 +131,12 @@ module.exports = validateProfieInput = (data, user) => {
   }
   if (!isEmpty(body.teacherFields.teacherId)) {
     if (
-      !Validator.isNumeric(body.teacherFields.teacherId + "", {
+      !Validator.isNumeric(String(body.teacherFields.teacherId), {
         no_symbols: true
       })
     ) {
       errors.teacherId = "Teacher Id must be numeric";
     }
-  }
-
-  if (body.studentFields.studentId && body.teacherFields.teacherId) {
-    errors.id =
-      "Cannot accept id for teacher and student. Please submit one discrete id for either student or teacher";
   }
 
   return {
