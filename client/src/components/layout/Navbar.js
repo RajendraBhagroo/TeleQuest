@@ -98,6 +98,11 @@ class Navbar extends Component {
                   Course
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-item nav-link" to="/profileUpdateTest">
+                  ProfileUpdateTest
+                </Link>
+              </li>
             </ul>
             {isAuthenticated ? authLinks : guestLinks}
           </div>
