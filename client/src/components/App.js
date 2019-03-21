@@ -17,6 +17,7 @@ import Course from "../components/home/Course";
 import Profile from "../components/profile/Profile";
 import Login from "../components/authentication/Login";
 import Register from "../components/authentication/Register";
+import ProfileUpdateTest from "../components/home/ProfileUpdateTest";
 
 // Check For JWT Token
 if (localStorage.jwtToken) {
@@ -41,6 +42,7 @@ const App = () => {
                 <Route path="/" exact component={Landing} />
                 <Route path="/about" exact component={About} />
                 <Route path="/course" exact component={Course} />
+                <Route path="/profileUpdateTest" exact component={ProfileUpdateTest} />
                 <PrivateRoute path="/profile" exact component={Profile} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
