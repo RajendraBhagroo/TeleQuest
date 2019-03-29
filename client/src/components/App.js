@@ -17,7 +17,9 @@ import Course from "../components/home/Course";
 import Profile from "../components/profile/Profile";
 import Login from "../components/authentication/Login";
 import Register from "../components/authentication/Register";
-import ProfileUpdateTest from "../components/home/ProfileUpdateTest";
+import ProfileUpdate from "../components/profile/ProfileUpdate";
+import Education from "../components/profile/Education";
+import Experience from "../components/profile/Experience";
 
 // Check For JWT Token
 if (localStorage.jwtToken) {
@@ -42,10 +44,12 @@ const App = () => {
                 <Route path="/" exact component={Landing} />
                 <Route path="/about" exact component={About} />
                 <Route path="/course" exact component={Course} />
-                <Route path="/profileUpdateTest" exact component={ProfileUpdateTest} />
+                <Route path="/profileUpdate" exact component={ProfileUpdate} />
                 <PrivateRoute path="/profile" exact component={Profile} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
+                <Route path="/education" exact component={Education} />
+                <Route path="/experience" exact component={Experience} />
               </Switch>
             </Layout>
           </React.Fragment>
