@@ -2,16 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import TextFieldGroup from "../common/TextFieldGroup";
 
+
 const styles = {
-    Head: {
-        paddingTop: "20px",
-        marginbottom: "20px"
-    },
-    Img: {
-        height:"150px",
-        width:"150px",
-        position: "absolute"
-    },
     Limite: {
         width:"1000px",
         margin: "auto"
@@ -19,7 +11,7 @@ const styles = {
   };
 
 
-class ProfileUpdateTest extends React.Component {
+class ProfileUpdate extends React.Component {
   state = {};
 
   render() {
@@ -45,7 +37,9 @@ class ProfileUpdateTest extends React.Component {
             <div className="row">
                 <div className="col-md-3 ">
                     <div className="list-group ">
-                    <Link className="list-group-item list-group-item-action active" to="/profileUpdateTest">Update Profile</Link>
+                    <Link className="list-group-item list-group-item-action active" to="/profileUpdate">Profile</Link>
+                    <Link className="list-group-item list-group-item-action" to="/education">Education</Link>
+                      <Link className="list-group-item list-group-item-action" to="/experience">Experience</Link>
                     </div> 
                 </div>
                 <div className="col-md-9">
@@ -53,7 +47,7 @@ class ProfileUpdateTest extends React.Component {
                         <div className="card-body">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <h4>Update Profile</h4>
+                                    <h4>Profile</h4>
                                     <hr></hr>
                                 </div>
                             </div>
@@ -101,17 +95,11 @@ class ProfileUpdateTest extends React.Component {
                                         <div className="col-8">
                                             <div className="form-check form-check-inline">
                                                 <div className="checkbox">
-                                                    <label data-toggle="collapse" data-target="#student" aria-expanded="false" aria-controls="student">
-                                                    <input type="checkbox"/>Student</label>
+                                                    <label data-toggle="collapse" data-target="#student" aria-expanded="true" aria-controls="student">
+                                                    <input type="checkbox" defaultChecked/>Are you Student?</label>
                                                 </div>                             
                                             </div>
-                                            <div className="form-check form-check-inline">
-                                                <div className="checkbox">
-                                                    <label data-toggle="collapse" data-target="#teacher" aria-expanded="false" aria-controls="teacher">
-                                                    <input type="checkbox"/>Teacher</label>
-                                                </div>                             
-                                            </div>
-                                            <div id="student" aria-expanded="false" className="collapse">
+                                            <div id="student" className="collapse show">
                                                 <div className="well">
                                                     <TextFieldGroup
                                                         placeholder="Student ID"
@@ -122,7 +110,7 @@ class ProfileUpdateTest extends React.Component {
                                                     />
                                                 </div>
                                             </div>
-                                            <div id="teacher" aria-expanded="false" className="collapse">
+                                            <div id="student" className="collapse">
                                                 <div className="well">
                                                     <TextFieldGroup
                                                         placeholder="Teacher ID"
@@ -136,17 +124,23 @@ class ProfileUpdateTest extends React.Component {
                                         </div>
                                     </div>
                                     <div className="form-group row">
-                                        <label for="experience" className="col-4 col-form-label">Experience</label> 
-                                        <div className="col-8">
-                                        <textarea id="experience" name="experience" cols="40" rows="4" className="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                    <div className="form-group row">
                                         <label for="newpass" className="col-4 col-form-label">New Password</label> 
                                         <div className="col-8">
                                         <TextFieldGroup
                                             placeholder="New Password"
                                             name="newpass"
+                                            //value={this.state.}
+                                            //onChange={this.onChange}
+                                            //error={errors.}
+                                        />
+                                        </div>
+                                    </div>
+                                    <div className="form-group row">
+                                        <label for="confirmpass" className="col-4 col-form-label">Confirm Password</label> 
+                                        <div className="col-8">
+                                        <TextFieldGroup
+                                            placeholder="Confirm Password"
+                                            name="confirmpass"
                                             //value={this.state.}
                                             //onChange={this.onChange}
                                             //error={errors.}
@@ -172,4 +166,5 @@ class ProfileUpdateTest extends React.Component {
   }
 }
 
-export default ProfileUpdateTest;
+
+export default ProfileUpdate;

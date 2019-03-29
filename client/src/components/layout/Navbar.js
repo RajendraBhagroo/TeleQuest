@@ -99,8 +99,8 @@ class Navbar extends Component {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-item nav-link" to="/profileUpdateTest">
-                  ProfileUpdateTest
+                <Link className="nav-item nav-link" to="/profileUpdate">
+                  ProfileTest
                 </Link>
               </li>
             </ul>
