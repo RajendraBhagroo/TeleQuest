@@ -109,7 +109,8 @@ const ProfileSchema = new Schema({
     coursesEnrolledIn: [
       {
         name: {
-          type: String
+          type: String,
+          max: 280
         },
         type: {
           type: String,
