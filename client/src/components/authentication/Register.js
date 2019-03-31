@@ -101,7 +101,7 @@ class Register extends Component {
                 <div className="login-register">
                   Already have an account? <Link to="/login">Login</Link>
                 </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" />
+                <input type="submit" className="btn btn-info btn-block mt-4" value="Register"/>
               </form>
             </div>
           </div>
