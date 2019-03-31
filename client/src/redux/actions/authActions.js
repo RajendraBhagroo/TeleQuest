@@ -29,6 +29,7 @@ export const loginUser = userData => dispatch => {
       setAuthToken(token);
       const decoded = jwt_decode(token);
       dispatch(setCurrentUser(decoded));
+      history.push("/profileUpdate")
     })
     .catch(err =>
       dispatch({
