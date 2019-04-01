@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { getCurrentProfile } from "../../redux/actions/profileActions";
 import PropTypes from "prop-types";
 
 const styles = {
@@ -13,9 +14,13 @@ const styles = {
 class Profile extends React.Component {
   state = {};
 
+  componentDidMount() {
+    this.props.getCurrentProfile();
+  }
+
   render() {
-    const { userName } = this.props.auth.user;
     const { user } = this.props.auth;
+    const { profile } = this.props.profile;
 
     return (
       <div style={styles.Limite}>
@@ -23,7 +28,7 @@ class Profile extends React.Component {
           <br />
           <div className="row">
             <div className="col-sm-10">
-              <h1>{userName}</h1>
+              <h1>{user.userName}</h1>
             </div>
           </div>
           <br />
@@ -300,11 +305,17 @@ class Profile extends React.Component {
 }
 
 Profile.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  profile: state.profile
 });
 
-export default connect(mapStateToProps)(Profile);
+export default connect(
+  mapStateToProps,
+  { getCurrentProfile }
+)(Profile);
