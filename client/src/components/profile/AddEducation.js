@@ -21,7 +21,7 @@ class AddEducation extends React.Component {
       fieldOfStudy: "",
       from: "",
       to: "",
-      isCurrent: "",
+      isCurrent: false,
       description: "",
       errors: {}
     };
@@ -153,11 +153,8 @@ class AddEducation extends React.Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label
-                            for="isCurrent"
-                            className="col-4 col-form-label"
-                          >
-                            Is It Your Current Job?
+                          <label className="col-4 col-form-label">
+                            Is It Your Current School?
                           </label>
                           <div className="col-8">
                             <div className="form-check form-check-inline">
@@ -172,8 +169,8 @@ class AddEducation extends React.Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label for="from" className="col-4 col-form-label">
-                            Working
+                          <label className="col-4 col-form-label">
+                            School Attended Dates
                           </label>
                           <div className="col-8">
                             From:
@@ -183,9 +180,9 @@ class AddEducation extends React.Component {
                               type="date"
                               placeholder="DD/MM/YYYY"
                               name="from"
-                              //value={this.state.}
-                              //onChange={this.onChange}
-                              //error={errors.}
+                              value={this.state.from}
+                              onChange={this.onChange}
+                              error={errors.from}
                             />
                             To: <br />
                             <br />
@@ -193,9 +190,9 @@ class AddEducation extends React.Component {
                               type="date"
                               placeholder="DD/MM/YYYY"
                               name="to"
-                              //value={this.state.}
-                              //onChange={this.onChange}
-                              //error={errors.}
+                              value={this.state.to}
+                              onChange={this.onChange}
+                              error={errors.to}
                             />
                           </div>
                         </div>
@@ -220,7 +217,7 @@ class AddEducation extends React.Component {
                               type="submit"
                               className="btn btn-primary"
                             >
-                              Add Experience
+                              Add Education
                             </button>
                           </div>
                         </div>
