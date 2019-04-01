@@ -1,8 +1,9 @@
 import isEmpty from "../../utils/is-empty";
-import { UPDATE_PROFILE } from "../actions/types";
+import { UPDATE_PROFILE, GET_PROFILE } from "../actions/types";
 
 const initialState = {
-  isStudent: true
+  isStudent: true,
+  profile: null
 };
 
 export default function(state = initialState, action) {
@@ -11,6 +12,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isStudent: !isEmpty(action.payload)
+      };
+    case GET_PROFILE:
+      return {
+        ...state,
+        profile: action.payload
       };
     default:
       return state;
