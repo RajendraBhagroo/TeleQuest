@@ -16,7 +16,7 @@ class ProfileUpdate extends React.Component {
     super();
     this.state = {
       handle: "",
-      isStudent: "",
+      isStudent: true,
       studentId: "",
       teacherId: "",
       bio: "",
@@ -77,13 +77,13 @@ class ProfileUpdate extends React.Component {
           <div className="span3 well">
             <center>
               <img
-                className="rounded-circle ml-2"
+                className="rounded-circle ml-2 mb-2"
                 src={user.avatar}
                 alt={user.userName}
                 title="You must have a Gravatar connected to your email to display an image"
               />
               <h3>{userName}</h3>
-              <em>Student</em>
+              <em>{this.state.isStudent ? "Student" : "Teacher"}</em>
             </center>
           </div>
         </div>
@@ -110,11 +110,12 @@ class ProfileUpdate extends React.Component {
                           <label className="col-4 col-form-label">Handle</label>
                           <div className="col-8">
                             <TextFieldGroup
-                              placeholder="Put your name"
+                              placeholder="Handle"
                               name="handle"
                               value={this.state.handle}
                               onChange={this.onChange}
                               error={errors.handle}
+                              info={"This Determines Your Unique URL"}
                             />
                           </div>
                         </div>
@@ -134,12 +135,13 @@ class ProfileUpdate extends React.Component {
                                   <input
                                     type="checkbox"
                                     onChange={this.onCheck}
+                                    defaultChecked={true}
                                   />
-                                  Are you Student?
+                                  Are You Currently A Student?
                                 </label>
                               </div>
                             </div>
-                            <div id="isStudent" className="collapse">
+                            <div id="isStudent" className="collapse show">
                               <div className="well">
                                 <TextFieldGroup
                                   placeholder="Student ID"
@@ -150,7 +152,7 @@ class ProfileUpdate extends React.Component {
                                 />
                               </div>
                             </div>
-                            <div id="isStudent" className="collapse show">
+                            <div id="isStudent" className="collapse">
                               <div className="well">
                                 <TextFieldGroup
                                   placeholder="Teacher ID"
@@ -181,6 +183,9 @@ class ProfileUpdate extends React.Component {
                             <TextFieldGroup
                               placeholder="Skills"
                               name="skills"
+                              info={
+                                "Comma Seperated Values [Ex. Python, Public Speaking, Accounting]"
+                              }
                               value={this.state.skills}
                               onChange={this.onChange}
                               error={errors.skills}
@@ -188,51 +193,59 @@ class ProfileUpdate extends React.Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label className="col-4 col-form-label">Social</label>
+                          <label className="col-4 col-form-label">
+                            Social Media
+                          </label>
                           <div className="col-8">
+                            <i className="fab fa-twitter mr-2" />
                             Youtube
                             <TextFieldGroup
-                              placeholder="Youtube"
+                              placeholder="https://www.youtube.com/user/"
                               name="youtube"
                               value={this.state.youtube}
                               onChange={this.onChange}
                               error={errors.youtube}
                             />
+                            <i className="fab fa-twitter mr-2" />
                             Twitter
                             <TextFieldGroup
-                              placeholder="Twitter"
+                              placeholder="https://twitter.com/"
                               name="twitter"
                               value={this.state.twitter}
                               onChange={this.onChange}
                               error={errors.twitter}
                             />
+                            <i className="fab fa-facebook mr-2" />
                             Facebook
                             <TextFieldGroup
-                              placeholder="Facebook"
+                              placeholder="https://www.facebook.com/"
                               name="facebook"
                               value={this.state.facebook}
                               onChange={this.onChange}
                               error={errors.facebook}
                             />
+                            <i className="fab fa-linkedin mr-2" />
                             Linked In
                             <TextFieldGroup
-                              placeholder="Linked in"
+                              placeholder="https://www.linkedin.com/in/"
                               name="linkedin"
                               value={this.state.linkedin}
                               onChange={this.onChange}
                               error={errors.linkedin}
                             />
+                            <i className="fab fa-instagram mr-2" />
                             Instagram
                             <TextFieldGroup
-                              placeholder="Instagram"
+                              placeholder="https://www.instagram.com/"
                               name="instagram"
                               value={this.state.instagram}
                               onChange={this.onChange}
                               error={errors.instagram}
                             />
+                            <i className="fab fa-github mr-2" />
                             Github
                             <TextFieldGroup
-                              placeholder="Github"
+                              placeholder="https://github.com/"
                               name="github"
                               value={this.state.github}
                               onChange={this.onChange}

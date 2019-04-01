@@ -16,20 +16,19 @@ const styles = {
 };
 
 class Navbar extends Component {
-  onLogoutClick(e) {
+  onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
-  }
+  };
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
-    const { userName } = this.props.auth.user;
 
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/profile">
-            {userName}
+            My Profile
             <img
               className="rounded-circle ml-2"
               src={user.avatar}
@@ -40,11 +39,7 @@ class Navbar extends Component {
           </Link>
         </li>
         <li className="nav-item">
-          <Link
-            to=""
-            onClick={this.onLogoutClick.bind(this)}
-            className="nav-link"
-          >
+          <Link to="" onClick={this.onLogoutClick} className="nav-link">
             Logout
             <i className="fas fa-sign-out-alt ml-2" />
           </Link>
