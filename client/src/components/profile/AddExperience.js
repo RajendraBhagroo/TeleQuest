@@ -20,7 +20,7 @@ class AddExperience extends React.Component {
       location: "",
       from: "",
       to: "",
-      isCurrent: "",
+      isCurrent: false,
       description: "",
       errors: {}
     };
@@ -58,8 +58,8 @@ class AddExperience extends React.Component {
 
   render() {
     const { user } = this.props.auth;
+    const { isStudent } = this.props.profile;
     const { errors } = this.state;
-    const { userName } = this.props.auth.user;
 
     return (
       <div style={styles.Limite}>
@@ -72,8 +72,8 @@ class AddExperience extends React.Component {
                 alt={user.userName}
                 title="You must have a Gravatar connected to your email to display an image"
               />
-              <h3>{userName}</h3>
-              <em>Student</em>
+              <h3>{user.userName}</h3>
+              <em>{isStudent ? "Student" : "Teacher"}</em>
             </center>
           </div>
         </div>
@@ -137,11 +137,8 @@ class AddExperience extends React.Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label
-                            for="isCurrent"
-                            className="col-4 col-form-label"
-                          >
-                            Is It Your Current Job?
+                          <label className="col-4 col-form-label">
+                            Employment Status
                           </label>
                           <div className="col-8">
                             <div className="form-check form-check-inline">
@@ -150,14 +147,14 @@ class AddExperience extends React.Component {
                                   type="checkbox"
                                   onChange={this.onCheck}
                                 />
-                                Yes
+                                Is This Your Current Job?
                               </div>
                             </div>
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label for="from" className="col-4 col-form-label">
-                            Working
+                          <label className="col-4 col-form-label">
+                            Employment Dates
                           </label>
                           <div className="col-8">
                             From:
@@ -167,9 +164,9 @@ class AddExperience extends React.Component {
                               type="date"
                               placeholder="DD/MM/YYYY"
                               name="from"
-                              //value={this.state.}
-                              //onChange={this.onChange}
-                              //error={errors.}
+                              value={this.state.from}
+                              onChange={this.onChange}
+                              error={errors.from}
                             />
                             To: <br />
                             <br />
@@ -177,9 +174,9 @@ class AddExperience extends React.Component {
                               type="date"
                               placeholder="DD/MM/YYYY"
                               name="to"
-                              //value={this.state.}
-                              //onChange={this.onChange}
-                              //error={errors.}
+                              value={this.state.to}
+                              onChange={this.onChange}
+                              error={errors.to}
                             />
                           </div>
                         </div>
@@ -223,12 +220,14 @@ class AddExperience extends React.Component {
 
 AddExperience.propTypes = {
   auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   addExperience: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  profile: state.profile,
   errors: state.errors
 });
 

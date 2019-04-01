@@ -60,8 +60,8 @@ class AddEducation extends React.Component {
 
   render() {
     const { user } = this.props.auth;
+    const { isStudent } = this.props.profile;
     const { errors } = this.state;
-    const { userName } = this.props.auth.user;
 
     return (
       <div style={styles.Limite}>
@@ -74,8 +74,8 @@ class AddEducation extends React.Component {
                 alt={user.userName}
                 title="You must have a Gravatar connected to your email to display an image"
               />
-              <h3>{userName}</h3>
-              <em>Student</em>
+              <h3>{user.userName}</h3>
+              <em>{isStudent ? "Student" : "Teacher"}</em>
             </center>
           </div>
         </div>
@@ -239,12 +239,14 @@ class AddEducation extends React.Component {
 
 AddEducation.propTypes = {
   auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   addEducation: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  profile: state.profile,
   errors: state.errors
 });
 

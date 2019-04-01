@@ -43,8 +43,8 @@ module.exports = validateExperienceInput = data => {
     String(body.to) != "" &&
     String(body.from) != ""
   ) {
-    errors.dates =
-      "the Starting date cannot equal the ending date, please enter valid dates";
+    errors.from =
+      "The starting date cannot equal the ending date, please enter valid dates";
   }
 
   // Checks If [to] Date Is After Current Date
