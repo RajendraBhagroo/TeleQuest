@@ -4,8 +4,8 @@ const passport = require("passport");
 const cors = require("cors");
 const app = express();
 require(`./${process.env.SERVER_VERSION}/passport`)(passport);
-const http=require('http').createServer();
-const io = require("socket.io")(http);
+var server = require('http').Server(app);
+var io = require('socket.io')(server)
 const connections=[];
 
 // Routes
