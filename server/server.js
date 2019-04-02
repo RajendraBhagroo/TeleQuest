@@ -3,11 +3,10 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const cors = require("cors");
 const app = express();
-const server=require('http').Server(app);
-const socket = require("socket.io")(server);
-const ss = require('socket.io-stream');
-const connections=[];
 require(`./${process.env.SERVER_VERSION}/passport`)(passport);
+const http=require('http').createServer();
+const io = require("socket.io")(http);
+const connections=[];
 
 // Routes
 const users = require(`./${process.env.SERVER_VERSION}/routes/api/users`);
@@ -32,23 +31,20 @@ app.use(`/api/${process.env.SERVER_VERSION}/profile`, profile);
 
 // Run Server
 const host = process.env.HOST || `127.0.0.1`;
-const port = process.env.NODE_PORT || 3001;
+const port = process.env.NODE_PORT || 3009;
 app.listen(port, () => console.log(`Server running on http://${host}:${port}`));
 
 //Establishing Socket.io server
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
-const io=socket(server);
-const roomID = "";
 const nameSpace="";
-
-io
-    .of(`/${nameSpace}`)
     /* @route   http://host:port/nameSpace
      * @params  {nameSpace}
-     * @desc    opens up a websocket for the specified route
+     * @desc    opens up a socket.io socket for the specified route
      */
+io
+    .of(`/${nameSpace}`)
   
     .on("connection",function(socket){
       connections.push(socket);
