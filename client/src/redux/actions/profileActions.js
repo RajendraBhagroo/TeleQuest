@@ -2,10 +2,17 @@ import axios from "axios";
 import server from "../../apis/server";
 import history from "../../history";
 
-import { SET_CURRENT_USER, GET_ERRORS, GET_PROFILE, CLEAR_CURRENT_PROFILE, PROFILE_LOADING } from "./types";
+import {
+  SET_CURRENT_USER,
+  GET_ERRORS,
+  GET_PROFILE,
+  CLEAR_CURRENT_PROFILE,
+  PROFILE_LOADING
+} from "./types";
 
 // Get Current Profile
 export const getCurrentProfile = () => dispatch => {
+  dispatch(setProfileLoading());
   axios
     .get(`${server}/api/v1/profile`)
     .then(res =>
@@ -24,6 +31,7 @@ export const getCurrentProfile = () => dispatch => {
 
 // Get Profile By Handle
 export const getProfileByHandle = handle => dispatch => {
+  dispatch(setProfileLoading());
   axios
     .get(`${server}/api/v1/profile/handle/${handle}`)
     .then(res =>
@@ -40,7 +48,6 @@ export const getProfileByHandle = handle => dispatch => {
     );
 };
 
-
 // Clear profile
 export const clearCurrentProfile = () => {
   return {
@@ -54,7 +61,6 @@ export const setProfileLoading = () => {
     type: PROFILE_LOADING
   };
 };
-
 
 // Update Profile
 export const updateProfile = profileInfo => dispatch => {
@@ -94,7 +100,6 @@ export const addEducation = educationInfo => dispatch => {
       })
     );
 };
-
 
 // Add Course Enrolled In
 // Add Course Teaching
