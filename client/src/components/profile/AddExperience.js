@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import { addExperience } from "../../redux/actions/profileActions";
@@ -143,11 +144,18 @@ class AddExperience extends React.Component {
                           <div className="col-8">
                             <div className="form-check form-check-inline">
                               <div className="checkbox">
+                                <label
+                                  data-toggle="collapse"
+                                  data-target="#isCurrent"
+                                  aria-expanded="true"
+                                  aria-controls="isCurrent"
+                                >
                                 <input
                                   type="checkbox"
                                   onChange={this.onCheck}
                                 />
                                 Is This Your Current Job?
+                                </label>
                               </div>
                             </div>
                           </div>
@@ -168,7 +176,9 @@ class AddExperience extends React.Component {
                               onChange={this.onChange}
                               error={errors.from}
                             />
-                            To: <br />
+                            <div id="isCurrent" className="collapse show">
+                            To: 
+                            <br />
                             <br />
                             <TextFieldGroup
                               type="date"
@@ -178,6 +188,7 @@ class AddExperience extends React.Component {
                               onChange={this.onChange}
                               error={errors.to}
                             />
+                            </div>
                           </div>
                         </div>
                         <div className="form-group row">
@@ -206,6 +217,10 @@ class AddExperience extends React.Component {
                           </div>
                         </div>
                       </form>
+                      <br/>
+                      <Link className="btn btn-success" to="/profile">
+                            Return to Profile
+                      </Link>
                     </div>
                   </div>
                 </div>
