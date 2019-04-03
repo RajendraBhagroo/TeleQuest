@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCurrentProfile } from "../../redux/actions/profileActions";
 import PropTypes from "prop-types";
-import Loading from '../common/Loading';
+import Spinner from "../common/Spinner";
 
 const styles = {
   Limite: {
@@ -18,17 +18,17 @@ class Profile extends React.Component {
   componentDidMount() {
     this.props.getCurrentProfile();
   }
-  
+
   render() {
     const { user } = this.props.auth;
     const { profile, loading } = this.props.profile;
     let publicProfile;
 
-    if (profile === null || loading){
-        publicProfile = <Loading/>;
-      } else {
-        publicProfile =(
-          <div className="container">
+    if (profile === null || loading) {
+      publicProfile = <Spinner />;
+    } else {
+      publicProfile = (
+        <div className="container">
           <br />
           <div className="row">
             <div className="col-sm-10">
@@ -171,22 +171,22 @@ class Profile extends React.Component {
                       </div>
                       <div className="col">
                         <h5>Ocupation</h5>
-                        <h6 className="font-weight-light"></h6>
+                        <h6 className="font-weight-light">Change</h6>
                       </div>
                     </div>
                     <br />
 
                     <div className="form-group">
                       <h5>Bio</h5>
-                      <h6 className="font-weight-light">
-                      {profile.profile.bio}
-                      </h6>
+                      <h6 className="font-weight-light">{profile.bio}</h6>
                     </div>
                     <br />
 
                     <div className="form-group">
                       <h5>Skills</h5>
-                      <h6 className="font-weight-light"></h6>
+                      <h6 className="font-weight-light">
+                        {profile.skills.join(", ")}
+                      </h6>
                     </div>
                   </form>
                   <br />
@@ -299,15 +299,10 @@ class Profile extends React.Component {
             </div>
           </div>
         </div>
+      );
+    }
 
-        );
-        }
-
-    return (
-      <div style={styles.Limite}>
-        {publicProfile}
-      </div>
-    );
+    return <div style={styles.Limite}>{publicProfile}</div>;
   }
 }
 
