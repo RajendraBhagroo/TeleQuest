@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCurrentProfile } from "../../redux/actions/profileActions";
 import PropTypes from "prop-types";
+import Loading from '../common/Loading';
 
 const styles = {
   Limite: {
@@ -17,14 +18,17 @@ class Profile extends React.Component {
   componentDidMount() {
     this.props.getCurrentProfile();
   }
-
+  
   render() {
     const { user } = this.props.auth;
-    const { profile } = this.props.profile;
+    const { profile, loading } = this.props.profile;
+    let publicProfile;
 
-    return (
-      <div style={styles.Limite}>
-        <div className="container">
+    if (profile === null || loading){
+        publicProfile = <Loading/>;
+      } else {
+        publicProfile =(
+          <div className="container">
           <br />
           <div className="row">
             <div className="col-sm-10">
@@ -151,11 +155,11 @@ class Profile extends React.Component {
                     <div className="form-group row">
                       <div className="col">
                         <h5>First name</h5>
-                        <h6 className="font-weight-light">Myeongkeun</h6>
+                        <h6 className="font-weight-light">{user.firstName}</h6>
                       </div>
                       <div className="col">
                         <h5>Last name</h5>
-                        <h6 className="font-weight-light">Kim</h6>
+                        <h6 className="font-weight-light">{user.lastName}</h6>
                       </div>
                     </div>
                     <br />
@@ -163,11 +167,11 @@ class Profile extends React.Component {
                     <div className="form-group row">
                       <div className="col">
                         <h5>Email</h5>
-                        <h6 className="font-weight-light">mkim28@nyit.edu</h6>
+                        <h6 className="font-weight-light">{user.email}</h6>
                       </div>
                       <div className="col">
                         <h5>Ocupation</h5>
-                        <h6 className="font-weight-light">Student</h6>
+                        <h6 className="font-weight-light"></h6>
                       </div>
                     </div>
                     <br />
@@ -175,18 +179,14 @@ class Profile extends React.Component {
                     <div className="form-group">
                       <h5>Bio</h5>
                       <h6 className="font-weight-light">
-                        This is just aa sample bio writing for the test. I don't
-                        know how to put actual data from database and don't even
-                        know what are the vlues in our data now.
+                      {profile.profile.bio}
                       </h6>
                     </div>
                     <br />
 
                     <div className="form-group">
                       <h5>Skills</h5>
-                      <h6 className="font-weight-light">Skill list 1</h6>
-                      <h6 className="font-weight-light">Skill list 2</h6>
-                      <h6 className="font-weight-light">Skill list 3</h6>
+                      <h6 className="font-weight-light"></h6>
                     </div>
                   </form>
                   <br />
@@ -299,6 +299,13 @@ class Profile extends React.Component {
             </div>
           </div>
         </div>
+
+        );
+        }
+
+    return (
+      <div style={styles.Limite}>
+        {publicProfile}
       </div>
     );
   }
