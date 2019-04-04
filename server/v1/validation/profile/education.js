@@ -16,6 +16,7 @@ module.exports = validateEducationInput = data => {
   body.to = !isEmpty(data.to) ? data.to : "";
   body.isCurrent = !isEmpty(data.isCurrent) ? data.isCurrent : false;
   body.description = !isEmpty(data.description) ? data.description.trim() : "";
+  body.location = !isEmpty(data.location) ? data.location.trim() : "";
 
   // Validate
 
@@ -33,6 +34,10 @@ module.exports = validateEducationInput = data => {
 
   if (Validator.isEmpty(String(body.from))) {
     errors.from = "From date field is required";
+  }
+
+  if (Validator.isEmpty(body.location)) {
+    errors.location = "Location field is required";
   }
 
   if (!Validator.isLength(body.description, { min: 0, max: 280 })) {
