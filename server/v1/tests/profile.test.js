@@ -349,7 +349,7 @@ describe("POST /api/v1/profile/coursesEnrolledIn", () => {
 
 /*
  * @route   POST /api/v1/profile/coursesTeaching
- * @params  {name, type, number, firstName, lastName, studentId}
+ * @params  {name, type, number, description, teacherId}
  * @desc    Add coursesTeaching [Teacher] To Profile
  * @access  Private
  */
@@ -358,9 +358,8 @@ describe("POST /api/v1/profile/coursesTeaching", () => {
     name: "Operating Systems Security",
     type: "CSCI",
     number: 330,
-    firstName: "Taylor",
-    lastName: "Swift",
-    studentId: 654321
+    description: "Operating Systems class learn something",
+    teacherId: 654321
   };
   it("Should Respond With 201 Created [coursesTeaching Added To Profile]", done => {
     request
