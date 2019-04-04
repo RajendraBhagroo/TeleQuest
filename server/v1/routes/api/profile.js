@@ -209,7 +209,7 @@ router.post(
 
 /*
  * @route   POST /api/v1/profile/coursesTeaching
- * @params  {name, type, number, firstName, lastName, studentId}
+ * @params  {name, type, number, description}
  * @desc    Add coursesTeaching Field [Teacher] To Profile
  * @access  Private
  */
