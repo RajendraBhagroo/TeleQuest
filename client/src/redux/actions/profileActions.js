@@ -104,8 +104,42 @@ export const addEducation = educationInfo => dispatch => {
 // Add Course Enrolled In
 // Add Course Teaching
 
-// Delete Education
 // Delete Experience
+export const deleteExperience = id => dispatch => {
+  axios
+    .delete(`${server}/api/v1/profile/experience/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Delete Education
+export const deleteEducation = id => dispatch => {
+  axios
+    .delete(`${server}/api/v1/profile/education/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Delete Course Enrolled In
 // Delete Course Teaching
 
