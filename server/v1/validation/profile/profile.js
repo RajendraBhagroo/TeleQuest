@@ -66,7 +66,9 @@ module.exports = validateProfieInput = (data, user) => {
     !isEmpty(String(body.studentFields.studentId)) &&
     !isEmpty(String(body.teacherFields.teacherId))
   ) {
-    errors.id =
+    errors.studentId =
+      "Cannot accept id for teacher and student. Please submit one discrete id for either student or teacher";
+    errors.teacherId =
       "Cannot accept id for teacher and student. Please submit one discrete id for either student or teacher";
   }
 

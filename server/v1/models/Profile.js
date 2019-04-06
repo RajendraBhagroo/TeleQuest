@@ -147,19 +147,10 @@ const ProfileSchema = new Schema({
         number: {
           type: Number
         },
-        students: [
-          {
-            firstName: {
-              type: String
-            },
-            lastName: {
-              type: String
-            },
-            studentId: {
-              type: Number
-            }
-          }
-        ]
+        description: {
+          type: String,
+          max: 280
+        }
       }
     ]
   },

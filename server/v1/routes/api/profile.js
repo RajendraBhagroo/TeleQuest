@@ -10,8 +10,8 @@ const User = require("../../models/User");
 const validateProfileInput = require("../../validation/profile/profile");
 const validateEducationInput = require("../../validation/profile/education");
 const validateExperienceInput = require("../../validation/profile/experience");
-const validateCoursesEnrolledInInput = require("../../validation/profile/coursesEnrolledIn");
-const validateCoursesTeachingInput = require("../../validation/profile/coursesTeaching");
+const validateCourseEnrolledInInput = require("../../validation/profile/courseEnrolledIn");
+const validateCourseTeachingInput = require("../../validation/profile/courseTeaching");
 
 /*
  * @route   GET /api/v1/profile/test
@@ -184,48 +184,48 @@ router.post(
 );
 
 /*
- * @route   POST /api/v1/profile/coursesEnrolledIn
+ * @route   POST /api/v1/profile/courseEnrolledIn
  * @params  {name, type, number, firstName, lastName}
- * @desc    Add coursesEnrolledIn Field [Student] To Profile
+ * @desc    Add courseEnrolledIn Field [Student] To Profile
  * @access  Private
  */
 router.post(
-  "/coursesEnrolledIn",
+  "/courseEnrolledIn",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { errors, body, isValid } = validateCoursesEnrolledInInput(req.body);
+    const { errors, body, isValid } = validateCourseEnrolledInInput(req.body);
 
     if (!isValid) {
       return res.status(400).json(errors);
     }
 
     Profile.findOne({ user: req.user.id }).then(profile => {
-      const newCoursesEnrolledIn = body;
-      profile.studentFields.coursesEnrolledIn.unshift(newCoursesEnrolledIn);
+      const newCourseEnrolledIn = body;
+      profile.studentFields.coursesEnrolledIn.unshift(newCourseEnrolledIn);
       profile.save().then(profile => res.status(201).json(profile));
     });
   }
 );
 
 /*
- * @route   POST /api/v1/profile/coursesTeaching
- * @params  {name, type, number, firstName, lastName, studentId}
- * @desc    Add coursesTeaching Field [Teacher] To Profile
+ * @route   POST /api/v1/profile/courseTeaching
+ * @params  {name, type, number, description}
+ * @desc    Add courseTeaching Field [Teacher] To Profile
  * @access  Private
  */
 router.post(
-  "/coursesTeaching",
+  "/courseTeaching",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { errors, body, isValid } = validateCoursesTeachingInput(req.body);
+    const { errors, body, isValid } = validateCourseTeachingInput(req.body);
 
     if (!isValid) {
       return res.status(400).json(errors);
     }
 
     Profile.findOne({ user: req.user.id }).then(profile => {
-      const newCoursesTeaching = body;
-      profile.teacherFields.coursesTeaching.unshift(newCoursesTeaching);
+      const newCourseTeaching = body;
+      profile.teacherFields.coursesTeaching.unshift(newCourseTeaching);
       profile.save().then(profile => res.status(201).json(profile));
     });
   }
@@ -284,13 +284,13 @@ router.delete(
 );
 
 /*
- * @route       DELETE /api/v1/profile/studentField/:coursesEnrolledIn_id
- * @params URL  {coursesEnrolledIn_id}
- * @desc        Delete coursesEnrolledIn Field From Profile
+ * @route       DELETE /api/v1/profile/courseEnrolledIn/:courseEnrolledIn_id
+ * @params URL  {courseEnrolledIn_id}
+ * @desc        Delete courseEnrolledIn Field From Profile
  * @access      Private
  */
 router.delete(
-  "/coursesEnrolledIn/:coursesEnrolledIn_id",
+  "/courseEnrolledIn/:courseEnrolledIn_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const errors = {};
@@ -298,25 +298,25 @@ router.delete(
     Profile.findOne({ user: req.user.id })
       .then(profile => {
         profile.studentFields.coursesEnrolledIn = profile.studentFields.coursesEnrolledIn.filter(
-          item => item.id != req.params.coursesEnrolledIn_id
+          item => item.id != req.params.courseEnrolledIn_id
         );
         profile.save().then(profile => res.json(profile));
       })
       .catch(err => {
-        errors.exp = `Could Not Remove coursesEnrolledIn Field By Id: ${err}`;
+        errors.exp = `Could Not Remove courseEnrolledIn Field By Id: ${err}`;
         res.status(404).json(errors);
       });
   }
 );
 
 /*
- * @route       DELETE /api/v1/profile/teacherField/:coursesTeaching_id
- * @params URL  {coursesTeaching_id}
- * @desc        Delete coursesTeaching Field From Profile
+ * @route       DELETE /api/v1/profile/courseTeaching/:courseTeaching_id
+ * @params URL  {courseTeaching_id}
+ * @desc        Delete courseTeaching Field From Profile
  * @access      Private
  */
 router.delete(
-  "/coursesTeaching/:coursesTeaching_id",
+  "/courseTeaching/:courseTeaching_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const errors = {};
@@ -324,12 +324,12 @@ router.delete(
     Profile.findOne({ user: req.user.id })
       .then(profile => {
         profile.teacherFields.coursesTeaching = profile.teacherFields.coursesTeaching.filter(
-          item => item.id != req.params.coursesTeaching_id
+          item => item.id != req.params.courseTeaching_id
         );
         profile.save().then(profile => res.json(profile));
       })
       .catch(err => {
-        errors.exp = `Could Not Remove coursesTeaching Field By Id: ${err}`;
+        errors.exp = `Could Not Remove courseTeaching Field By Id: ${err}`;
         res.status(404).json(errors);
       });
   }

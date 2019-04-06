@@ -78,7 +78,7 @@ class Login extends Component {
                 <div>
                   New Here? <Link to="/register">Create an account</Link>
                 </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" />
+                <input type="submit" className="btn btn-info btn-block mt-4" value="Login"/>
               </form>
             </div>
           </div>
