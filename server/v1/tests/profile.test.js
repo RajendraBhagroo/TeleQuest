@@ -6,8 +6,8 @@ let token = null;
 let user_id = "";
 let edu_id = "";
 let exp_id = "";
-let coursesEnrolledIn_id = "";
-let coursesTeaching_id = "";
+let courseEnrolledIn_id = "";
+let courseTeaching_id = "";
 
 /*
  * @route   POST /api/v1/users/register
@@ -319,12 +319,12 @@ describe("POST /api/v1/profile/experience", () => {
 });
 
 /*
- * @route   POST /api/v1/profile/coursesEnrolledIn
+ * @route   POST /api/v1/profile/courseEnrolledIn
  * @params  {name, type, number, firstName, lastName}
- * @desc    Add coursesEnrolledIn [Student] To Profile
+ * @desc    Add courseEnrolledIn [Student] To Profile
  * @access  Private
  */
-describe("POST /api/v1/profile/coursesEnrolledIn", () => {
+describe("POST /api/v1/profile/courseEnrolledIn", () => {
   const body = {
     name: "Operating Systems Security",
     type: "CSCI",
@@ -332,28 +332,28 @@ describe("POST /api/v1/profile/coursesEnrolledIn", () => {
     firstName: "Howard",
     lastName: "CLutz"
   };
-  it("Should Respond With 201 Created [coursesEnrolledIn Added To Profile]", done => {
+  it("Should Respond With 201 Created [courseEnrolledIn Added To Profile]", done => {
     request
-      .post("/api/v1/profile/coursesEnrolledIn")
+      .post("/api/v1/profile/courseEnrolledIn")
       .set("Authorization", token)
       .set("Accept", "application/json")
       .send(body)
       .expect(201)
       .end((err, res) => {
         if (err) return done(err);
-        else coursesEnrolledIn_id = res.body.id;
+        else courseEnrolledIn_id = res.body.id;
         done();
       });
   });
 });
 
 /*
- * @route   POST /api/v1/profile/coursesTeaching
+ * @route   POST /api/v1/profile/courseTeaching
  * @params  {name, type, number, description, teacherId}
- * @desc    Add coursesTeaching [Teacher] To Profile
+ * @desc    Add courseTeaching [Teacher] To Profile
  * @access  Private
  */
-describe("POST /api/v1/profile/coursesTeaching", () => {
+describe("POST /api/v1/profile/courseTeaching", () => {
   const body = {
     name: "Operating Systems Security",
     type: "CSCI",
@@ -361,16 +361,16 @@ describe("POST /api/v1/profile/coursesTeaching", () => {
     description: "Operating Systems class learn something",
     teacherId: 654321
   };
-  it("Should Respond With 201 Created [coursesTeaching Added To Profile]", done => {
+  it("Should Respond With 201 Created [courseTeaching Added To Profile]", done => {
     request
-      .post("/api/v1/profile/coursesTeaching")
+      .post("/api/v1/profile/courseTeaching")
       .set("Authorization", token)
       .set("Accept", "application/json")
       .send(body)
       .expect(201)
       .end((err, res) => {
         if (err) return done(err);
-        else coursesTeaching_id = res.body.id;
+        else courseTeaching_id = res.body.id;
         done();
       });
   });
@@ -439,15 +439,15 @@ describe("DELETE /api/v1/profile/experience/:exp_id", () => {
 });
 
 /*
- * @route       DELETE /api/v1/profile/coursesEnrolledIn/:coursesEnrolledIn_id
- * @params URL  {coursesEnrolledIn_id}
- * @desc        Delete coursesEnrolledIn Field From Profile
+ * @route       DELETE /api/v1/profile/courseEnrolledIn/:courseEnrolledIn_id
+ * @params URL  {courseEnrolledIn_id}
+ * @desc        Delete courseEnrolledIn Field From Profile
  * @access      Private
  */
-describe("DELETE /api/v1/profile/coursesEnrolledIn/:coursesEnrolledIn_id", () => {
-  it("Should Return 200 OK [CoursesEnrolledIn Field Deleted From Profile]", done => {
+describe("DELETE /api/v1/profile/courseEnrolledIn/:courseEnrolledIn_id", () => {
+  it("Should Return 200 OK [CourseEnrolledIn Field Deleted From Profile]", done => {
     request
-      .delete(`/api/v1/profile/coursesEnrolledIn/${coursesEnrolledIn_id}`)
+      .delete(`/api/v1/profile/courseEnrolledIn/${courseEnrolledIn_id}`)
       .set("Authorization", token)
       .set("Accept", "application/json")
       .expect(200, done);
@@ -455,15 +455,15 @@ describe("DELETE /api/v1/profile/coursesEnrolledIn/:coursesEnrolledIn_id", () =>
 });
 
 /*
- * @route       DELETE /api/v1/profile/teacherField/:coursesTeaching_id
- * @params URL  {coursesTeaching_id}
- * @desc        Delete coursesTeaching Field From Profile
+ * @route       DELETE /api/v1/profile/teacherField/:courseTeaching_id
+ * @params URL  {courseTeaching_id}
+ * @desc        Delete courseTeaching Field From Profile
  * @access      Private
  */
-describe("DELETE /api/v1/profile/coursesTeaching/:coursesTeaching_id", () => {
-  it("Should Return 200 OK [coursesTeaching Field Deleted From Profile]", done => {
+describe("DELETE /api/v1/profile/courseTeaching/:courseTeaching_id", () => {
+  it("Should Return 200 OK [courseTeaching Field Deleted From Profile]", done => {
     request
-      .delete(`/api/v1/profile/coursesTeaching/${coursesTeaching_id}`)
+      .delete(`/api/v1/profile/courseTeaching/${courseTeaching_id}`)
       .set("Authorization", token)
       .set("Accept", "application/json")
       .expect(200, done);

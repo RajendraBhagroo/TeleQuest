@@ -9,6 +9,9 @@ import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
 import EducationTab from "./EducationTab";
 import ExperienceTab from "./ExperienceTab";
+import CoursesEnrolledInTab from "./CoursesEnrolledInTab";
+import CoursesTeachingTab from "./CoursesTeachingTab";
+import ProfileSideCourseCard from "./ProfileSideCourseCard";
 
 const styles = {
   Limite: {
@@ -37,7 +40,7 @@ class Profile extends React.Component {
     if (profile === null || loading) {
       publicProfile = <Spinner />;
     } else {
-      if (profile.isStudent === true || false) {
+      if (profile.studentFields.studentId || profile.teacherFields.teacherId) {
         publicProfile = (
           <div className="container">
             <br />
@@ -63,13 +66,23 @@ class Profile extends React.Component {
 
                 <div className="card">
                   <div className="card-header">
-                    <strong>Course</strong>
+                    <strong>
+                      {profile.isStudent
+                        ? "Enrolled Courses"
+                        : "Teaching Courses"}
+                    </strong>
                   </div>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item">CSCI 455</li>
-                    <li className="list-group-item">IENG 320</li>
-                    <li className="list-group-item">IENG 400</li>
-                  </ul>
+                  <div>
+                    {profile.isStudent ? (
+                      <ProfileSideCourseCard
+                        course={profile.studentFields.coursesEnrolledIn}
+                      />
+                    ) : (
+                      <ProfileSideCourseCard
+                        course={profile.teacherFields.coursesTeaching}
+                      />
+                    )}
+                  </div>
                 </div>
                 <br />
 
@@ -156,6 +169,33 @@ class Profile extends React.Component {
                       Education
                     </a>
                   </li>
+                  <li className="nav-item">
+                    {profile.isStudent ? (
+                      <a
+                        className="nav-link"
+                        id="coursesEnrolledIn"
+                        data-toggle="tab"
+                        role="tab"
+                        aria-controls="coursesEnrolledIn"
+                        aria-selected="false"
+                        href="#CoursesEnrolledIn"
+                      >
+                        Enrolled Courses
+                      </a>
+                    ) : (
+                      <a
+                        className="nav-link"
+                        id="coursesTeaching"
+                        data-toggle="tab"
+                        role="tab"
+                        aria-controls="coursesTeaching"
+                        aria-selected="false"
+                        href="#CoursesTeaching"
+                      >
+                        Teaching Courses
+                      </a>
+                    )}
+                  </li>
                 </ul>
                 <br />
 
@@ -185,7 +225,6 @@ class Profile extends React.Component {
                         </div>
                       </div>
                       <br />
-                      {console.log(user)}
                       <div className="form-group row">
                         <div className="col">
                           <h5>Email</h5>
@@ -271,6 +310,57 @@ class Profile extends React.Component {
                           to="/addEducation"
                         >
                           Add New Education
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ----------------------------------Enrolled Courses tab---------------------------------------------------- */}
+                  <div
+                    className="tab-pane fade"
+                    role="tabpanel"
+                    id="CoursesEnrolledIn"
+                  >
+                    <div>
+                      <CoursesEnrolledInTab
+                        course={profile.studentFields.coursesEnrolledIn}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <div className="col-xs-12">
+                        <br />
+                        <Link
+                          type="button"
+                          className="btn btn-primary pull-right"
+                          to="/addCourseEnrolledIn"
+                        >
+                          Add New Course
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ----------------------------------Teaching Courses tab---------------------------------------------------- */}
+                  <div
+                    className="tab-pane fade"
+                    role="tabpanel"
+                    id="CoursesTeaching"
+                  >
+                    <div>
+                      <CoursesTeachingTab
+                        courseTeaching={profile.teacherFields.coursesTeaching}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <div className="col-xs-12">
+                        <br />
+                        <Link
+                          type="button"
+                          className="btn btn-primary pull-right"
+                          to="/addCourseTeaching"
+                        >
+                          Add New Course
                         </Link>
                       </div>
                     </div>

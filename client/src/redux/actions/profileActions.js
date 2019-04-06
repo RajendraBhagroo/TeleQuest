@@ -102,7 +102,30 @@ export const addEducation = educationInfo => dispatch => {
 };
 
 // Add Course Enrolled In
+export const addCourseEnrolledIn = courseEnrolledInInfo => dispatch => {
+  axios
+    .post(`${server}/api/v1/profile/courseEnrolledIn`, courseEnrolledInInfo)
+    .then(res => history.push("/profile"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Add Course Teaching
+export const addCourseTeaching = courseTeachingInfo => dispatch => {
+  axios
+    .post(`${server}/api/v1/profile/courseTeaching`, courseTeachingInfo)
+    .then(res => history.push("/profile"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
 
 // Delete Experience
 export const deleteExperience = id => dispatch => {
@@ -141,7 +164,40 @@ export const deleteEducation = id => dispatch => {
 };
 
 // Delete Course Enrolled In
+export const deleteCourseEnrolledIn = id => dispatch => {
+  axios
+    .delete(`${server}/api/v1/profile/courseEnrolledIn/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Delete Course Teaching
+export const deleteCourseTeaching = id => dispatch => {
+  axios
+    .delete(`${server}/api/v1/profile/courseTeaching/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
 
 // Delete account & profile
 export const deleteAccount = () => dispatch => {
