@@ -64,6 +64,7 @@ export const setProfileLoading = () => {
 
 // Update Profile
 export const updateProfile = profileInfo => dispatch => {
+  dispatch(setProfileLoading());
   axios
     .post(`${server}/api/v1/profile`, profileInfo)
     .then(res => history.push("/profile"))
