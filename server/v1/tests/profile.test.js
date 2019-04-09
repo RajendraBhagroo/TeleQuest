@@ -498,4 +498,5 @@ describe("DELETE /api/v1/profile", () => {
       .set("Accept", "application/json")
       .expect(200, done);
   });
-});
+})
+;

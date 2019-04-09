@@ -5,9 +5,8 @@ const cors = require("cors");
 const app = express();
 require(`./${process.env.SERVER_VERSION}/passport`)(passport);
 var server = require('http').Server(app);
-var io = require('socket.io')(server)
+var io = require('socket.io').listen(server)
 const connections=[];
-
 // Routes
 const users = require(`./${process.env.SERVER_VERSION}/routes/api/users`);
 const profile = require(`./${process.env.SERVER_VERSION}/routes/api/profile`);
@@ -31,9 +30,8 @@ app.use(`/api/${process.env.SERVER_VERSION}/profile`, profile);
 
 // Run Server
 const host = process.env.HOST || `127.0.0.1`;
-const port = process.env.NODE_PORT || 3009;
-app.listen(port, () => console.log(`Server running on http://${host}:${port}`));
-
+const socket_port = process.env.SOCKET_PORT || 3002;
+server.listen(socket_port, () => console.log(`Server running on http://${host}:${socket_port}`));
 //Establishing Socket.io server
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -69,6 +67,4 @@ io
       socket.join("/");
     })
     })
-
-
 ;
