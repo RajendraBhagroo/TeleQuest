@@ -16,6 +16,7 @@ module.exports = validateEducationInput = data => {
   body.to = !isEmpty(data.to) ? data.to : "";
   body.isCurrent = !isEmpty(data.isCurrent) ? data.isCurrent : false;
   body.description = !isEmpty(data.description) ? data.description.trim() : "";
+  body.location = !isEmpty(data.location) ? data.location.trim() : "";
 
   // Validate
 
@@ -35,6 +36,10 @@ module.exports = validateEducationInput = data => {
     errors.from = "From date field is required";
   }
 
+  if (Validator.isEmpty(body.location)) {
+    errors.location = "Location field is required";
+  }
+
   if (!Validator.isLength(body.description, { min: 0, max: 280 })) {
     errors.description = "Description needs to be below 280 characters";
   }
@@ -45,8 +50,8 @@ module.exports = validateEducationInput = data => {
     String(body.to) != "" &&
     String(body.from) != ""
   ) {
-    errors.dates =
-      "the Starting date cannot equal the ending date, please enter valid dates";
+    errors.from =
+      "The starting date cannot equal the ending date, please enter valid dates";
   }
 
   // Checks If [to] Date Is After Current Date

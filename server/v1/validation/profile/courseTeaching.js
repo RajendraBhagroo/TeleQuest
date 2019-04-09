@@ -1,7 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("../is-empty");
 
-module.exports = validateCoursesTeachingInput = data => {
+module.exports = validateCourseTeachingInput = data => {
   let errors = {};
   let body = {};
 
@@ -10,13 +10,7 @@ module.exports = validateCoursesTeachingInput = data => {
   body.name = !isEmpty(data.name) ? data.name.trim() : "";
   body.type = !isEmpty(data.type) ? data.type.trim() : "";
   body.number = !isEmpty(data.number) ? data.number : "";
-
-  body.students = {};
-  body.students.firstName = !isEmpty(data.firstName)
-    ? data.firstName.trim()
-    : "";
-  body.students.lastName = !isEmpty(data.lastName) ? data.lastName.trim() : "";
-  body.students.studentId = !isEmpty(data.studentId) ? data.studentId : "";
+  body.description = !isEmpty(data.description) ? data.description.trim() : "";
 
   // Validate
 
@@ -28,12 +22,8 @@ module.exports = validateCoursesTeachingInput = data => {
     errors.number = "Course number is required";
   }
 
-  if (Validator.isEmpty(body.students.lastName)) {
-    errors.lastName = "Students last name is required";
-  }
-
-  if (Validator.isEmpty(String(body.students.studentId))) {
-    errors.studentId = "Students Id number is required";
+  if (!Validator.isLength(body.description, { min: 0, max: 280 })) {
+    errors.description = "Description needs to be below 280 characters";
   }
 
   if (!Validator.isLength(body.name, { min: 0, max: 280 })) {

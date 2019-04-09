@@ -21,7 +21,7 @@ const styles = {
     backgroundColor: "#1c1c1c",
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
+    btnLocation: 0,
     bottom: 0
   },
 
