@@ -40,7 +40,25 @@ class Profile extends React.Component {
     if (profile === null || loading) {
       publicProfile = <Spinner />;
     } else {
-      if (profile.studentFields.studentId || profile.teacherFields.teacherId) {
+      if (profile.handle === undefined) {
+        publicProfile = (
+          <div>
+            <center>
+              <h2>Welcome {user.userName}</h2>
+              <h4>
+                There is no profile in this account. Please create your profile.
+              </h4>
+              <Link
+                type="button"
+                className="btn btn-primary pull-right"
+                to="/profileUpdate"
+              >
+                Create Profile
+              </Link>
+            </center>
+          </div>
+        );
+      } else {
         publicProfile = (
           <div className="container">
             <br />
@@ -246,7 +264,7 @@ class Profile extends React.Component {
                       <div className="form-group">
                         <h5>Skills</h5>
                         <h6 className="font-weight-light">
-                          {profile.skills.join(", ")}
+                          {Array(profile.skills).join(",")}
                         </h6>
                       </div>
                     </form>
@@ -368,24 +386,6 @@ class Profile extends React.Component {
                 </div>
               </div>
             </div>
-          </div>
-        );
-      } else {
-        publicProfile = (
-          <div>
-            <center>
-              <h2>Welcome {user.userName}</h2>
-              <h4>
-                There is no profile in this account. Please create your profile.
-              </h4>
-              <Link
-                type="button"
-                className="btn btn-primary pull-right"
-                to="/profileUpdate"
-              >
-                Create Profile
-              </Link>
-            </center>
           </div>
         );
       }

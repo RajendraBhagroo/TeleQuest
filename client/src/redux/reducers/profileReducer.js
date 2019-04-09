@@ -1,4 +1,3 @@
-import isEmpty from "../../utils/is-empty";
 import {
   UPDATE_PROFILE,
   GET_PROFILE,
@@ -7,7 +6,6 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  isStudent: true,
   loading: false,
   profile: null
 };
@@ -16,8 +14,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case UPDATE_PROFILE:
       return {
-        ...state,
-        isStudent: !isEmpty(action.payload)
+        ...state
       };
     case GET_PROFILE:
       return {
