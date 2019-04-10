@@ -45,23 +45,31 @@ const App = () => {
               <Switch>
                 <Route path="/" exact component={Landing} />
                 <Route path="/about" exact component={About} />
-                <Route path="/course" exact component={Course} />
-                <Route path="/profileUpdate" exact component={ProfileUpdate} />
-                <PrivateRoute path="/profile" exact component={Profile} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
-                <Route path="/addExperience" exact component={AddExperience} />
-                <Route
+                <PrivateRoute path="/profile" exact component={Profile} />
+                <PrivateRoute
+                  path="/profileUpdate"
+                  exact
+                  component={ProfileUpdate}
+                />
+                <PrivateRoute path="/course" exact component={Course} />
+                <PrivateRoute
+                  path="/addExperience"
+                  exact
+                  component={AddExperience}
+                />
+                <PrivateRoute
                   path="/addEducation"
                   exact
                   component={AddEducation}
                 />{" "}
-                <Route
+                <PrivateRoute
                   path="/addCourseTeaching"
                   exact
                   component={AddCourseTeaching}
                 />
-                <Route
+                <PrivateRoute
                   path="/addCourseEnrolledIn"
                   exact
                   component={AddCourseEnrolledIn}
