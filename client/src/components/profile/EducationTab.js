@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { deleteEducation } from "../../redux/actions/profileActions";
+import PropTypes from "prop-types";
 
 class EducationTab extends Component {
   onDeleteClick(id) {
@@ -37,12 +37,14 @@ class EducationTab extends Component {
                 <h5>Degree</h5>
                 <h6 className="font-weight-light">{education.degree}</h6>
               </div>
-              <div className="col">
-                <h5>Is it Your Current Job?</h5>
-                <h6 className="font-weight-light">
-                  {education.isCurrent ? "Yes" : "No"}
-                </h6>
-              </div>
+              {education.isCurrent ? (
+                <div className="col">
+                  <h5>Current Educational Institution</h5>
+                  <h6 className="font-weight-light">Yes</h6>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <br />
 
@@ -57,7 +59,7 @@ class EducationTab extends Component {
                 <h5>To</h5>
                 <h6 className="font-weight-light">
                   {education.isCurrent ? (
-                    "Current job"
+                    "Current Education"
                   ) : (
                     <div>{education.to.slice(0, 10)}</div>
                   )}

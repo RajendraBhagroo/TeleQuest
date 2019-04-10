@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { deleteCourseTeaching } from "../../redux/actions/profileActions";
+import PropTypes from "prop-types";
 
 class CoursesTeachingTab extends Component {
   onDeleteClick(id) {
