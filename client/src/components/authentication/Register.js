@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../redux/actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 import PropTypes from "prop-types";
 
-class Register extends Component {
+class Register extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -101,7 +101,11 @@ class Register extends Component {
                 <div className="login-register">
                   Already have an account? <Link to="/login">Login</Link>
                 </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" value="Register"/>
+                <input
+                  type="submit"
+                  className="btn btn-info btn-block mt-4"
+                  value="Register"
+                />
               </form>
             </div>
           </div>
@@ -112,9 +116,9 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  registerUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

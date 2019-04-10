@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import TextFieldGroup from "../common/TextFieldGroup";
 import { addCourseTeaching } from "../../redux/actions/profileActions";
+import TextFieldGroup from "../common/TextFieldGroup";
+import PropTypes from "prop-types";
 
 const styles = {
   Limite: {
@@ -49,7 +49,7 @@ class AddCourseTeaching extends React.Component {
 
   render() {
     const { user } = this.props.auth;
-    const { isStudent } = this.props.profile;
+    const { profile } = this.props.profile;
     const { errors } = this.state;
 
     return (
@@ -64,7 +64,7 @@ class AddCourseTeaching extends React.Component {
                 title="You must have a Gravatar connected to your email to display an image"
               />
               <h3>{user.userName}</h3>
-              <em>{isStudent ? "Student" : "Teacher"}</em>
+              <em>{profile.isStudent ? "Student" : "Teacher"}</em>
             </center>
           </div>
         </div>
@@ -93,7 +93,7 @@ class AddCourseTeaching extends React.Component {
                           </label>
                           <div className="col-8">
                             <TextFieldGroup
-                              placeholder="Course Name"
+                              placeholder="Senior Project"
                               name="name"
                               value={this.state.name}
                               onChange={this.onChange}
@@ -107,7 +107,7 @@ class AddCourseTeaching extends React.Component {
                           </label>
                           <div className="col-8">
                             <TextFieldGroup
-                              placeholder="Course Type"
+                              placeholder="CSCI"
                               name="type"
                               value={this.state.type}
                               onChange={this.onChange}
@@ -121,7 +121,7 @@ class AddCourseTeaching extends React.Component {
                           </label>
                           <div className="col-8">
                             <TextFieldGroup
-                              placeholder="Course Number"
+                              placeholder="330"
                               name="number"
                               value={this.state.number}
                               onChange={this.onChange}

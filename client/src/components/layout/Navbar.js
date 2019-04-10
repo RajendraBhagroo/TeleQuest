@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/authActions";
-import {clearCurrentProfile} from "../../redux/actions/profileActions";
+import { clearCurrentProfile } from "../../redux/actions/profileActions";
 import Logo from "../../resources/images/TeleQuest_Logo.png";
 import PropTypes from "prop-types";
-
 
 const styles = {
   Logo: {
@@ -17,7 +16,7 @@ const styles = {
   }
 };
 
-class Navbar extends Component {
+class Navbar extends React.Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
@@ -107,9 +106,9 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
+  auth: PropTypes.object.isRequired,
   logoutUser: PropTypes.func.isRequired,
-  clearCurrentProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  clearCurrentProfile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
