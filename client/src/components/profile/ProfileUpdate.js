@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import Spinner from "../common/Spinner";
-import TextFieldGroup from "../common/TextFieldGroup";
 import {
   updateProfile,
   getCurrentProfile
 } from "../../redux/actions/profileActions";
 import isEmpty from "../../utils/is-empty";
+import TextFieldGroup from "../common/TextFieldGroup";
+import Spinner from "../common/Spinner";
+import PropTypes from "prop-types";
 
 const styles = {
   Limite: {
@@ -48,14 +48,11 @@ class ProfileUpdate extends React.Component {
     if (nextProps.profile.profile) {
       const profile = nextProps.profile.profile;
 
-      // Bring skills array back to CSV
-      const skillsCSV = profile.skills.join(",");
-
-      // If profile field doesnt exist, make empty string
+      profile.skills = !isEmpty(profile.skills) ? profile.skills : "";
       profile.handle = !isEmpty(profile.handle) ? profile.handle : "";
       profile.isStudent = !isEmpty(profile.isStudent)
         ? profile.isStudent
-        : false;
+        : true;
       profile.studentFields = !isEmpty(profile.studentFields)
         ? profile.studentFields
         : {};
@@ -100,7 +97,7 @@ class ProfileUpdate extends React.Component {
         studentId: profile.studentFields.studentId,
         teacherId: profile.teacherFields.teacherId,
         bio: profile.bio,
-        skills: skillsCSV,
+        skills: profile.skills,
         youtube: profile.social.youtube,
         twitter: profile.social.twitter,
         facebook: profile.social.facebook,

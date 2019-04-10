@@ -55,11 +55,6 @@ module.exports = validateProfieInput = (data, user) => {
 
   if (Validator.isEmpty(body.skills)) {
     errors.skills = "Skills field is required";
-  } else {
-    // Split Skills Into Array
-    if (typeof data.skills !== "undefined") {
-      body.skills = data.skills.split(",");
-    }
   }
 
   if (

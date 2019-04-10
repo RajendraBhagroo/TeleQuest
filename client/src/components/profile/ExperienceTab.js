@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { deleteExperience } from "../../redux/actions/profileActions";
+import PropTypes from "prop-types";
 
 class ExperienceTab extends Component {
   onDeleteClick(id) {
@@ -37,12 +37,14 @@ class ExperienceTab extends Component {
             </div>
             <br />
 
-            <div className="form-group">
-              <h5>Is It Your Current Job?</h5>
-              <h6 className="font-weight-light">
-                {experience.isCurrent ? "Yes" : "No"}
-              </h6>
-            </div>
+            {experience.isCurrent ? (
+              <div className="form-group">
+                <h5>Current Job</h5>
+                <h6 className="font-weight-light">Yes</h6>
+              </div>
+            ) : (
+              ""
+            )}
             <br />
 
             <div className="form-group row">

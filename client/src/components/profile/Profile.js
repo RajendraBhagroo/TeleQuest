@@ -5,13 +5,13 @@ import {
   getCurrentProfile,
   deleteAccount
 } from "../../redux/actions/profileActions";
-import PropTypes from "prop-types";
-import Spinner from "../common/Spinner";
 import EducationTab from "./EducationTab";
 import ExperienceTab from "./ExperienceTab";
 import CoursesEnrolledInTab from "./CoursesEnrolledInTab";
 import CoursesTeachingTab from "./CoursesTeachingTab";
 import ProfileSideCourseCard from "./ProfileSideCourseCard";
+import Spinner from "../common/Spinner";
+import PropTypes from "prop-types";
 
 const styles = {
   Limite: {
@@ -21,8 +21,6 @@ const styles = {
 };
 
 class Profile extends React.Component {
-  state = {};
-
   onDeleteClick(e) {
     this.props.deleteAccount();
   }
@@ -40,7 +38,25 @@ class Profile extends React.Component {
     if (profile === null || loading) {
       publicProfile = <Spinner />;
     } else {
-      if (typeof profile.studentFields !== 'undefined' || typeof profile.teacherFields !== 'undefined') {
+      if (profile.handle === undefined) {
+        publicProfile = (
+          <div>
+            <center>
+              <h2>Welcome {user.userName}</h2>
+              <h4>
+                There is no profile in this account. Please create your profile.
+              </h4>
+              <Link
+                type="button"
+                className="btn btn-primary pull-right"
+                to="/profileUpdate"
+              >
+                Create Profile
+              </Link>
+            </center>
+          </div>
+        );
+      } else {
         publicProfile = (
           <div className="container">
             <br />
@@ -68,8 +84,8 @@ class Profile extends React.Component {
                   <div className="card-header">
                     <strong>
                       {profile.isStudent
-                        ? "Enrolled Courses"
-                        : "Teaching Courses"}
+                        ? "Courses Enrolled In"
+                        : "Courses Teaching"}
                     </strong>
                   </div>
                   <div>
@@ -180,7 +196,7 @@ class Profile extends React.Component {
                         aria-selected="false"
                         href="#CoursesEnrolledIn"
                       >
-                        Enrolled Courses
+                        Courses Enrolled In
                       </a>
                     ) : (
                       <a
@@ -192,7 +208,7 @@ class Profile extends React.Component {
                         aria-selected="false"
                         href="#CoursesTeaching"
                       >
-                        Teaching Courses
+                        Courses Teaching
                       </a>
                     )}
                   </li>
@@ -245,9 +261,7 @@ class Profile extends React.Component {
 
                       <div className="form-group">
                         <h5>Skills</h5>
-                        <h6 className="font-weight-light">
-                          {profile.skills.join(", ")}
-                        </h6>
+                        <h6 className="font-weight-light">{profile.skills}</h6>
                       </div>
                     </form>
                     <br />
@@ -315,7 +329,7 @@ class Profile extends React.Component {
                     </div>
                   </div>
 
-                  {/* ----------------------------------Enrolled Courses tab---------------------------------------------------- */}
+                  {/* ---------------------------------- Courses Enrolled In Tab---------------------------------------------------- */}
                   <div
                     className="tab-pane fade"
                     role="tabpanel"
@@ -340,7 +354,7 @@ class Profile extends React.Component {
                     </div>
                   </div>
 
-                  {/* ----------------------------------Teaching Courses tab---------------------------------------------------- */}
+                  {/* ----------------------------------Courses Teaching Tab---------------------------------------------------- */}
                   <div
                     className="tab-pane fade"
                     role="tabpanel"
@@ -368,24 +382,6 @@ class Profile extends React.Component {
                 </div>
               </div>
             </div>
-          </div>
-        );
-      } else {
-        publicProfile = (
-          <div>
-            <center>
-              <h2>Welcome {user.userName}</h2>
-              <h4>
-                There is no profile in this account. Please create your profile.
-              </h4>
-              <Link
-                type="button"
-                className="btn btn-primary pull-right"
-                to="/profileUpdate"
-              >
-                Create Profile
-              </Link>
-            </center>
           </div>
         );
       }
