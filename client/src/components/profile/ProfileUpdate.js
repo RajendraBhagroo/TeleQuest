@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import Spinner from "../common/Spinner";
-import TextFieldGroup from "../common/TextFieldGroup";
 import {
   updateProfile,
   getCurrentProfile
 } from "../../redux/actions/profileActions";
 import isEmpty from "../../utils/is-empty";
+import TextFieldGroup from "../common/TextFieldGroup";
+import Spinner from "../common/Spinner";
+import PropTypes from "prop-types";
 
 const styles = {
   Limite: {
@@ -125,6 +125,7 @@ class ProfileUpdate extends React.Component {
       instagram: this.state.instagram,
       github: this.state.github
     };
+
     this.props.updateProfile(profileInfo);
   };
 

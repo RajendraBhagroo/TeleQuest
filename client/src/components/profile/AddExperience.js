@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import TextFieldGroup from "../common/TextFieldGroup";
 import { addExperience } from "../../redux/actions/profileActions";
+import TextFieldGroup from "../common/TextFieldGroup";
+import PropTypes from "prop-types";
 
 const styles = {
   Limite: {
@@ -59,7 +59,7 @@ class AddExperience extends React.Component {
 
   render() {
     const { user } = this.props.auth;
-    const { isStudent } = this.props.profile;
+    const { profile } = this.props.profile;
     const { errors } = this.state;
 
     return (
@@ -74,7 +74,7 @@ class AddExperience extends React.Component {
                 title="You must have a Gravatar connected to your email to display an image"
               />
               <h3>{user.userName}</h3>
-              <em>{isStudent ? "Student" : "Teacher"}</em>
+              <em>{profile.isStudent ? "Student" : "Teacher"}</em>
             </center>
           </div>
         </div>
@@ -150,11 +150,11 @@ class AddExperience extends React.Component {
                                   aria-expanded="true"
                                   aria-controls="isCurrent"
                                 >
-                                <input
-                                  type="checkbox"
-                                  onChange={this.onCheck}
-                                />
-                                Is This Your Current Job?
+                                  <input
+                                    type="checkbox"
+                                    onChange={this.onCheck}
+                                  />
+                                  Is This Your Current Job?
                                 </label>
                               </div>
                             </div>
@@ -177,17 +177,17 @@ class AddExperience extends React.Component {
                               error={errors.from}
                             />
                             <div id="isCurrent" className="collapse show">
-                            To: 
-                            <br />
-                            <br />
-                            <TextFieldGroup
-                              type="date"
-                              placeholder="DD/MM/YYYY"
-                              name="to"
-                              value={this.state.to}
-                              onChange={this.onChange}
-                              error={errors.to}
-                            />
+                              To:
+                              <br />
+                              <br />
+                              <TextFieldGroup
+                                type="date"
+                                placeholder="DD/MM/YYYY"
+                                name="to"
+                                value={this.state.to}
+                                onChange={this.onChange}
+                                error={errors.to}
+                              />
                             </div>
                           </div>
                         </div>
@@ -217,9 +217,9 @@ class AddExperience extends React.Component {
                           </div>
                         </div>
                       </form>
-                      <br/>
+                      <br />
                       <Link className="btn btn-success" to="/profile">
-                            Return to Profile
+                        Return to Profile
                       </Link>
                     </div>
                   </div>
