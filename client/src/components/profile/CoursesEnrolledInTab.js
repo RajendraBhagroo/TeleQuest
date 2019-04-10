@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { deleteCourseEnrolledIn } from "../../redux/actions/profileActions";
+import PropTypes from "prop-types";
 
 class CoursesEnrolledInTab extends Component {
   onDeleteClick(id) {
@@ -31,6 +31,7 @@ class CoursesEnrolledInTab extends Component {
                 </h6>
               </div>
             </div>
+
             <br />
 
             <div className="form-group">

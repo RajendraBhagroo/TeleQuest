@@ -5,13 +5,13 @@ import {
   getCurrentProfile,
   deleteAccount
 } from "../../redux/actions/profileActions";
-import PropTypes from "prop-types";
-import Spinner from "../common/Spinner";
 import EducationTab from "./EducationTab";
 import ExperienceTab from "./ExperienceTab";
 import CoursesEnrolledInTab from "./CoursesEnrolledInTab";
 import CoursesTeachingTab from "./CoursesTeachingTab";
 import ProfileSideCourseCard from "./ProfileSideCourseCard";
+import Spinner from "../common/Spinner";
+import PropTypes from "prop-types";
 
 const styles = {
   Limite: {
@@ -21,8 +21,6 @@ const styles = {
 };
 
 class Profile extends React.Component {
-  state = {};
-
   onDeleteClick(e) {
     this.props.deleteAccount();
   }
@@ -86,8 +84,8 @@ class Profile extends React.Component {
                   <div className="card-header">
                     <strong>
                       {profile.isStudent
-                        ? "Enrolled Courses"
-                        : "Teaching Courses"}
+                        ? "Courses Enrolled In"
+                        : "Courses Teaching"}
                     </strong>
                   </div>
                   <div>
@@ -198,7 +196,7 @@ class Profile extends React.Component {
                         aria-selected="false"
                         href="#CoursesEnrolledIn"
                       >
-                        Enrolled Courses
+                        Courses Enrolled In
                       </a>
                     ) : (
                       <a
@@ -210,7 +208,7 @@ class Profile extends React.Component {
                         aria-selected="false"
                         href="#CoursesTeaching"
                       >
-                        Teaching Courses
+                        Courses Teaching
                       </a>
                     )}
                   </li>
@@ -331,7 +329,7 @@ class Profile extends React.Component {
                     </div>
                   </div>
 
-                  {/* ----------------------------------Enrolled Courses tab---------------------------------------------------- */}
+                  {/* ---------------------------------- Courses Enrolled In Tab---------------------------------------------------- */}
                   <div
                     className="tab-pane fade"
                     role="tabpanel"
@@ -356,7 +354,7 @@ class Profile extends React.Component {
                     </div>
                   </div>
 
-                  {/* ----------------------------------Teaching Courses tab---------------------------------------------------- */}
+                  {/* ----------------------------------Courses Teaching Tab---------------------------------------------------- */}
                   <div
                     className="tab-pane fade"
                     role="tabpanel"
