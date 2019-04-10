@@ -48,9 +48,7 @@ class ProfileUpdate extends React.Component {
     if (nextProps.profile.profile) {
       const profile = nextProps.profile.profile;
 
-      // If profile field doesnt exist, make empty string
       profile.skills = !isEmpty(profile.skills) ? profile.skills : "";
-
       profile.handle = !isEmpty(profile.handle) ? profile.handle : "";
       profile.isStudent = !isEmpty(profile.isStudent)
         ? profile.isStudent

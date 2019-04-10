@@ -263,9 +263,7 @@ class Profile extends React.Component {
 
                       <div className="form-group">
                         <h5>Skills</h5>
-                        <h6 className="font-weight-light">
-                          {Array(profile.skills).join(",")}
-                        </h6>
+                        <h6 className="font-weight-light">{profile.skills}</h6>
                       </div>
                     </form>
                     <br />

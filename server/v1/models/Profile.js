@@ -75,7 +75,7 @@ const ProfileSchema = new Schema({
     }
   ],
   skills: {
-    type: [String],
+    type: String,
     required: true
   },
   social: {
