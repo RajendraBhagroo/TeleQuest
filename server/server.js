@@ -31,7 +31,9 @@ app.use(`/api/${process.env.SERVER_VERSION}/profile`, profile);
 // Run Server
 const host = process.env.HOST || `127.0.0.1`;
 const socket_port = process.env.SOCKET_PORT || 3002;
-server.listen(socket_port, () => console.log(`Server running on http://${host}:${socket_port}`));
+const node_port=process.env.NODE_PORT||3001
+app.listen(node_port,()=>console.log(`Node Server listening on http://${host}:${node_port}`));
+server.listen(socket_port, () => console.log(`Socket.io Server running on http://${host}:${socket_port}`));
 //Establishing Socket.io server
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');

@@ -40,7 +40,7 @@ class Profile extends React.Component {
     if (profile === null || loading) {
       publicProfile = <Spinner />;
     } else {
-      if (profile.studentFields.studentId || profile.teacherFields.teacherId) {
+      if (typeof profile.studentFields !== 'undefined' || typeof profile.teacherFields !== 'undefined') {
         publicProfile = (
           <div className="container">
             <br />
