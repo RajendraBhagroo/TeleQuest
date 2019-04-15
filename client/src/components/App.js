@@ -22,7 +22,7 @@ import AddExperience from "../components/profile/AddExperience";
 import AddEducation from "../components/profile/AddEducation";
 import AddCourseTeaching from "../components/profile/AddCourseTeaching";
 import AddCourseEnrolledIn from "../components/profile/AddCourseEnrolledIn";
-
+import Streams from "../components/stream/Stream"
 // Check For JWT Token
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -73,6 +73,11 @@ const App = () => {
                   path="/addCourseEnrolledIn"
                   exact
                   component={AddCourseEnrolledIn}
+                />
+                <PrivateRoute
+                  path="/streams"
+                  exact
+                  component={Streams}
                 />
               </Switch>
             </Layout>
