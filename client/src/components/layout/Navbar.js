@@ -31,7 +31,7 @@ class Navbar extends React.Component {
         <li className="nav-item">
           <Link to="/streams" className="nav-link">
             Streams
-            <i className="fas fa-sign-out-alt ml-2" />
+            <i className="fas fa-video ml-2" />
           </Link>
         </li>
         <li className="nav-item">

@@ -8,7 +8,7 @@ module.exports = validateCourseEnrolledInInput = data => {
   // Populate
 
   body.name = !isEmpty(data.name) ? data.name.trim() : "";
-  body.type = !isEmpty(data.type) ? data.type.trim() : "";
+  body.type = !isEmpty(data.type) ? data.type.trim().toUpperCase() : "";
   body.number = !isEmpty(data.number) ? data.number : "";
 
   body.teacher = {};
