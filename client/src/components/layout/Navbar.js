@@ -97,11 +97,6 @@ class Navbar extends React.Component {
                   About Us
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-item nav-link" to="/course">
-                  Course
-                </Link>
-              </li>
             </ul>
             {isAuthenticated ? authLinks : guestLinks}
           </div>

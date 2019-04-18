@@ -13,7 +13,6 @@ import history from "../history";
 import Layout from "../components/layout/Layout";
 import Landing from "../components/home/Landing";
 import About from "../components/home/About";
-import Course from "../components/home/Course";
 import Profile from "../components/profile/Profile";
 import Login from "../components/authentication/Login";
 import Register from "../components/authentication/Register";
@@ -44,7 +43,7 @@ const App = () => {
           <React.Fragment>
             <Layout>
               <Switch>
-                <Route path="/" exact component={Landing} />
+                <Route path="/" exact default component={Landing} />
                 <Route path="/about" exact component={About} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
@@ -54,7 +53,6 @@ const App = () => {
                   exact
                   component={ProfileUpdate}
                 />
-                <PrivateRoute path="/course" exact component={Course} />
                 <PrivateRoute
                   path="/addExperience"
                   exact
