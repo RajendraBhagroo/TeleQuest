@@ -4,7 +4,12 @@ import { getCurrentProfile } from "../../redux/actions/profileActions";
 import ProfileSideCourseCard from "../profile/ProfileSideCourseCard";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
-
+import io from "socket.io-client";
+const host = process.env.HOST || `127.0.0.1`;
+const socket_port = process.env.SOCKET_PORT || 3002;
+let room="";
+let mainURL=`http://${host}:${socket_port}/`;
+let socket=io.connect(mainURL);
 class Stream extends Component {
   constructor() {
     super();
@@ -12,7 +17,34 @@ class Stream extends Component {
       errors: {}
     };
   }
+  /*function that is called when a teacher clicks on a classroom
+  * using the clicked on class creates a room
+  * the streamingURL is a combination of the host, socketport
+  * and the name of the class that was clicked
+  */
+  CreateClassRoom(){
+    room="";
+    io.connect(mainURL).emit('new-class',`${this.user.userName} has created a new room`);
+    socket.connect(mainURL+room);
+    socket.send=function(message)
+    {
+      socket.emit('message',{data:message});
+    }
+  }
+  /*Function thats called when a student clicks on a classroom that exists
+  * joins the specified room that the user clicked on
+  *
+  */
+  JoinClassRoom(){
+    room="";
+    io.connect(URL);
+    socket.connect(mainURL+room);
+    socket.on('connect',function(){
+      socket.emit(`${this.user.userName} has joined the classroom!`);
+    })
+  }
 
+  
   componentDidMount() {
     this.props.getCurrentProfile();
     const constraints = { audio: true, video: { width: 400, height: 300 } };
