@@ -7,10 +7,31 @@ import PropTypes from "prop-types";
 import io from "socket.io-client";
 const host = process.env.HOST || `127.0.0.1`;
 const socket_port = process.env.SOCKET_PORT || 3002;
-let room="";
 let namespace="";
-let mainURL=`http://${host}:${socket_port}/`+namespace;
+/*main url being where the website is being hosted as well as the specified porition of that website
+* since rooms are virtuilized in the namespace the url won't change
+*/
+const mainURL=`http://${host}:${socket_port}/`+namespace;
 let socket=io.connect(mainURL);
+
+//occurs in the event of a err response from the server
+socket.on('err',function(data){
+  console.log(data);
+});
+
+//@desc occurs in the event of a success
+socket.on('success',function(data){
+  console.log(data);
+});
+
+//@desc occurs in the event of a response
+socket.on('response',function(data){
+  console.log(data);
+});
+socket.on('streaming',function(data){
+  const video = document.querySelector("streamingVid");
+
+});
 class Stream extends Component {
   constructor() {
     super();
@@ -18,36 +39,35 @@ class Stream extends Component {
       errors: {}
     };
   }
+
   /*function that is called when a teacher clicks on a classroom
   * using the clicked on class creates a room
   * the streamingURL is a combination of the host, socketport
   * and the name of the class that was clicked
   */
-  CreateClassRoom(){
-    room="";
-    io.connect(mainURL).emit('new-class',room);
-    socket.connect(mainURL);
-    socket.send=function(message)
-    {
-      socket.emit('message',{data:message});
-    }
+  CreateClassRoom(room){
+    socket.emit('newClass',room);
   }
+
   /*Function thats called when a student clicks on a classroom that exists
   * joins the specified room that the user clicked on
-  *
   */
-  JoinClassRoom(){
-    room="";
-    io.connect(mainURL);
-    socket.connect(mainURL+room);
-    socket.on('connect',function(){
-      socket.emit(`${this.user.userName} has joined the classroom!`);
-    })
+  JoinClassRoom(room){
+    socket.emit('joinRoom',room);
   }
 
-  StartStream(){
-
+  /*@desc returns the current avaiable rooms/classes in the namespace
+  */
+  GetRooms(){
+    socket.emit('currentClasses');
   }
+
+  /*@desc emits the start of the stream to those in the room
+  */
+  StartStream(data){
+    socket.emit('stream',data);
+  }
+
   componentDidMount() {
     this.props.getCurrentProfile();
     const constraints = { audio: true, video: { width: 400, height: 300 } };
@@ -113,6 +133,7 @@ class Stream extends Component {
             </div>
 
             <video id="videoElement" autoPlay={true} />
+            <video id="streamingVid" autoPlay={true} />
           </div>
         </div>
       );

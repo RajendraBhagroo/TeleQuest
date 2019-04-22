@@ -4,10 +4,11 @@ const passport = require("passport");
 const cors = require("cors");
 const app = express();
 require(`./${process.env.SERVER_VERSION}/passport`)(passport);
-var server = require('http').Server(app);
-var io = require('socket.io').listen(server)
+let server = require('http').Server(app);
+let io = require('socket.io').listen(server)
 const connections=[];
-let availableooms=[];
+let availablerooms=[];
+let currentRoom="";
 // Routes
 const users = require(`./${process.env.SERVER_VERSION}/routes/api/users`);
 const profile = require(`./${process.env.SERVER_VERSION}/routes/api/profile`);
@@ -56,10 +57,11 @@ io
      * @desc joins or creates a room within the given nameSpace
      */
     socket.on("joinRoom",function(room){
-      if(availableooms.includes(room))
+      if(availablerooms.includes(room))
       {
       socket.join(room);
-      io.emit(`New User has joined ${room}`);
+      currentRoom=room;
+      return io.emit("success",`New User has joined ${room}`);
       }
       else{return socket.emit('err',"This room doesn't exist yet")}
     });
@@ -67,12 +69,22 @@ io
     /*@desc upon streaming, broadcasts stream to those in the room
     */
     socket.on("stream",function(data){
-      socket.broadcast.emit("stream",data);
-    }
-    );
-    socket.on("new-class",function(data){
-      availableooms.push(data);
+      io.of(`/${nameSpace}`)
+        .in(currentRoom).emit("streaming",data)
+    });
+
+    /*@desc on event new-class, socket will append the new class to 
+    * availablerooms then joins it
+    */
+    socket.on("newClass",function(data){
+      availablerooms.push(data);
       socket.join(data);
+    });
+    /*@desc on event currentClasses, socket emits the response of current available rooms
+    * in the namespace
+    */
+    socket.on("currentClasses",function(){
+      return socket.emit('response',availablerooms);
     })
     /* @route 
      * @params
