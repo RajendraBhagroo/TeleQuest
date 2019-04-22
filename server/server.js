@@ -7,10 +7,10 @@ require(`./${process.env.SERVER_VERSION}/passport`)(passport);
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server)
 const connections=[];
+let availableooms=[];
 // Routes
 const users = require(`./${process.env.SERVER_VERSION}/routes/api/users`);
 const profile = require(`./${process.env.SERVER_VERSION}/routes/api/profile`);
-
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -56,8 +56,23 @@ io
      * @desc joins or creates a room within the given nameSpace
      */
     socket.on("joinRoom",function(room){
+      if(availableooms.includes(room))
+      {
       socket.join(room);
       io.emit(`New User has joined ${room}`);
+      }
+      else{return socket.emit('err',"This room doesn't exist yet")}
+    });
+
+    /*@desc upon streaming, broadcasts stream to those in the room
+    */
+    socket.on("stream",function(data){
+      socket.broadcast.emit("stream",data);
+    }
+    );
+    socket.on("new-class",function(data){
+      availableooms.push(data);
+      socket.join(data);
     })
     /* @route 
      * @params

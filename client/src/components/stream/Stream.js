@@ -8,7 +8,8 @@ import io from "socket.io-client";
 const host = process.env.HOST || `127.0.0.1`;
 const socket_port = process.env.SOCKET_PORT || 3002;
 let room="";
-let mainURL=`http://${host}:${socket_port}/`;
+let namespace="";
+let mainURL=`http://${host}:${socket_port}/`+namespace;
 let socket=io.connect(mainURL);
 class Stream extends Component {
   constructor() {
@@ -24,8 +25,8 @@ class Stream extends Component {
   */
   CreateClassRoom(){
     room="";
-    io.connect(mainURL).emit('new-class',`${this.user.userName} has created a new room`);
-    socket.connect(mainURL+room);
+    io.connect(mainURL).emit('new-class',room);
+    socket.connect(mainURL);
     socket.send=function(message)
     {
       socket.emit('message',{data:message});
@@ -37,14 +38,16 @@ class Stream extends Component {
   */
   JoinClassRoom(){
     room="";
-    io.connect(URL);
+    io.connect(mainURL);
     socket.connect(mainURL+room);
     socket.on('connect',function(){
       socket.emit(`${this.user.userName} has joined the classroom!`);
     })
   }
 
-  
+  StartStream(){
+
+  }
   componentDidMount() {
     this.props.getCurrentProfile();
     const constraints = { audio: true, video: { width: 400, height: 300 } };
