@@ -39,7 +39,7 @@ server.listen(socket_port, () => console.log(`Socket.io Server running on http:/
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
-const nameSpace="";
+const nameSpace="NYIT";
     /* @route   http://host:port/nameSpace
      * @params  {nameSpace}
      * @desc    opens up a socket.io socket for the specified route

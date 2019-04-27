@@ -5,9 +5,10 @@ import ProfileSideCourseCard from "../profile/ProfileSideCourseCard";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import io from "socket.io-client";
+import { Link } from "react-router-dom";
 const host = process.env.HOST || `127.0.0.1`;
 const socket_port = process.env.SOCKET_PORT || 3002;
-let namespace="";
+let namespace="NYIT";
 /*main url being where the website is being hosted as well as the specified porition of that website
 * since rooms are virtuilized in the namespace the url won't change
 */
@@ -32,6 +33,31 @@ socket.on('streaming',function(data){
   const video = document.querySelector("streamingVid");
 
 });
+
+//function to get user media 
+function startVideo(){
+    const constraints = { audio: true, video: { width: 400, height: 300 } };
+    let video=document.getElementById("videoElement");
+
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(stream) {
+      try{
+      video.srcObject= stream;
+      console.log("Entering try");
+      }
+      catch(e)
+      {
+        console.log("Entering catch");
+        console.log(`Error: ${e}`)
+      }
+      video.play();
+
+    })
+    .catch(function(err) {
+      console.log("An error occurred: " + err);
+    });
+};
+
 class Stream extends Component {
   constructor() {
     super();
@@ -45,7 +71,7 @@ class Stream extends Component {
   * the streamingURL is a combination of the host, socketport
   * and the name of the class that was clicked
   */
-  CreateClassRoom(room){
+   CreateClassRoom(room){
     socket.emit('newClass',room);
   }
 
@@ -70,43 +96,38 @@ class Stream extends Component {
 
   componentDidMount() {
     this.props.getCurrentProfile();
-    const constraints = { audio: true, video: { width: 400, height: 300 } };
-
-    const getUserMedia = params =>
-      new Promise((successCallback, errorCallback) => {
-        navigator.webkitGetUserMedia.call(
-          navigator,
-          params,
-          successCallback,
-          errorCallback
-        );
-      });
-
-    getUserMedia(constraints)
-      .then(stream => {
-        const video = document.querySelector("videoElement");
-        const vendorURL = window.URL || window.webkitURL;
-
-        let binaryData = [];
-        binaryData.push(stream);
-        vendorURL.srcObject = new Blob(binaryData, {
-          type: "application/zip"
-        });
-
-        video.play();
-      })
-      .catch(err => {
-        console.log(err);
-      });
   }
 
   render() {
     const { user } = this.props.auth;
     const { profile, loading } = this.props.profile;
-
+    let publicProfile;
     if (profile === null || loading) {
-      return <Spinner />;
+      console.log("Either profile null or loading")
+      return publicProfile =<Spinner />;
     } else {
+      if (profile.handle === undefined) {
+        console.log("profile.handle prob null")
+        publicProfile = (
+          <div>
+            <center>
+              <h2>Welcome {user.userName}</h2>
+              <h4>
+                There is no profile in this account. Please create your profile.
+              </h4>
+              <Link
+                type="button"
+                className="btn btn-primary pull-right"
+                to="/profileUpdate"
+              >
+                Create Profile
+              </Link>
+            </center>
+          </div>
+        );
+      }
+      else{
+        console.log("loading vid player");
       return (
         <div>
           <div className="container">
@@ -131,14 +152,14 @@ class Stream extends Component {
                 )}
               </div>
             </div>
-
-            <video id="videoElement" autoPlay={true} />
-            <video id="streamingVid" autoPlay={true} />
-          </div>
+                </div>
+                <video id="videoElement">No Video Stream.....</video>
+                 <video id="streamingVid"/>
+                <button id="startStream" onClick={function(){startVideo()}}>Start</button>
         </div>
       );
     }
-  }
+  }}
 }
 
 Stream.propTypes = {
