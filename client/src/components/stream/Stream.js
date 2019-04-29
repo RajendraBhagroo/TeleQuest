@@ -42,6 +42,7 @@ function startVideo() {
     .getUserMedia(constraints)
     .then(function(stream) {
       video.srcObject = stream;
+      video.controls = true;
       video.play();
     })
     .catch(function(err) {
