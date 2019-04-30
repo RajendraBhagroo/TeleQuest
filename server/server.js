@@ -80,7 +80,10 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   /*@desc upon streaming, broadcasts stream to those in the room
    */
   socket.on("stream", function(data) {
-    io.of(`/${nameSpace}`)
+    console.log("Recived Stream Event");
+    console.log(data);
+    io
+      .of(`/${nameSpace}`)
       .in(currentRoom)
       .emit("streaming", data);
   });
@@ -89,8 +92,14 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
    * availablerooms then joins it
    */
   socket.on("newClass", function(data) {
+    console.log("recieved newclass event");
     availablerooms.push(data);
+    currentRoom=data;
     socket.join(data);
+    io
+    .of(`/${nameSpace}`)
+    .in(currentRoom)
+    .emit("success",`${data} room created`);
   });
 
   /*@desc on event currentClasses, socket emits the response of current available rooms

@@ -7,9 +7,12 @@ import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import io from "socket.io-client";
 
+
 const host = process.env.HOST || `127.0.0.1`;
 const socket_port = process.env.SOCKET_PORT || 3002;
 let namespace = "NYIT";
+let outBoundStream;
+
 
 /*
  * main url being where the website is being hosted as well as the specified porition of that website
@@ -31,9 +34,9 @@ socket.on("response", function(data) {
 });
 
 socket.on("streaming", function(data) {
-  const video = document.querySelector("streamingVid");
+  const video = document.getElementById("streamingVid");
+  video.srcObject=data;
 });
-
 function startVideo() {
   const constraints = { audio: true, video: { width: 400, height: 300 } };
   let video = document.getElementById("videoElement");
@@ -41,15 +44,45 @@ function startVideo() {
   navigator.mediaDevices
     .getUserMedia(constraints)
     .then(function(stream) {
+
       video.srcObject = stream;
+      outBoundStream = stream;
       video.controls = true;
       video.play();
+      CreateClassRoom("math");
+      //StartStream(stream);
     })
     .catch(function(err) {
       throw Error("An error occurred: " + err);
     });
 }
+/*
+   * Function that is called when a teacher clicks on a classroom
+   * using the clicked on class creates a room
+   * the streamingURL is a combination of the host, socketport
+   * and the name of the class that was clicked
+   */
+  function CreateClassRoom(room) {
+    socket.emit("newClass", room);
+  }
 
+  /*
+   * Function thats called when a student clicks on a classroom that exists
+   * joins the specified room that the user clicked on
+   */
+  function JoinClassRoom(room) {
+    socket.emit("joinRoom", room);
+  }
+
+  // returns the current avaiable rooms/classes in the namespace
+  function GetRooms() {
+    socket.emit("currentClasses");
+  }
+
+  // emits the start of the stream to those in the room
+  function StartStream(data) {
+    socket.emit("stream", data);
+  }
 class Stream extends Component {
   constructor() {
     super();
@@ -58,33 +91,6 @@ class Stream extends Component {
     };
   }
 
-  /*
-   * Function that is called when a teacher clicks on a classroom
-   * using the clicked on class creates a room
-   * the streamingURL is a combination of the host, socketport
-   * and the name of the class that was clicked
-   */
-  CreateClassRoom(room) {
-    socket.emit("newClass", room);
-  }
-
-  /*
-   * Function thats called when a student clicks on a classroom that exists
-   * joins the specified room that the user clicked on
-   */
-  JoinClassRoom(room) {
-    socket.emit("joinRoom", room);
-  }
-
-  // returns the current avaiable rooms/classes in the namespace
-  GetRooms() {
-    socket.emit("currentClasses");
-  }
-
-  // emits the start of the stream to those in the room
-  StartStream(data) {
-    socket.emit("stream", data);
-  }
 
   componentDidMount() {
     this.props.getCurrentProfile();
