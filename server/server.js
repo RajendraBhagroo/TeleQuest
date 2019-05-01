@@ -77,15 +77,14 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     }
   });
 
-  /*@desc upon streaming, broadcasts stream to those in the room
+  /*@desc upon receiving offer
    */
-  socket.on("stream", function(data) {
-    console.log("Recived Stream Event");
+  socket.on("offer", function(data) {
     console.log(data);
     io
       .of(`/${nameSpace}`)
       .in(currentRoom)
-      .emit("streaming", data);
+      .emit("response_offer", data);
   });
 
   /*@desc on event new-class, socket will append the new class to
@@ -102,6 +101,12 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     .emit("success",`${data} room created`);
   });
 
+  socket.on("answer", function(data){
+    io
+      .of(`/${nameSpace}`)
+      .in(currentRoom)
+      .emit("remote_answer", data);
+  })
   /*@desc on event currentClasses, socket emits the response of current available rooms
    * in the namespace
    */
