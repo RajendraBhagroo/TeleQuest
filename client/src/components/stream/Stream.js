@@ -37,20 +37,20 @@ socket.on("response", function(data) {
   console.log(data);
 });
 
-socket.on("response_offer", function(data){
+socket.on("response_offer", async function(data){
   console.log("Recieved Data Offer:");
   console.log(data);
-  peer2.setRemoteDescription(data)
+  await peer2.setRemoteDescription(data)
   .then(()=>peer2.createAnswer())
   .then(sdp=>peer2.setLocalDescription(sdp))
   .then(function(){
     socket.emit("answer",peer2.localDescription);
   })
 });
-socket.on("remote_answer",function(data){
+socket.on("remote_answer",async function(data){
   console.log("Recieved Data Answer:");
   console.log(data);
-  peer1.setRemoteDescription(data);
+  await peer1.setRemoteDescription(data);
 })
 socket.on("avaiableCourse", function(data){
   avaiableCourse=data;
@@ -93,7 +93,41 @@ function endRecording(){
     console.log(mediaRecorder.state);
     
 };
+peer1.addEventListener('icecandidate', e => onIceCandidate(peer1, e));
+peer2.addEventListener('icecandidate', e => onIceCandidate(peer2, e));
+peer1.addEventListener('iceconnectionstatechange', e => onIceStateChange(peer1, e));
+peer2.addEventListener('iceconnectionstatechange', e => onIceStateChange(peer2, e));
+function getName(pc) {
+  return (pc === peer1) ? 'peer1' : 'peer2';
+}
 
+function getOtherPc(pc) {
+  return (pc === peer1) ? peer2 : peer1;
+}
+async function onIceCandidate(pc, event) {
+  try {
+    await (getOtherPc(pc).addIceCandidate(event.candidate));
+    onAddIceCandidateSuccess(pc);
+  } catch (e) {
+    onAddIceCandidateError(pc, e);
+  }
+  console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
+}
+
+function onAddIceCandidateSuccess(pc) {
+  console.log(`${getName(pc)} addIceCandidate success`);
+}
+
+function onAddIceCandidateError(pc, error) {
+  console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
+}
+
+function onIceStateChange(pc, event) {
+  if (pc) {
+    console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
+    console.log('ICE state change event: ', event);
+  }
+}
 function onCreateSessionDescError(error) {
   console.log(`Failed to create session description: ${error.toString()}`);
 }
@@ -121,7 +155,7 @@ function onCreateSessionDescError(error) {
   };
 
   // emits the start of the stream to those in the room
-  function startStream(data) {
+  async function startStream(data) {
     CreateClassRoom("Test");
     if(streaming){
     peer2.ontrack=function(event){
@@ -131,10 +165,15 @@ function onCreateSessionDescError(error) {
       incomeVid.play();
     };
     outBoundStream.getTracks().forEach(track=>peer1.addTrack(track,outBoundStream));
-    peer1.createOffer()
-    .then(sdp=>peer1.setLocalDescription(sdp))
+    try {
+      console.log('peer1 createOffer start');
+      await peer1.createOffer()
+      .then(sdp=>peer1.setLocalDescription(sdp))
     .then(function(){console.log("Peer1 LocalDescription:");console.log(peer1.localDescription);
       socket.emit("offer",peer1.localDescription)})
+    } catch (e) {
+      console.log(e.toString());
+  }
   }
   }  ;
 
