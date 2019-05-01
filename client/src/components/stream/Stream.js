@@ -12,8 +12,8 @@ const host = process.env.HOST || `127.0.0.1`;
 const socket_port = process.env.SOCKET_PORT || 3002;
 let namespace = "NYIT";
 var outBoundStream;
-let peer1;
-let peer2;
+let peer1 = new RTCPeerConnection(); 
+let peer2 = new RTCPeerConnection();
 let streaming=false;
 let avaiableCourse=[];
 let mediaRecorder;
@@ -38,7 +38,8 @@ socket.on("response", function(data) {
 });
 
 socket.on("response_offer", function(data){
-  console.log(`Recieved Data Offer: ${data}`);
+  console.log("Recieved Data Offer:");
+  console.log(data);
   peer2.setRemoteDescription(data)
   .then(()=>peer2.createAnswer())
   .then(sdp=>peer2.setLocalDescription(sdp))
@@ -47,7 +48,8 @@ socket.on("response_offer", function(data){
   })
 });
 socket.on("remote_answer",function(data){
-  console.log(`Recieved Data Answer: ${data}`);
+  console.log("Recieved Data Answer:");
+  console.log(data);
   peer1.setRemoteDescription(data);
 })
 socket.on("avaiableCourse", function(data){
@@ -121,9 +123,7 @@ function onCreateSessionDescError(error) {
   // emits the start of the stream to those in the room
   function startStream(data) {
     CreateClassRoom("Test");
-    //socket.emit("stream", data);
-    peer1 = new RTCPeerConnection(); 
-    peer2 = new RTCPeerConnection();
+    if(streaming){
     peer2.ontrack=function(event){
       console.log("recieving foriegn stream");
       let incomeVid=document.getElementById("ForiegnVid");
@@ -133,9 +133,10 @@ function onCreateSessionDescError(error) {
     outBoundStream.getTracks().forEach(track=>peer1.addTrack(track,outBoundStream));
     peer1.createOffer()
     .then(sdp=>peer1.setLocalDescription(sdp))
-    .then(function(){console.log(peer1.localDescription);
+    .then(function(){console.log("Peer1 LocalDescription:");console.log(peer1.localDescription);
       socket.emit("offer",peer1.localDescription)})
-  };
+  }
+  }  ;
 
   function stopStream(){
     if(streaming)
