@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/RajendraBhagroo/TeleQuest#readme",
   "dependencies": {
-    "simple-peer": "^9.3.0"
+
   },
   "devDependencies": {
     "concurrently": "^4.1.0"

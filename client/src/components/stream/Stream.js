@@ -11,9 +11,12 @@ import io from "socket.io-client";
 const host = process.env.HOST || `127.0.0.1`;
 const socket_port = process.env.SOCKET_PORT || 3002;
 let namespace = "NYIT";
-let outBoundStream;
-
-
+var outBoundStream;
+let thisPC;
+let streaming=false;
+let avaiableCourse=[];
+let mediaRecorder;
+let chunks=[];
 /*
  * main url being where the website is being hosted as well as the specified porition of that website
  * since rooms are virtuilized in the namespace the url won't change
@@ -37,25 +40,53 @@ socket.on("streaming", function(data) {
   const video = document.getElementById("streamingVid");
   video.srcObject=data;
 });
-function startVideo() {
-  const constraints = { audio: true, video: { width: 400, height: 300 } };
-  let video = document.getElementById("videoElement");
 
+socket.on("avaiableCourse", function(data){
+  avaiableCourse=data;
+});
+
+function getSelectedSdpSemantics() {
+  const sdpSemanticsSelect = document.querySelector('#sdpSemantics');
+  const option = sdpSemanticsSelect.options[sdpSemanticsSelect.selectedIndex];
+  return option.value === '' ? {} : {sdpSemantics: option.value};
+};
+
+function startVideo(){
+  const constraints = { audio: true, video: { width: 400, height: 300 } };
   navigator.mediaDevices
     .getUserMedia(constraints)
     .then(function(stream) {
-
-      video.srcObject = stream;
-      outBoundStream = stream;
-      video.controls = true;
+      streaming=true;
+      let video = document.getElementById("videoElement");
+      let startRecording = document.getElementById("startRecord");
+      video.srcObject=stream;
+      outBoundStream=stream;
       video.play();
-      CreateClassRoom("math");
-      //StartStream(stream);
+
     })
     .catch(function(err) {
       throw Error("An error occurred: " + err);
     });
-}
+};
+
+function startRecording(){
+    mediaRecorder = new MediaRecorder(outBoundStream);
+    mediaRecorder.start();
+    console.log(mediaRecorder.state);
+    mediaRecorder.ondataavailable=function(e){
+      chunks.push(e.data);
+    };
+    mediaRecorder.onStop=function(e){
+      let blob = new Blob(chunks,{'type':'video/mp4'})
+      chunks=[];
+    };
+};
+
+function endRecording(){
+    mediaRecorder.stop();
+    console.log(mediaRecorder.state);
+    
+};
 /*
    * Function that is called when a teacher clicks on a classroom
    * using the clicked on class creates a room
@@ -80,8 +111,25 @@ function startVideo() {
   }
 
   // emits the start of the stream to those in the room
-  function StartStream(data) {
+  function startStream(data) {
     socket.emit("stream", data);
+
+  }
+
+  //create a new peer
+  function createPeer(){
+    let configuration = getSelectedSdpSemantics();
+    thisPC = new RTCPeerConnection(configuration); 
+  }
+
+  function stopStream(){
+    if(streaming)
+    {
+      console.log(outBoundStream);
+      let tracks=outBoundStream.getTracks();
+
+      tracks.forEach(track=>track.stop());
+    }
   }
 class Stream extends Component {
   constructor() {
@@ -151,12 +199,44 @@ class Stream extends Component {
             <video id="videoElement">No Video Stream.....</video>
             <video id="streamingVid" />
             <button
-              id="startStream"
+              id="startVideo"
               onClick={function() {
                 startVideo();
               }}
             >
-              Start
+              Start Video
+            </button>
+            <button
+              id="startStream"
+              onClick={function() {
+                startStream();
+              }}
+            >
+              Start Stream
+            </button>
+            <button
+              id="stopStream"
+              onClick={function() {
+                stopStream();
+              }}
+            >
+              Stop Stream
+            </button>
+            <button
+              id="startRecord"
+              onClick={function(){
+                startRecording();
+              }}
+            >
+              Start Recording
+            </button>
+            <button
+              id="stopRecording"
+              onClick={function(){
+                endRecording();
+              }}
+            >
+              Stop Recording
             </button>
           </div>
         );

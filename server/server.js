@@ -106,7 +106,7 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
    * in the namespace
    */
   socket.on("currentClasses", function() {
-    return socket.emit("response", availablerooms);
+    return socket.emit("avaiableCourse", availablerooms);
   });
 
   /* @route
