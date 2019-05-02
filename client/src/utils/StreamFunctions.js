@@ -218,10 +218,16 @@ let startStream = async data => {
 
 let stopStream = () => {
   if (streaming) {
-    console.log(outBoundStream);
     let tracks = outBoundStream.getTracks();
-
     tracks.forEach(track => track.stop());
+    let incomeVid = document.getElementById("ForiegnVid");
+    let video = document.getElementById("videoElement");
+    incomeVid.pause();
+    video.pause();
+    incomeVid.removeAttribute("src");
+    video.removeAttribute("src");
+    incomeVid.load()
+    video.load();
   }
 };
 
