@@ -83,11 +83,13 @@ socket.on("response_offer", async function(data) {
       socket.emit("answer", peer2.localDescription);
     });
 });
+
 socket.on("remote_answer", async function(data) {
   console.log("Recieved Data Answer:");
   console.log(data);
   await peer1.setRemoteDescription(data);
 });
+
 socket.on("avaiableCourse", function(data) {
   avaiableCourse = data;
 });
@@ -118,6 +120,7 @@ function startRecording() {
   };
   mediaRecorder.onStop = function(e) {
     let blob = new Blob(chunks, { type: "video/mp4" });
+    let vod = prompt("Enter a name for your stream VOD");
     chunks = [];
   };
 }
@@ -126,6 +129,7 @@ function endRecording() {
   mediaRecorder.stop();
   console.log(mediaRecorder.state);
 }
+
 peer1.addEventListener("icecandidate", e => onIceCandidate(peer1, e));
 peer2.addEventListener("icecandidate", e => onIceCandidate(peer2, e));
 peer1.addEventListener("iceconnectionstatechange", e =>
@@ -134,6 +138,7 @@ peer1.addEventListener("iceconnectionstatechange", e =>
 peer2.addEventListener("iceconnectionstatechange", e =>
   onIceStateChange(peer2, e)
 );
+
 function getName(pc) {
   return pc === peer1 ? "peer1" : "peer2";
 }
@@ -141,6 +146,7 @@ function getName(pc) {
 function getOtherPc(pc) {
   return pc === peer1 ? peer2 : peer1;
 }
+
 async function onIceCandidate(pc, event) {
   try {
     await getOtherPc(pc).addIceCandidate(event.candidate);
@@ -171,9 +177,11 @@ function onIceStateChange(pc, event) {
     console.log("ICE state change event: ", event);
   }
 }
+
 function onCreateSessionDescError(error) {
   console.log(`Failed to create session description: ${error.toString()}`);
 }
+
 /*
  * Function that is called when a teacher clicks on a classroom
  * using the clicked on class creates a room
@@ -249,13 +257,13 @@ class Stream extends Component {
   render() {
     const { user } = this.props.auth;
     const { profile, loading } = this.props.profile;
-    let publicProfile;
+    let streamPage;
 
     if (profile === null || loading) {
-      return (publicProfile = <Spinner />);
+      return (streamPage = <Spinner />);
     } else {
       if (profile.handle === undefined) {
-        publicProfile = (
+        streamPage = (
           <div>
             <center>
               <h2>Welcome {user.userName}</h2>
@@ -273,7 +281,7 @@ class Stream extends Component {
           </div>
         );
       } else {
-        return (
+        streamPage = (
           <div style={styles.Cont}>
             <div>
               <p>{user.userName}</p>
@@ -365,6 +373,7 @@ class Stream extends Component {
         );
       }
     }
+    return streamPage;
   }
 }
 
