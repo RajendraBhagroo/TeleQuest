@@ -53,6 +53,7 @@ let streaming = false;
 let avaiableCourse = [];
 let mediaRecorder;
 let chunks = [];
+
 /*
  * main url being where the website is being hosted as well as the specified porition of that website
  * since rooms are virtuilized in the namespace the url won't change
@@ -60,45 +61,45 @@ let chunks = [];
 const mainURL = `http://${host}:${socket_port}/${namespace}`;
 let socket = io.connect(mainURL);
 
-socket.on("err", function(data) {
+socket.on("err", data => {
   console.log(data);
 });
 
-socket.on("success", function(data) {
+socket.on("success", data => {
   console.log(data);
 });
 
-socket.on("response", function(data) {
+socket.on("response", data => {
   console.log(data);
 });
 
-socket.on("response_offer", async function(data) {
+socket.on("response_offer", async data => {
   console.log("Recieved Data Offer:");
   console.log(data);
   await peer2
     .setRemoteDescription(data)
     .then(() => peer2.createAnswer())
     .then(sdp => peer2.setLocalDescription(sdp))
-    .then(function() {
+    .then(() => {
       socket.emit("answer", peer2.localDescription);
     });
 });
 
-socket.on("remote_answer", async function(data) {
+socket.on("remote_answer", async data => {
   console.log("Recieved Data Answer:");
   console.log(data);
   await peer1.setRemoteDescription(data);
 });
 
-socket.on("avaiableCourse", function(data) {
+socket.on("avaiableCourse", data => {
   avaiableCourse = data;
 });
 
-function startVideo() {
+let startVideo = () => {
   const constraints = { audio: true, video: { width: 400, height: 300 } };
   navigator.mediaDevices
     .getUserMedia(constraints)
-    .then(function(stream) {
+    .then(stream => {
       streaming = true;
       let video = document.getElementById("videoElement");
       let startRecording = document.getElementById("startRecord");
@@ -106,29 +107,29 @@ function startVideo() {
       outBoundStream = stream;
       video.play();
     })
-    .catch(function(err) {
+    .catch(err => {
       throw Error("An error occurred: " + err);
     });
-}
+};
 
-function startRecording() {
+let startRecording = () => {
   mediaRecorder = new MediaRecorder(outBoundStream);
   mediaRecorder.start();
   console.log(mediaRecorder.state);
-  mediaRecorder.ondataavailable = function(e) {
+  mediaRecorder.ondataavailable = e => {
     chunks.push(e.data);
   };
-  mediaRecorder.onStop = function(e) {
+  mediaRecorder.onStop = e => {
     let blob = new Blob(chunks, { type: "video/mp4" });
     let vod = prompt("Enter a name for your stream VOD");
     chunks = [];
   };
-}
+};
 
-function endRecording() {
+let endRecording = () => {
   mediaRecorder.stop();
   console.log(mediaRecorder.state);
-}
+};
 
 peer1.addEventListener("icecandidate", e => onIceCandidate(peer1, e));
 peer2.addEventListener("icecandidate", e => onIceCandidate(peer2, e));
@@ -139,15 +140,15 @@ peer2.addEventListener("iceconnectionstatechange", e =>
   onIceStateChange(peer2, e)
 );
 
-function getName(pc) {
+let getName = pc => {
   return pc === peer1 ? "peer1" : "peer2";
-}
+};
 
-function getOtherPc(pc) {
+let getOtherPc = pc => {
   return pc === peer1 ? peer2 : peer1;
-}
+};
 
-async function onIceCandidate(pc, event) {
+let onIceCandidate = async (pc, event) => {
   try {
     await getOtherPc(pc).addIceCandidate(event.candidate);
     onAddIceCandidateSuccess(pc);
@@ -159,28 +160,28 @@ async function onIceCandidate(pc, event) {
       event.candidate ? event.candidate.candidate : "(null)"
     }`
   );
-}
+};
 
-function onAddIceCandidateSuccess(pc) {
+let onAddIceCandidateSuccess = pc => {
   console.log(`${getName(pc)} addIceCandidate success`);
-}
+};
 
-function onAddIceCandidateError(pc, error) {
+let onAddIceCandidateError = (pc, error) => {
   console.log(
     `${getName(pc)} failed to add ICE Candidate: ${error.toString()}`
   );
-}
+};
 
-function onIceStateChange(pc, event) {
+let onIceStateChange = (pc, event) => {
   if (pc) {
     console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
     console.log("ICE state change event: ", event);
   }
-}
+};
 
-function onCreateSessionDescError(error) {
+let onCreateSessionDescError = error => {
   console.log(`Failed to create session description: ${error.toString()}`);
-}
+};
 
 /*
  * Function that is called when a teacher clicks on a classroom
@@ -188,28 +189,28 @@ function onCreateSessionDescError(error) {
  * the streamingURL is a combination of the host, socketport
  * and the name of the class that was clicked
  */
-function CreateClassRoom(room) {
+let CreateClassRoom = room => {
   socket.emit("newClass", room);
-}
+};
 
 /*
  * Function thats called when a student clicks on a classroom that exists
  * joins the specified room that the user clicked on
  */
-function JoinClassRoom(room) {
+let JoinClassRoom = room => {
   socket.emit("joinRoom", room);
-}
+};
 
 // returns the current avaiable rooms/classes in the namespace
-function GetRooms() {
+let GetRooms = () => {
   socket.emit("currentClasses");
-}
+};
 
 // emits the start of the stream to those in the room
-async function startStream(data) {
+let startStream = async data => {
   CreateClassRoom("Test");
   if (streaming) {
-    peer2.ontrack = function(event) {
+    peer2.ontrack = event => {
       console.log("recieving foriegn stream");
       let incomeVid = document.getElementById("ForiegnVid");
       incomeVid.srcObject = event.streams[0];
@@ -223,25 +224,25 @@ async function startStream(data) {
       await peer1
         .createOffer()
         .then(sdp => peer1.setLocalDescription(sdp))
-        .then(function() {
+        .then(() => {
           console.log("Peer1 LocalDescription:");
           console.log(peer1.localDescription);
           socket.emit("offer", peer1.localDescription);
         });
     } catch (e) {
-      console.log(e.toString());
+      console.log(e);
     }
   }
-}
+};
 
-function stopStream() {
+let stopStream = () => {
   if (streaming) {
     console.log(outBoundStream);
     let tracks = outBoundStream.getTracks();
 
     tracks.forEach(track => track.stop());
   }
-}
+};
 class Stream extends Component {
   constructor() {
     super();
@@ -318,45 +319,35 @@ class Stream extends Component {
                   <div className="center">
                     <button
                       id="startVideo"
-                      onClick={function() {
-                        startVideo();
-                      }}
+                      onClick={() => startVideo()}
                       style={styles.Button}
                     >
                       Start Video
                     </button>
                     <button
                       id="startStream"
-                      onClick={function() {
-                        startStream();
-                      }}
+                      onClick={() => startStream()}
                       style={styles.Button}
                     >
                       Start Stream
                     </button>
                     <button
                       id="stopStream"
-                      onClick={function() {
-                        stopStream();
-                      }}
+                      onClick={() => stopStream()}
                       style={styles.Button}
                     >
                       Stop Stream
                     </button>
                     <button
                       id="startRecord"
-                      onClick={function() {
-                        startRecording();
-                      }}
+                      onClick={() => startRecording()}
                       style={styles.Button}
                     >
                       Start Recording
                     </button>
                     <button
                       id="stopRecording"
-                      onClick={function() {
-                        endRecording();
-                      }}
+                      onClick={() => endRecording()}
                       style={styles.Button}
                     >
                       Stop Recording
