@@ -5,6 +5,7 @@ import {
   getCurrentProfile,
   deleteAccount
 } from "../../redux/actions/profileActions";
+import ProfileNotFound from "../common/ProfileNotFound";
 import EducationTab from "./EducationTab";
 import ExperienceTab from "./ExperienceTab";
 import CoursesEnrolledInTab from "./CoursesEnrolledInTab";
@@ -39,23 +40,7 @@ class Profile extends React.Component {
       publicProfile = <Spinner />;
     } else {
       if (profile.handle === undefined) {
-        publicProfile = (
-          <div>
-            <center>
-              <h2>Welcome {user.userName}</h2>
-              <h4>
-                There is no profile in this account. Please create your profile.
-              </h4>
-              <Link
-                type="button"
-                className="btn btn-primary pull-right"
-                to="/profileUpdate"
-              >
-                Create Profile
-              </Link>
-            </center>
-          </div>
-        );
+        publicProfile = <ProfileNotFound />;
       } else {
         publicProfile = (
           <div className="container">

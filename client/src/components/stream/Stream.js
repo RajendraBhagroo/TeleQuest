@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCurrentProfile } from "../../redux/actions/profileActions";
 import ProfileSideCourseCard from "../profile/ProfileSideCourseCard";
+import ProfileNotFound from "../common/ProfileNotFound";
 import {
   startVideo,
   startStream,
   stopStream,
   startRecording,
   endRecording
-} from "./StreamFunctions";
+} from "../../utils/StreamFunctions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 
@@ -70,23 +70,7 @@ class Stream extends Component {
       return (streamPage = <Spinner />);
     } else {
       if (profile.handle === undefined) {
-        streamPage = (
-          <div>
-            <center>
-              <h2>Welcome {user.userName}</h2>
-              <h4>
-                There is no profile in this account. Please create your profile.
-              </h4>
-              <Link
-                type="button"
-                className="btn btn-primary pull-right"
-                to="/profileUpdate"
-              >
-                Create Profile
-              </Link>
-            </center>
-          </div>
-        );
+        streamPage = <ProfileNotFound />;
       } else {
         streamPage = (
           <div style={styles.Cont}>
