@@ -99,6 +99,7 @@ class Stream extends Component {
                     </div>
                   </div>
                 </div>
+                <article className="vod-clips" />
                 <div className="col">
                   <div className="row" style={styles.Frame}>
                     <video id="videoElement" style={styles.Screen}>

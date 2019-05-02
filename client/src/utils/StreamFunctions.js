@@ -75,11 +75,35 @@ let startRecording = () => {
   mediaRecorder.ondataavailable = e => {
     chunks.push(e.data);
   };
-  mediaRecorder.onStop = e => {
+  mediaRecorder.onstop = e => {
     console.log("ENDING");
+
+    let vodClips = document.querySelector(".vod-clips");
+    let vodName = prompt("Enter a name for your stream VOD");
+    let vodContainer = document.createElement("article");
+    let vodLabel = document.createElement("p");
+    let video = document.createElement("video");
+    let deleteButton = document.createElement("button");
+
+    vodContainer.classList.add("Vod");
+    video.setAttribute("controls", "");
+    deleteButton.innerHTML = "Delete Vod";
+    vodLabel.innerHTML = vodName;
+
+    vodContainer.appendChild(video);
+    vodContainer.appendChild(vodLabel);
+    vodContainer.appendChild(deleteButton);
+    vodClips.appendChild(vodContainer);
+
     let blob = new Blob(chunks, { type: "video/mp4" });
-    let vod = prompt("Enter a name for your stream VOD");
     chunks = [];
+    let vodURL = window.URL.createObjectURL(blob);
+    video.src = vodURL;
+
+    deleteButton.onclick = function(e) {
+      let evtTgt = e.target;
+      evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+    };
   };
 };
 
