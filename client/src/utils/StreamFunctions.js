@@ -52,66 +52,6 @@ socket.on("avaiableCourse", data => {
   avaiableCourse = data;
 });
 
-let startVideo = () => {
-  const constraints = { audio: true, video: { width: 400, height: 300 } };
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then(stream => {
-      streaming = true;
-      let video = document.getElementById("videoElement");
-      video.srcObject = stream;
-      outBoundStream = stream;
-      video.play();
-    })
-    .catch(err => {
-      throw Error("An error occurred: " + err);
-    });
-};
-
-let startRecording = () => {
-  mediaRecorder = new MediaRecorder(outBoundStream);
-  mediaRecorder.start();
-  console.log(mediaRecorder.state);
-  mediaRecorder.ondataavailable = e => {
-    chunks.push(e.data);
-  };
-  mediaRecorder.onstop = e => {
-    console.log("ENDING");
-
-    let vodClips = document.querySelector(".vod-clips");
-    let vodName = prompt("Enter a name for your stream VOD");
-    let vodContainer = document.createElement("article");
-    let vodLabel = document.createElement("p");
-    let video = document.createElement("video");
-    let deleteButton = document.createElement("button");
-
-    vodContainer.classList.add("Vod");
-    video.setAttribute("controls", "");
-    deleteButton.innerHTML = "Delete Vod";
-    vodLabel.innerHTML = vodName;
-
-    vodContainer.appendChild(video);
-    vodContainer.appendChild(vodLabel);
-    vodContainer.appendChild(deleteButton);
-    vodClips.appendChild(vodContainer);
-
-    let blob = new Blob(chunks, { type: "video/mp4" });
-    chunks = [];
-    let vodURL = window.URL.createObjectURL(blob);
-    video.src = vodURL;
-
-    deleteButton.onclick = function(e) {
-      let evtTgt = e.target;
-      evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-    };
-  };
-};
-
-let endRecording = () => {
-  mediaRecorder.stop();
-  console.log(mediaRecorder.state);
-};
-
 peer1.addEventListener("icecandidate", e => onIceCandidate(peer1, e));
 peer2.addEventListener("icecandidate", e => onIceCandidate(peer2, e));
 peer1.addEventListener("iceconnectionstatechange", e =>
@@ -187,6 +127,22 @@ let GetRooms = () => {
   socket.emit("currentClasses");
 };
 
+let startVideo = () => {
+  const constraints = { audio: true, video: { width: 400, height: 300 } };
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then(stream => {
+      streaming = true;
+      let video = document.getElementById("videoElement");
+      video.srcObject = stream;
+      outBoundStream = stream;
+      video.play();
+    })
+    .catch(err => {
+      throw Error("An error occurred: " + err);
+    });
+};
+
 // emits the start of the stream to those in the room
 let startStream = async data => {
   CreateClassRoom("Test");
@@ -229,6 +185,53 @@ let stopStream = () => {
     incomeVid.load()
     video.load();
   }
+};
+
+let startRecording = () => {
+  mediaRecorder = new MediaRecorder(outBoundStream);
+  mediaRecorder.start();
+  console.log(mediaRecorder.state);
+  mediaRecorder.ondataavailable = e => {
+    chunks.push(e.data);
+  };
+  mediaRecorder.onstop = e => {
+    console.log("ENDING");
+
+    let vodClips = document.querySelector(".vod-clips");
+    let vodName = prompt("Enter a name for your stream VOD");
+    let vodContainer = document.createElement("article");
+    let vodLabel = document.createElement("p");
+    let video = document.createElement("video");
+    let deleteButton = document.createElement("button");
+    let bookmarkButton = document.createElement("button");
+
+    vodContainer.classList.add("Vod");
+    video.setAttribute("controls", "");
+    deleteButton.innerHTML = "Delete Vod";
+    bookmarkButton.innerHTML = "Set BookMark";
+    vodLabel.innerHTML = vodName;
+
+    vodContainer.appendChild(video);
+    vodContainer.appendChild(vodLabel);
+    vodContainer.appendChild(deleteButton);
+    vodContainer.appendChild(bookmarkButton);
+    vodClips.appendChild(vodContainer);
+
+    let blob = new Blob(chunks, { type: "video/mp4" });
+    chunks = [];
+    let vodURL = window.URL.createObjectURL(blob);
+    video.src = vodURL;
+
+    deleteButton.onclick = function(e) {
+      let evtTgt = e.target;
+      evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+    };
+  };
+};
+
+let endRecording = () => {
+  mediaRecorder.stop();
+  console.log(mediaRecorder.state);
 };
 
 export { startVideo, startStream, stopStream, startRecording, endRecording };
