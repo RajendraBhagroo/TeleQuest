@@ -138,6 +138,7 @@ let startVideo = () => {
       outBoundStream = stream;
       video.play();
     })
+    .then(() => startRecording())
     .catch(err => {
       throw Error("An error occurred: " + err);
     });
@@ -182,8 +183,9 @@ let stopStream = () => {
     video.pause();
     incomeVid.removeAttribute("src");
     video.removeAttribute("src");
-    incomeVid.load()
+    incomeVid.load();
     video.load();
+    endRecording();
   }
 };
 
@@ -198,7 +200,9 @@ let startRecording = () => {
     console.log("ENDING");
 
     let vodClips = document.querySelector(".vod-clips");
-    let vodName = prompt("Enter a name for your stream VOD");
+    let date = new Date();
+    let vodName =
+      date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
     let vodContainer = document.createElement("article");
     let vodLabel = document.createElement("p");
     let video = document.createElement("video");
@@ -206,6 +210,7 @@ let startRecording = () => {
     let bookmarkButton = document.createElement("button");
 
     vodContainer.classList.add("Vod");
+    vodContainer.classList.add("p-2");
     video.setAttribute("controls", "");
     deleteButton.innerHTML = "Delete Vod";
     bookmarkButton.innerHTML = "Set BookMark";
@@ -221,6 +226,14 @@ let startRecording = () => {
     chunks = [];
     let vodURL = window.URL.createObjectURL(blob);
     video.src = vodURL;
+    video.width = 350;
+    video.height = 350;
+
+    bookmarkButton.onclick = function(e) {
+      let bookmark = document.createElement("p");
+      bookmark.innerHTML = `Bookmarked Time: ${Math.floor(video.currentTime)}s`;
+      vodContainer.appendChild(bookmark);
+    };
 
     deleteButton.onclick = function(e) {
       let evtTgt = e.target;

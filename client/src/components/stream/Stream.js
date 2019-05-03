@@ -27,8 +27,8 @@ const styles = {
     margin: "0 1em 0"
   },
   Screen: {
-    width: "100%",
-    height: "100%"
+    width: "558px",
+    height: "359px"
   },
   Cont: {
     height: "100%",
@@ -39,7 +39,7 @@ const styles = {
     margin: "0 0.5em 0"
   },
   Button_Location: {
-    padding: "20px 0 20px 0",
+    padding: "50px 0 50px 0",
     margin: "auto"
   },
   Log: {
@@ -190,21 +190,22 @@ class Stream extends Component {
                           className="card border-primary"
                           style={styles.Dual}
                         >
-                          <div className="card-header bg-primary text-white">
-                            Professor's Stream Screen
+                          <div className="card-header bg-primary text-white text-center">
+                            Professor's Stream
                           </div>
                           <div className="card-body bg-dark">
-                            <video id="ForiegnVid" style={styles.Screen} />
+                            <video id="videoElement" style={styles.Screen} />
                           </div>
                         </div>
                       </div>
+
                       <div>
                         <div
                           className="card border-primary"
                           style={styles.Dual}
                         >
-                          <div className="card-header bg-primary text-white">
-                            Students' View Screen
+                          <div className="card-header bg-primary text-white text-center">
+                            Student
                           </div>
                           <div className="card-body bg-dark">
                             <video id="ForiegnVid" style={styles.Screen} />
@@ -216,49 +217,32 @@ class Stream extends Component {
                     <div className="row">
                       <div style={styles.Button_Location}>
                         <button
+                          class="btn btn-success mr-2 ml-5"
                           id="startVideo"
                           onClick={function() {
                             startVideo();
                           }}
-                          style={styles.Button}
                         >
                           Start Stream
                         </button>
                         <button
-                          id="startStream"
-                          onClick={function() {
-                            startStream();
-                          }}
-                          style={styles.Button}
-                        >
-                          Join Stream
-                        </button>
-                        <button
+                          class="btn btn-danger mr-2 ml-5"
                           id="stopStream"
                           onClick={function() {
                             stopStream();
                           }}
-                          style={styles.Button}
                         >
                           Stop Stream
                         </button>
                         <button
-                          id="startRecord"
+                          class="btn btn-info"
+                          id="startStream"
+                          style={{ marginLeft: "480px" }}
                           onClick={function() {
-                            startRecording();
+                            startStream();
                           }}
-                          style={styles.Button}
                         >
-                          Start Recording
-                        </button>
-                        <button
-                          id="stopRecording"
-                          onClick={function() {
-                            endRecording();
-                          }}
-                          style={styles.Button}
-                        >
-                          Stop Recording
+                          Join Stream
                         </button>
                       </div>
                     </div>
@@ -268,6 +252,9 @@ class Stream extends Component {
 
                       <div style={styles.Log}>
                         <div className="card border-primary">
+                          <div className="card-header bg-primary text-white text-center">
+                            Log
+                          </div>
                           <div className="card-body" />
                         </div>
                       </div>
@@ -277,7 +264,7 @@ class Stream extends Component {
                       <div style={styles.Chat}>
                         <div>
                           <div className="card border-primary">
-                            <div className="card-header bg-primary text-white">
+                            <div className="card-header bg-primary text-white text-center">
                               Chat
                             </div>
                             <div className="card-body" />
@@ -285,10 +272,10 @@ class Stream extends Component {
                         </div>
                       </div>
                     </div>
+                    <article className="vod-clips d-flex" />
                   </div>
                 )}
               </div>
-              <article className="vod-clips" />
             </div>
           </div>
         );
