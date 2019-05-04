@@ -217,7 +217,7 @@ class Stream extends Component {
                     <div className="row">
                       <div style={styles.Button_Location}>
                         <button
-                          class="btn btn-success mr-2 ml-5"
+                          className="btn btn-success mr-2 ml-5"
                           id="startVideo"
                           onClick={function() {
                             startVideo();
@@ -226,7 +226,7 @@ class Stream extends Component {
                           Start Stream
                         </button>
                         <button
-                          class="btn btn-danger mr-2 ml-5"
+                          className="btn btn-danger mr-2 ml-5"
                           id="stopStream"
                           onClick={function() {
                             stopStream();
@@ -235,7 +235,7 @@ class Stream extends Component {
                           Stop Stream
                         </button>
                         <button
-                          class="btn btn-info"
+                          className="btn btn-info"
                           id="startStream"
                           style={{ marginLeft: "480px" }}
                           onClick={function() {

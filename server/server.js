@@ -87,6 +87,20 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
       .emit("response_offer", data);
   });
 
+  socket.on("new_watcher", function(data) {
+    console.log(data);
+    io
+      .of(`/${nameSpace}`)
+      .in(currentRoom)
+      .emit("add_new_watcher", data);
+  });
+  socket.on("new_streamer", function(data) {
+    console.log(data);
+    io
+      .of(`/${nameSpace}`)
+      .in(currentRoom)
+      .emit("add_new_streamer", data);
+  });
   /*@desc on event new-class, socket will append the new class to
    * availablerooms then joins it
    */

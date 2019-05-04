@@ -52,8 +52,14 @@ socket.on("avaiableCourse", data => {
   avaiableCourse = data;
 });
 
-peer1.addEventListener("icecandidate", e => onIceCandidate(peer1, e));
-peer2.addEventListener("icecandidate", e => onIceCandidate(peer2, e));
+socket.on("add_new_watcher",async data=>{
+  peer1.addIceCandidate(data);
+});
+socket.on("add_new_streamer", async data=>{
+  peer2.addIceCandidate(data);
+});
+peer1.addEventListener("icecandidate", e => onIceCandidateStreamer(peer1, e));
+peer2.addEventListener("icecandidate", e => onIceCandidateWatcher(peer2, e));
 peer1.addEventListener("iceconnectionstatechange", e =>
   onIceStateChange(peer1, e)
 );
@@ -65,13 +71,9 @@ let getName = pc => {
   return pc === peer1 ? "peer1" : "peer2";
 };
 
-let getOtherPc = pc => {
-  return pc === peer1 ? peer2 : peer1;
-};
-
-let onIceCandidate = async (pc, event) => {
+let onIceCandidateWatcher = async (pc, event) => {
   try {
-    await getOtherPc(pc).addIceCandidate(event.candidate);
+    if(event.candidate){socket.emit("new_watcher",event.candidate);}
     onAddIceCandidateSuccess(pc);
   } catch (e) {
     onAddIceCandidateError(pc, e);
@@ -83,6 +85,19 @@ let onIceCandidate = async (pc, event) => {
   );
 };
 
+let onIceCandidateStreamer = async (pc, event) => {
+  try {
+    if(event.candidate){socket.emit("new_streamer",event.candidate);}
+    onAddIceCandidateSuccess(pc);
+  } catch (e) {
+    onAddIceCandidateError(pc, e);
+  }
+  console.log(
+    `${getName(pc)} ICE candidate:\n${
+      event.candidate ? event.candidate.candidate : "(null)"
+    }`
+  );
+};
 let onAddIceCandidateSuccess = pc => {
   console.log(`${getName(pc)} addIceCandidate success`);
 };
