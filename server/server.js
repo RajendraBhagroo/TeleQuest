@@ -10,7 +10,7 @@ let io = require("socket.io").listen(server);
 const connections = [];
 let availablerooms = [];
 let currentRoom = "";
-
+let profSocket;
 // Routes
 const users = require(`./${process.env.SERVER_VERSION}/routes/api/users`);
 const profile = require(`./${process.env.SERVER_VERSION}/routes/api/profile`);
@@ -77,30 +77,65 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     }
   });
 
-  /*@desc upon receiving offer
-   */
-  socket.on("offer", function(data) {
-    console.log(data);
+    /*emits a targeted message to the specified socket denoted by id
+    *in the nameSpace & room.
+    *The emitted data is an offer event, with the arguments of the sender socket.id, and offer data
+    */
+  socket.on("offer", function(id,data) {
     io
       .of(`/${nameSpace}`)
       .in(currentRoom)
-      .emit("response_offer", data);
+      .sockets(id)
+      .emit("offer", socket.id,data);
   });
 
-  socket.on("new_watcher", function(data) {
-    console.log(data);
+  /*emits a targeted message to the specified socket denoted by the id
+   * in the nameSpace & room
+   * The emitted data is a new candidate event, with the arguments being the sender's socket.id
+   * and candidate information
+   */
+  socket.on("candidate", function(id,data) {
     io
       .of(`/${nameSpace}`)
       .in(currentRoom)
-      .emit("add_new_watcher", data);
+      .sockets(id).emit('candidate', socket.id, data);
   });
-  socket.on("new_streamer", function(data) {
-    console.log(data);
+  /*emits a targeted message to the socket of the client that started the handshake process
+  * typically being the professor's client. This is denoted by the id value which represents the 
+  * the professors socket. The data being passsed along consists of the senders answer data. 
+  */
+  socket.on("answer", function(id,data){
     io
       .of(`/${nameSpace}`)
       .in(currentRoom)
-      .emit("add_new_streamer", data);
+      .sockets(id)
+      .emit("answer", socket.id,data);
   });
+
+  /*Emits to the those in the room that the professor has began the streaming process
+  * Also sets the professors socket for future reference
+  */
+  socket.on("ProfIn",function(id){
+    profSocket=socket.id;
+    io
+    .of(`/${nameSpace}`)
+    .in(currentRoom)
+    .sockets(id)
+    .emit("ProfIn");
+  });
+
+  /*Invoked when a new viewer has joined the streaming session, 
+  * A Join_Stream is event is emitted to the professors socket to begin
+  * the handshake process to establish a connection
+  */
+  socket.on("Join_Stream",function(){
+    io
+    .of(`/${nameSpace}`)
+    .in(currentRoom)
+    .sockets(profSocket)
+    .emit("Join_Stream",socket.id);
+  });
+
   /*@desc on event new-class, socket will append the new class to
    * availablerooms then joins it
    */
@@ -114,13 +149,7 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     .in(currentRoom)
     .emit("success",`${data} room created`);
   });
-
-  socket.on("answer", function(data){
-    io
-      .of(`/${nameSpace}`)
-      .in(currentRoom)
-      .emit("remote_answer", data);
-  })
+  
   /*@desc on event currentClasses, socket emits the response of current available rooms
    * in the namespace
    */
