@@ -11,7 +11,7 @@ let mediaRecorder;
 let chunks = [];
 const mainURL = `http://${host}:${socket_port}/${namespace}`;
 let socket = io.connect(mainURL);
-
+let video = document.getElementById("videoElement");
 /** @type {MediaStreamConstraints} */
 const constraints = {
 	// audio: true,
@@ -27,7 +27,6 @@ const constraints = {
 let StartStream = () =>{
 navigator.mediaDevices.getUserMedia(constraints)
 .then(function(stream) {
-    let video = document.getElementById("videoElement");
 	video.srcObject = stream;
 	socket.emit("newClass","Math");
 	socket.emit('ProfIn');
@@ -44,7 +43,6 @@ let stopStream = () => {
 	if (streaming) {
 	  let tracks = outBoundStream.getTracks();
 	  tracks.forEach(track => track.stop());
-	  let video = document.getElementById("videoElement");
 	  video.pause();
 	  video.removeAttribute("src");
 	  video.load();

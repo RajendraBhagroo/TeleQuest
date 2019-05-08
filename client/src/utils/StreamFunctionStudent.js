@@ -9,11 +9,23 @@ let socket = io.connect(mainURL);
 let peerConnection;
 let video = document.getElementById("");
 
+/*When the student Client knows that the professor has started a stream
+* It notifies the professors client to begin the handshake process to establish
+* a conenction
+*/
 socket.on("ProfIn",function(){
-    socket.emit("joinRoom","Math");
     socket.emit("Join_Stream");
 });
-
+/* Upon recieving an offer request from a remote peer typically the professor's client
+*  The local client creates a new RTCPeerConnection with the specified webRtcConfig
+*  Next it sets its remoteDescription to what was offered by the remote peer
+*  Then creates an answer to send to the remote peer. Before that though it sets its localDescription
+*  As stated in the professors streamfunctions, the onicecandidate is invoked when the client
+*  sets its local description. When this event occurs it sends its candidate information to the remote peer
+*  To establish the connection.
+*  The ontrack event is triggered when streaming data is recieved, the client takes this streaming data and
+*  Displays it on the specifed video element.
+*/
 socket.on("offer",function(id,offer){
     peerConnection = new RTCPeerConnection(webRtcConfig);
     peerConnection.setRemoteDescription(offer)
@@ -34,6 +46,9 @@ socket.on("offer",function(id,offer){
           };
 });
 
+/*Reacts upon a new candidate, the new candidate is added to the associated
+* candidate. The connection is referenced via the id.
+*/
 socket.on('candidate', function(id, candidate) {
 	try{
 	    peerConnection.addIceCandidate((candidate))
@@ -44,7 +59,10 @@ socket.on('candidate', function(id, candidate) {
 		console.log("Error Occured"+e);
 	}
 });
-
+/* This function assumes that the professor has already created a room, and emits
+*  a join_stream event to notify the professor or remote client to begin the handshake process
+*
+*/
 let JoinStream = () =>{
     socket.emit("joinRoom","Math");
     socket.emit("Join_Stream");
