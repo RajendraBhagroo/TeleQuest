@@ -120,7 +120,6 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     io
     .of(`/${nameSpace}`)
     .in(currentRoom)
-    .sockets(id)
     .emit("ProfIn");
   });
 
@@ -129,10 +128,7 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   * the handshake process to establish a connection
   */
   socket.on("Join_Stream",function(){
-    io
-    .of(`/${nameSpace}`)
-    .in(currentRoom)
-    .sockets(profSocket)
+    socket.to(profSocket)
     .emit("Join_Stream",socket.id);
   });
 

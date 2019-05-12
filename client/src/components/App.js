@@ -22,6 +22,7 @@ import AddEducation from "../components/profile/AddEducation";
 import AddCourseTeaching from "../components/profile/AddCourseTeaching";
 import AddCourseEnrolledIn from "../components/profile/AddCourseEnrolledIn";
 import Stream from "../components/stream/Stream";
+import ProfStream from "../components/stream/ProfStream";
 
 // Check For JWT Token
 if (localStorage.jwtToken) {
@@ -74,6 +75,7 @@ const App = () => {
                   component={AddCourseEnrolledIn}
                 />
                 <PrivateRoute path="/streams" exact component={Stream} />
+                <PrivateRoute path="/profStream" exact component={ProfStream} />
               </Switch>
             </Layout>
           </React.Fragment>

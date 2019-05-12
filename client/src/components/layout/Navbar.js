@@ -29,7 +29,7 @@ class Navbar extends React.Component {
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <Link to="/streams" className="nav-link">
+          <Link to="/profStream" className="nav-link">
             Streams
             <i className="fas fa-video ml-2" />
           </Link>
