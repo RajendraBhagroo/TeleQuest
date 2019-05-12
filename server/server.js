@@ -58,6 +58,7 @@ const nameSpace = "NYIT";
  */
 io.of(`/${nameSpace}`).on("connection", function(socket) {
   connections.push(socket);
+  console.log(socket.id);
   console.log(
     `Connected to ${nameSpace}, number of connections = ${connections.length}`
   );
@@ -70,6 +71,7 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   socket.on("joinRoom", function(room) {
     if (availablerooms.includes(room)) {
       socket.join(room);
+      console.log(Object.keys(socket.rooms));
       currentRoom = room;
       return io.emit("success", `New User has joined ${room}`);
     } else {
@@ -84,7 +86,6 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   socket.on("offer", function(id,data) {
     io
       .of(`/${nameSpace}`)
-      .in(currentRoom)
       .sockets(id)
       .emit("offer", socket.id,data);
   });
@@ -97,7 +98,6 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   socket.on("candidate", function(id,data) {
     io
       .of(`/${nameSpace}`)
-      .in(currentRoom)
       .sockets(id).emit('candidate', socket.id, data);
   });
   /*emits a targeted message to the socket of the client that started the handshake process
@@ -107,7 +107,6 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   socket.on("answer", function(id,data){
     io
       .of(`/${nameSpace}`)
-      .in(currentRoom)
       .sockets(id)
       .emit("answer", socket.id,data);
   });
@@ -140,6 +139,8 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     availablerooms.push(data);
     currentRoom=data;
     socket.join(data);
+    console.log(availablerooms);
+    console.log(socket.rooms);
     io
     .of(`/${nameSpace}`)
     .in(currentRoom)
