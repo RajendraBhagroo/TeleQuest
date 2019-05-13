@@ -119,7 +119,6 @@ class Stream extends Component {
                         </div>
                       </div>
                     </div>
-
                     {/*--Buttons--*/}
                     <div>
                       <div>
@@ -152,9 +151,7 @@ class Stream extends Component {
                           </div>
                         </div>
                       </div>
-
                       {/*--Chat--*/}
-
                       <div>
                         <div style={styles.Student_Chat}>
                           <div className="card border-primary">
@@ -198,7 +195,6 @@ class Stream extends Component {
                           </div>
                         </div>
                       </div>
-
                       <div>
                         <div
                           className="card border-primary"
@@ -213,7 +209,6 @@ class Stream extends Component {
                         </div>
                       </div>
                     </div>
-
                     <div className="row">
                       <div style={styles.Button_Location}>
                         <button
@@ -246,10 +241,8 @@ class Stream extends Component {
                         </button>
                       </div>
                     </div>
-
                     <div className="row">
                       {/*--Log--*/}
-
                       <div style={styles.Log}>
                         <div className="card border-primary">
                           <div className="card-header bg-primary text-white text-center">
@@ -258,9 +251,7 @@ class Stream extends Component {
                           <div className="card-body" />
                         </div>
                       </div>
-
                       {/*--Chat--*/}
-
                       <div style={styles.Chat}>
                         <div>
                           <div className="card border-primary">
@@ -284,18 +275,15 @@ class Stream extends Component {
     return streamPage;
   }
 }
-
 Stream.propTypes = {
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   getCurrentProfile: PropTypes.func.isRequired
 };
-
 const mapStateToProps = state => ({
   auth: state.auth,
   profile: state.profile
 });
-
 export default connect(
   mapStateToProps,
   { getCurrentProfile }
