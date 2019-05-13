@@ -13,7 +13,7 @@ const mainURL = `http://${host}:${socket_port}/${namespace}`;
 let socket = io.connect(mainURL);
 /** @type {MediaStreamConstraints} */
 const constraints = {
-	// audio: true,
+	audio: true,
 	video: {facingMode: "user"}
 };
 
@@ -50,7 +50,8 @@ let stopStream = () => {
 	  video.pause();
 	  video.removeAttribute("src");
 	  video.load();
-	  endRecording();
+		endRecording();
+		socket.emit("StreamEnd");
 	}
   };
 /*Handles the recording process by creating a new mediaRecorder object

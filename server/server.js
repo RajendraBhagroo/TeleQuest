@@ -125,6 +125,13 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     console.log(`Professor socket: ${profSocket}`);
   });
 
+  socket.on("StreamEnd",function(){
+    io
+    .of(`/${nameSpace}`)
+    .in(currentRoom)
+    .emit("StreamEnd");
+  })
+
   /*Invoked when a new viewer has joined the streaming session, 
   * A Join_Stream is event is emitted to the professors socket to begin
   * the handshake process to establish a connection

@@ -116,17 +116,7 @@ class ProfStream extends Component {
                           </div>
                           <div className="card-body bg-dark">
                             <video id="videoElement" style={styles.Screen} />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <div
-                          className="card border-primary"
-                          style={styles.Dual}
-                        >
-                          <div className="card-header bg-primary text-white text-center">
-                            Student
+                            
                           </div>
                         </div>
                       </div>
@@ -151,7 +141,7 @@ class ProfStream extends Component {
                             StartStream();
                           }}
                         >
-                          Join Stream
+                          Start Stream
                         </button>
                       </div>
                     </div>

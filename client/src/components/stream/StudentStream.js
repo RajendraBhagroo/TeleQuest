@@ -138,7 +138,8 @@ const styles = {
                                 src={OK_Button}
                                 alt="OK"
                               />
-                              <button className="btn btn-info"
+                            </button>
+                            <button className="btn btn-info"
                                 id="startStream"
                                  style={{ marginLeft: "480px" }}
                                  onClick={function() {
@@ -147,7 +148,6 @@ const styles = {
                                 >
                           Join Stream
                         </button>
-                            </button>
                           </div>
                         </div>
                       </div>

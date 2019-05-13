@@ -5,10 +5,15 @@ const socket_port = process.env.SOCKET_PORT || 3002;
 const webRtcConfig={'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]};
 let namespace = "NYIT";
 const mainURL = `http://${host}:${socket_port}/${namespace}`;
-let socket = io.connect(mainURL);
 let peerConnection;
 
-/*When the student Client knows that the professor has started a stream
+/* This function assumes that the professor has already created a room, and emits
+*  a join_stream event to notify the professor or remote client to begin the handshake process
+*
+*/
+let JoinStream = () =>{
+    let socket=io.connect(mainURL);
+    /*When the student Client knows that the professor has started a stream
 * It notifies the professors client to begin the handshake process to establish
 * a conenction
 */
@@ -49,6 +54,12 @@ socket.on("offer",function(id,offer){
           };
 });
 
+socket.on('StreamEnd',function(){
+    let video = document.getElementById("ForiegnVid");
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+})
 /*Reacts upon a new candidate, the new candidate is added to the associated
 * candidate. The connection is referenced via the id.
 */
@@ -62,14 +73,11 @@ socket.on('candidate', function(id, candidate) {
 	{
 		console.log("Error Occured"+e);
 	}
-});
-/* This function assumes that the professor has already created a room, and emits
-*  a join_stream event to notify the professor or remote client to begin the handshake process
-*
-*/
-let JoinStream = () =>{
+    });
+    
     socket.emit("joinRoom","Math");
     socket.emit("Join_Stream");
 };
+
 
 export{JoinStream}
