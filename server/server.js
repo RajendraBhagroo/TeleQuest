@@ -160,8 +160,9 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
    */
   socket.on("disconnect", function(data) {
     connections.splice(connections.indexOf(socket), 1);
+    console.log(socket.id)
     console.log(
-      `Connection disconnected, number of connections ${connections.length}`
+      `Disconnected, number of connections ${connections.length}`
     );
     socket.join("/");
   });

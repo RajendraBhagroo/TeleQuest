@@ -1,7 +1,9 @@
 import io from "socket.io-client";
 
-const host = process.env.HOST || `127.0.0.1`;
-const socket_port = process.env.SOCKET_PORT || 3002;
+//const host = process.env.HOST || `127.0.0.1`;
+//const socket_port = process.env.SOCKET_PORT || 3002;
+const host="192.168.1.16";
+const socket_port=3002;
 let namespace = "NYIT";
 let outBoundStream;
 const webRtcConfig={'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]};

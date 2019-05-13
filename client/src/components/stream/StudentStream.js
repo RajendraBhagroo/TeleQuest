@@ -138,7 +138,7 @@ const styles = {
                                 src={OK_Button}
                                 alt="OK"
                               />
-                              <button type="button" className="btn btn-info"
+                              <button className="btn btn-info"
                                 id="startStream"
                                  style={{ marginLeft: "480px" }}
                                  onClick={function() {

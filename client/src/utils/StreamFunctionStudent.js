@@ -1,13 +1,14 @@
 import io from "socket.io-client";
 
-const host = process.env.HOST || `127.0.0.1`;
-const socket_port = process.env.SOCKET_PORT || 3002;
+//const host = process.env.HOST || `127.0.0.1`;
+//const socket_port = process.env.SOCKET_PORT || 3002;
+const host="192.168.1.16"
+const socket_port=3002;
 const webRtcConfig={'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]};
 let namespace = "NYIT";
 const mainURL = `http://${host}:${socket_port}/${namespace}`;
 let socket = io.connect(mainURL);
 let peerConnection;
-let video = document.getElementById("");
 
 /*When the student Client knows that the professor has started a stream
 * It notifies the professors client to begin the handshake process to establish
@@ -41,6 +42,7 @@ socket.on("offer",function(id,offer){
         }};
 
     peerConnection.ontrack = event => {
+        let video = document.getElementById("ForiegnVid");
             video.srcObject = event.streams[0];
             video.play();
           };
