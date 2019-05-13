@@ -1,9 +1,7 @@
 import io from "socket.io-client";
 
-//const host = process.env.HOST || `127.0.0.1`;
-//const socket_port = process.env.SOCKET_PORT || 3002;
-const host="192.168.1.16"
-const socket_port=3002;
+const host = process.env.HOST || `127.0.0.1`;
+const socket_port = process.env.SOCKET_PORT || 3002;
 const webRtcConfig={'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]};
 let namespace = "NYIT";
 const mainURL = `http://${host}:${socket_port}/${namespace}`;
@@ -28,6 +26,7 @@ socket.on("ProfIn",function(){
 *  Displays it on the specifed video element.
 */
 socket.on("offer",function(id,offer){
+    console.log("Student Recieved Offer");
     peerConnection = new RTCPeerConnection(webRtcConfig);
     peerConnection.setRemoteDescription(offer)
     .then(()=>peerConnection.createAnswer())
@@ -38,10 +37,12 @@ socket.on("offer",function(id,offer){
 
     peerConnection.onicecandidate = function(event) {
 		if (event.candidate) {
+            console.log("student emitting candidate offer");
 			socket.emit('candidate', id, event.candidate);
         }};
 
     peerConnection.ontrack = event => {
+        console.log("Recieving video");
         let video = document.getElementById("ForiegnVid");
             video.srcObject = event.streams[0];
             video.play();
@@ -53,6 +54,7 @@ socket.on("offer",function(id,offer){
 */
 socket.on('candidate', function(id, candidate) {
 	try{
+        console.log("student recieving candidate offer");
 	    peerConnection.addIceCandidate((candidate))
 	    .then(console.log("Successfully added Candidate"));
 	}

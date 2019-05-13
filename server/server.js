@@ -84,9 +84,10 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     *The emitted data is an offer event, with the arguments of the sender socket.id, and offer data
     */
   socket.on("offer", function(id,data) {
+    console.log(`Sending offer to ${id}`);
     io
       .of(`/${nameSpace}`)
-      .sockets(id)
+      .to(`${id}`)
       .emit("offer", socket.id,data);
   });
 
@@ -98,7 +99,8 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   socket.on("candidate", function(id,data) {
     io
       .of(`/${nameSpace}`)
-      .sockets(id).emit('candidate', socket.id, data);
+      .to(`${id}`)
+      .emit('candidate', socket.id, data);
   });
   /*emits a targeted message to the socket of the client that started the handshake process
   * typically being the professor's client. This is denoted by the id value which represents the 
@@ -107,7 +109,7 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   socket.on("answer", function(id,data){
     io
       .of(`/${nameSpace}`)
-      .sockets(id)
+      .to(`${id}`)
       .emit("answer", socket.id,data);
   });
 
@@ -120,6 +122,7 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     .of(`/${nameSpace}`)
     .in(currentRoom)
     .emit("ProfIn");
+    console.log(`Professor socket: ${profSocket}`);
   });
 
   /*Invoked when a new viewer has joined the streaming session, 
@@ -127,6 +130,7 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   * the handshake process to establish a connection
   */
   socket.on("Join_Stream",function(){
+    console.log(`Connection ${socket.id} sending join_stream to professor`);
     socket.to(profSocket)
     .emit("Join_Stream",socket.id);
   });

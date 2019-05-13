@@ -1,9 +1,7 @@
 import io from "socket.io-client";
 
-//const host = process.env.HOST || `127.0.0.1`;
-//const socket_port = process.env.SOCKET_PORT || 3002;
-const host="192.168.1.16";
-const socket_port=3002;
+const host = process.env.HOST || `127.0.0.1`;
+const socket_port = process.env.SOCKET_PORT || 3002;
 let namespace = "NYIT";
 let outBoundStream;
 const webRtcConfig={'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]};
@@ -35,6 +33,7 @@ navigator.mediaDevices.getUserMedia(constraints)
 	socket.emit("newClass","Math");
 	socket.emit('ProfIn');
 	streaming=true;
+	startRecording();
 }).catch(error => console.error(error));
 };
 
@@ -140,7 +139,7 @@ socket.on('answer', function(id, description) {
 */
 
 socket.on('Join_Stream', function(id) {
-    console.log("Client Recieved Join Stream");
+  console.log(`Client Recieved Join Stream; Client ID: ${id}`);
 	const pc = new RTCPeerConnection(webRtcConfig);
 	peerConnections[id] = pc;
 	outBoundStream.getTracks().forEach(track => pc.addTrack(track, outBoundStream));
@@ -151,6 +150,7 @@ socket.on('Join_Stream', function(id) {
 	});
 	pc.onicecandidate = function(event) {
 		if (event.candidate) {
+			console.log("Professor emitting candidiate");
 			socket.emit('candidate', id, event.candidate);
 		}
 	};
