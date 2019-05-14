@@ -36,18 +36,15 @@ class Stream extends Component {
     }
   }
 }
-
 Stream.propTypes = {
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   getCurrentProfile: PropTypes.func.isRequired
 };
-
 const mapStateToProps = state => ({
   auth: state.auth,
   profile: state.profile
 });
-
 export default connect(
   mapStateToProps,
   { getCurrentProfile }

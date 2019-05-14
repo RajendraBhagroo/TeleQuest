@@ -12,7 +12,6 @@ import history from "../history";
 
 import Layout from "../components/layout/Layout";
 import Landing from "../components/home/Landing";
-import About from "../components/home/About";
 import Profile from "../components/profile/Profile";
 import Login from "../components/authentication/Login";
 import Register from "../components/authentication/Register";
@@ -46,7 +45,6 @@ const App = () => {
             <Layout>
               <Switch>
                 <Route path="/" exact default component={Landing} />
-                <Route path="/about" exact component={About} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
                 <PrivateRoute path="/profile" exact component={Profile} />
