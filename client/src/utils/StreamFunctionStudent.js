@@ -22,7 +22,7 @@ let JoinStream = () => {
    * It notifies the professors client to begin the handshake process to establish
    * a conenction
    */
-  socket.on("ProfIn", function() {
+  socket.on("ProfIn", () => {
     socket.emit("Join_Stream");
   });
 
@@ -37,18 +37,18 @@ let JoinStream = () => {
    *  The ontrack event is triggered when streaming data is recieved, the client takes this streaming data and
    *  Displays it on the specifed video element.
    */
-  socket.on("offer", function(id, offer) {
+  socket.on("offer", (id, offer) => {
     console.log("Student Recieved Offer");
     peerConnection = new RTCPeerConnection(webRtcConfig);
     peerConnection
       .setRemoteDescription(offer)
       .then(() => peerConnection.createAnswer())
       .then(sdp => peerConnection.setLocalDescription(sdp))
-      .then(function() {
+      .then(() => {
         socket.emit("answer", id, peerConnection.localDescription);
       });
 
-    peerConnection.onicecandidate = function(event) {
+    peerConnection.onicecandidate = event => {
       if (event.candidate) {
         console.log("student emitting candidate offer");
         socket.emit("candidate", id, event.candidate);
@@ -63,7 +63,7 @@ let JoinStream = () => {
     };
   });
 
-  socket.on("StreamEnd", function() {
+  socket.on("StreamEnd", () => {
     let video = document.getElementById("ForiegnVid");
     video.pause();
     video.removeAttribute("src");
@@ -74,7 +74,7 @@ let JoinStream = () => {
    * Reacts upon a new candidate, the new candidate is added to the associated
    * candidate. The connection is referenced via the id.
    */
-  socket.on("candidate", function(id, candidate) {
+  socket.on("candidate", (id, candidate) => {
     try {
       console.log("student recieving candidate offer");
       peerConnection

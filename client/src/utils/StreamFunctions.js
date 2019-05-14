@@ -249,13 +249,13 @@ let startRecording = () => {
     video.width = 350;
     video.height = 350;
 
-    bookmarkButton.onclick = function(e) {
+    bookmarkButton.onclick = e => {
       let bookmark = document.createElement("p");
       bookmark.innerHTML = `Bookmarked Time: ${Math.floor(video.currentTime)}s`;
       vodContainer.appendChild(bookmark);
     };
 
-    deleteButton.onclick = function(e) {
+    deleteButton.onclick = e => {
       let evtTgt = e.target;
       evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
     };

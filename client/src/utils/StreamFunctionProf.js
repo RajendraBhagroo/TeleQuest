@@ -109,13 +109,13 @@ let startRecording = () => {
     video.width = 350;
     video.height = 350;
 
-    bookmarkButton.onclick = function(e) {
+    bookmarkButton.onclick = e => {
       let bookmark = document.createElement("p");
       bookmark.innerHTML = `Bookmarked Time: ${Math.floor(video.currentTime)}s`;
       vodContainer.appendChild(bookmark);
     };
 
-    deleteButton.onclick = function(e) {
+    deleteButton.onclick = e => {
       let evtTgt = e.target;
       evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
     };
@@ -132,7 +132,7 @@ let endRecording = () => {
  * Sets the associated peer's, remoteDescription with the provided information
  * The specific connection is associated with the given id.
  */
-socket.on("answer", function(id, description) {
+socket.on("answer", (id, description) => {
   peerConnections[id].setRemoteDescription(description);
 });
 
@@ -147,7 +147,7 @@ socket.on("answer", function(id, description) {
  * Additionally an onicecandiate event is invoked once the peer has set their
  * localDescription, then emits to  the server that a new candidate is available  * to connected to.
  */
-socket.on("Join_Stream", function(id) {
+socket.on("Join_Stream", id => {
   const pc = new RTCPeerConnection(webRtcConfig);
   console.log(`Client Recieved Join Stream; Client ID: ${id}`);
   peerConnections[id] = pc;
@@ -156,10 +156,10 @@ socket.on("Join_Stream", function(id) {
     .forEach(track => pc.addTrack(track, outBoundStream));
   pc.createOffer()
     .then(sdp => pc.setLocalDescription(sdp))
-    .then(function() {
+    .then(() => {
       socket.emit("offer", id, pc.localDescription);
     });
-  pc.onicecandidate = function(event) {
+  pc.onicecandidate = event => {
     if (event.candidate) {
       console.log("Professor emitting candidiate");
       socket.emit("candidate", id, event.candidate);
@@ -167,10 +167,11 @@ socket.on("Join_Stream", function(id) {
   };
 });
 
-/*Reacts upon a new candidate, the new candidate is added to the associated
+/*
+ * Reacts upon a new candidate, the new candidate is added to the associated
  * candidate. The connection is referenced via the id.
  */
-socket.on("candidate", function(id, candidate) {
+socket.on("candidate", (id, candidate) => {
   try {
     peerConnections[id]
       .addIceCandidate(candidate)
@@ -180,7 +181,7 @@ socket.on("candidate", function(id, candidate) {
   }
 });
 
-socket.on("bye", function(id) {
+socket.on("bye", id => {
   peerConnections[id] && peerConnections[id].close();
   delete peerConnections[id];
 });

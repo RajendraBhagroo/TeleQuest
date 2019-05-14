@@ -58,16 +58,10 @@ const styles = {
   }
 };
 class StudentStream extends Component {
-  constructor() {
-    super();
-    this.state = {
-      errors: {}
-    };
-  }
-
   componentDidMount() {
     this.props.getCurrentProfile();
   }
+
   render() {
     const { user } = this.props.auth;
     const { profile, loading } = this.props.profile;
