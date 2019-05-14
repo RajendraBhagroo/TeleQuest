@@ -10,7 +10,7 @@ let io = require("socket.io").listen(server);
 const connections = [];
 let availablerooms = [];
 let currentRoom = "";
-
+let profSocket;
 // Routes
 const users = require(`./${process.env.SERVER_VERSION}/routes/api/users`);
 const profile = require(`./${process.env.SERVER_VERSION}/routes/api/profile`);
@@ -58,6 +58,7 @@ const nameSpace = "NYIT";
  */
 io.of(`/${nameSpace}`).on("connection", function(socket) {
   connections.push(socket);
+  console.log(socket.id);
   console.log(
     `Connected to ${nameSpace}, number of connections = ${connections.length}`
   );
@@ -70,6 +71,7 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
   socket.on("joinRoom", function(room) {
     if (availablerooms.includes(room)) {
       socket.join(room);
+      console.log(Object.keys(socket.rooms));
       currentRoom = room;
       return io.emit("success", `New User has joined ${room}`);
     } else {
@@ -77,30 +79,69 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     }
   });
 
-  /*@desc upon receiving offer
-   */
-  socket.on("offer", function(data) {
-    console.log(data);
+    /*emits a targeted message to the specified socket denoted by id
+    *in the nameSpace & room.
+    *The emitted data is an offer event, with the arguments of the sender socket.id, and offer data
+    */
+  socket.on("offer", function(id,data) {
+    console.log(`Sending offer to ${id}`);
     io
       .of(`/${nameSpace}`)
-      .in(currentRoom)
-      .emit("response_offer", data);
+      .to(`${id}`)
+      .emit("offer", socket.id,data);
   });
 
-  socket.on("new_watcher", function(data) {
-    console.log(data);
+  /*emits a targeted message to the specified socket denoted by the id
+   * in the nameSpace & room
+   * The emitted data is a new candidate event, with the arguments being the sender's socket.id
+   * and candidate information
+   */
+  socket.on("candidate", function(id,data) {
     io
       .of(`/${nameSpace}`)
-      .in(currentRoom)
-      .emit("add_new_watcher", data);
+      .to(`${id}`)
+      .emit('candidate', socket.id, data);
   });
-  socket.on("new_streamer", function(data) {
-    console.log(data);
+  /*emits a targeted message to the socket of the client that started the handshake process
+  * typically being the professor's client. This is denoted by the id value which represents the 
+  * the professors socket. The data being passsed along consists of the senders answer data. 
+  */
+  socket.on("answer", function(id,data){
     io
       .of(`/${nameSpace}`)
-      .in(currentRoom)
-      .emit("add_new_streamer", data);
+      .to(`${id}`)
+      .emit("answer", socket.id,data);
   });
+
+  /*Emits to the those in the room that the professor has began the streaming process
+  * Also sets the professors socket for future reference
+  */
+  socket.on("ProfIn",function(id){
+    profSocket=socket.id;
+    io
+    .of(`/${nameSpace}`)
+    .in(currentRoom)
+    .emit("ProfIn");
+    console.log(`Professor socket: ${profSocket}`);
+  });
+
+  socket.on("StreamEnd",function(){
+    io
+    .of(`/${nameSpace}`)
+    .in(currentRoom)
+    .emit("StreamEnd");
+  })
+
+  /*Invoked when a new viewer has joined the streaming session, 
+  * A Join_Stream is event is emitted to the professors socket to begin
+  * the handshake process to establish a connection
+  */
+  socket.on("Join_Stream",function(){
+    console.log(`Connection ${socket.id} sending join_stream to professor`);
+    socket.to(profSocket)
+    .emit("Join_Stream",socket.id);
+  });
+
   /*@desc on event new-class, socket will append the new class to
    * availablerooms then joins it
    */
@@ -109,18 +150,14 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
     availablerooms.push(data);
     currentRoom=data;
     socket.join(data);
+    console.log(availablerooms);
+    console.log(socket.rooms);
     io
     .of(`/${nameSpace}`)
     .in(currentRoom)
     .emit("success",`${data} room created`);
   });
-
-  socket.on("answer", function(data){
-    io
-      .of(`/${nameSpace}`)
-      .in(currentRoom)
-      .emit("remote_answer", data);
-  })
+  
   /*@desc on event currentClasses, socket emits the response of current available rooms
    * in the namespace
    */
@@ -134,8 +171,9 @@ io.of(`/${nameSpace}`).on("connection", function(socket) {
    */
   socket.on("disconnect", function(data) {
     connections.splice(connections.indexOf(socket), 1);
+    console.log(socket.id)
     console.log(
-      `Connection disconnected, number of connections ${connections.length}`
+      `Disconnected, number of connections ${connections.length}`
     );
     socket.join("/");
   });

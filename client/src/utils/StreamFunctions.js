@@ -2,6 +2,7 @@ import io from "socket.io-client";
 
 const host = process.env.HOST || `127.0.0.1`;
 const socket_port = process.env.SOCKET_PORT || 3002;
+
 let namespace = "NYIT";
 let outBoundStream;
 let peer1 = new RTCPeerConnection();
@@ -52,10 +53,10 @@ socket.on("avaiableCourse", data => {
   avaiableCourse = data;
 });
 
-socket.on("add_new_watcher",async data=>{
+socket.on("add_new_watcher", async data => {
   peer1.addIceCandidate(data);
 });
-socket.on("add_new_streamer", async data=>{
+socket.on("add_new_streamer", async data => {
   peer2.addIceCandidate(data);
 });
 peer1.addEventListener("icecandidate", e => onIceCandidateStreamer(peer1, e));
@@ -73,7 +74,9 @@ let getName = pc => {
 
 let onIceCandidateWatcher = async (pc, event) => {
   try {
-    if(event.candidate){socket.emit("new_watcher",event.candidate);}
+    if (event.candidate) {
+      socket.emit("new_watcher", event.candidate);
+    }
     onAddIceCandidateSuccess(pc);
   } catch (e) {
     onAddIceCandidateError(pc, e);
@@ -87,7 +90,9 @@ let onIceCandidateWatcher = async (pc, event) => {
 
 let onIceCandidateStreamer = async (pc, event) => {
   try {
-    if(event.candidate){socket.emit("new_streamer",event.candidate);}
+    if (event.candidate) {
+      socket.emit("new_streamer", event.candidate);
+    }
     onAddIceCandidateSuccess(pc);
   } catch (e) {
     onAddIceCandidateError(pc, e);
@@ -244,13 +249,13 @@ let startRecording = () => {
     video.width = 350;
     video.height = 350;
 
-    bookmarkButton.onclick = function(e) {
+    bookmarkButton.onclick = e => {
       let bookmark = document.createElement("p");
       bookmark.innerHTML = `Bookmarked Time: ${Math.floor(video.currentTime)}s`;
       vodContainer.appendChild(bookmark);
     };
 
-    deleteButton.onclick = function(e) {
+    deleteButton.onclick = e => {
       let evtTgt = e.target;
       evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
     };
